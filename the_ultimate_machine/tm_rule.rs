@@ -28,7 +28,12 @@ impl TMRule {
         self.state == config.State && self.character == config.Tape.middle
     }
 
-    pub fn next_tape(&self, mut config: TMConfiguration) {
+    pub fn follow(&self, config: &mut TMConfiguration) {
+        config.State = self.next_state;
+        self.next_tape(config);
+    }
+
+    pub fn next_tape(&self, config: &mut TMConfiguration) {
         config.Tape.write(self.write_character);
         match self.direction {
             Direction::Left => config.Tape.move_head_left(),

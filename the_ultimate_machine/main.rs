@@ -23,4 +23,8 @@ pub fn main() {
     println!("{}", rule.applies_to(TMConfiguration::new(1, Tape::new("", '0', "", '_'))));
     println!("{}", rule.applies_to(TMConfiguration::new(1, Tape::new("", '1', "", '_'))));
     println!("{}", rule.applies_to(TMConfiguration::new(2, Tape::new("", '0', "", '_'))));
+
+    let mut config = TMConfiguration::new(1, Tape::new("", '0', "", '_'));
+    rule.follow(&mut config);
+    println!("{}", config);
 }
