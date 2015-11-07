@@ -1,5 +1,6 @@
 use tm_configuration::{TMConfiguration};
 
+#[allow(dead_code)]
 pub enum Direction {
     Left,
     Right,
@@ -25,19 +26,19 @@ impl TMRule {
     }
 
     pub fn applies_to(&self, config: TMConfiguration) -> bool {
-        self.state == config.State && self.character == config.Tape.middle
+        self.state == config.state && self.character == config.tape.middle
     }
 
     pub fn follow(&self, config: &mut TMConfiguration) {
-        config.State = self.next_state;
+        config.state = self.next_state;
         self.next_tape(config);
     }
 
     pub fn next_tape(&self, config: &mut TMConfiguration) {
-        config.Tape.write(self.write_character);
+        config.tape.write(self.write_character);
         match self.direction {
-            Direction::Left => config.Tape.move_head_left(),
-            Direction::Right => config.Tape.move_head_right(),
+            Direction::Left => config.tape.move_head_left(),
+            Direction::Right => config.tape.move_head_right(),
         }
     }
 }

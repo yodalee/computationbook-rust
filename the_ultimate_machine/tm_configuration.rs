@@ -2,20 +2,20 @@ use std::fmt;
 use tape::{Tape};
 
 pub struct TMConfiguration {
-    pub State: i32,
-    pub Tape: Tape,
+    pub state: i32,
+    pub tape: Tape,
 }
 
 impl fmt::Display for TMConfiguration {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "#<TMConfiguration state={} tape={}>",
-            self.State,
-            self.Tape,
+            self.state,
+            self.tape,
         )
     }
 }
 impl TMConfiguration {
     pub fn new(state: i32, tape: Tape) -> TMConfiguration {
-        TMConfiguration {State: state, Tape: tape}
+        TMConfiguration {state: state, tape: tape}
     }
 }
