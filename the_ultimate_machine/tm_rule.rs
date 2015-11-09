@@ -25,7 +25,7 @@ impl TMRule {
         }
     }
 
-    pub fn applies_to(&self, config: TMConfiguration) -> bool {
+    pub fn applies_to(&self, config: &TMConfiguration) -> bool {
         self.state == config.state && self.character == config.tape.middle
     }
 
