@@ -22,7 +22,7 @@ impl DTMRulebook {
         self.rules.iter().find(|rule| rule.applies_to(config))
     }
 
-    fn applies_to(&self, config: &TMConfiguration) -> bool{
+    pub fn applies_to(&self, config: &TMConfiguration) -> bool{
         match self.rule_for(config) {
             Some(rule) => true,
             None => false,
