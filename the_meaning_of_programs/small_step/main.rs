@@ -65,4 +65,13 @@ pub fn main() {
     );
     machine.run();
     println!("{}", machine.environment);
+
+    machine = Machine::new_with_empty_env(
+        Node::sequence(
+            Node::assign("x", Node::add(Node::number(1), Node::number(1))),
+            Node::assign("y", Node::add(Node::variable("x"), Node::number(3))),
+        )
+    );
+    machine.run();
+    println!("{}", machine.environment);
 }
