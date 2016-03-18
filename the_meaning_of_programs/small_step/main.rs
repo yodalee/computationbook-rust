@@ -9,10 +9,13 @@ pub fn main() {
     print!("{}\n", n);
     print!("{}\n", n.reducible());
 
-    let mut m = Node::multiply(Node::add(Node::number(1), Node::number(2)), Node::add(Node::number(3), Node::number(4)));
+    let m = Node::add(Node::multiply(Node::number(1), Node::number(2)), Node::multiply(Node::number(3), Node::number(4)));
     print!("{}\n", m);
     print!("{}\n", m.reducible());
 
     let mut machine = Machine::new(m);
+    machine.run();
+
+    machine = Machine::new(Node::lessthan(Node::number(5), Node::add(Node::number(2), Node::number(2))));
     machine.run();
 }
