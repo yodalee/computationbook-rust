@@ -74,4 +74,15 @@ pub fn main() {
     );
     machine.run();
     println!("{}", machine.environment);
+
+    env = Environment::new();
+    env.add("x", Node::number(1));
+    machine = Machine::new(
+        Node::while_node(
+            Node::lessthan(Node::variable("x"), Node::number(5)),
+            Node::assign("x", Node::multiply(Node::variable("x"), Node::number(3)))
+        ), env
+    );
+
+    machine.run()
 }

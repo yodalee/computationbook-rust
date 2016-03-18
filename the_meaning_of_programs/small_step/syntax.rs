@@ -16,6 +16,7 @@ pub enum Node {
     Assign(String, Box<Node>),
     If(Box<Node>, Box<Node>, Box<Node>),
     Sequence(Box<Node>, Box<Node>),
+    While(Box<Node>, Box<Node>),
 }
 
 impl Node {
@@ -29,6 +30,7 @@ impl Node {
     pub fn assign(name: &str, expr: Box<Node>) -> Box<Node> { Box::new(Node::Assign(name.to_string(), expr)) }
     pub fn if_cond_else(condition: Box<Node>, consequence: Box<Node>, alternative: Box<Node>) -> Box<Node> { Box::new(Node::If(condition, consequence, alternative)) }
     pub fn sequence(head: Box<Node>, more: Box<Node>) -> Box<Node> { Box::new(Node::Sequence(head, more)) }
+    pub fn while_node(cond: Box<Node>, body: Box<Node>) -> Box<Node> { Box::new(Node::While(cond, body)) }
 
     pub fn reducible(&self) -> bool {
         match *self {
@@ -108,6 +110,13 @@ impl Node {
                     _ => Node::sequence(head.reduce(environment), more.clone()),
                 }
             }
+            Node::While(ref cond, ref body) => {
+                Node::if_cond_else(
+                    cond.clone(),
+                    Node::sequence(body.clone(), Box::new(self.clone())),
+                    Node::donothing()
+                )
+            }
             _ => panic!("Non reducible type found: {}", *self)
         }
     }
@@ -126,6 +135,7 @@ impl Display for Node {
             Node::Assign(ref name, ref expr) => write!(f, "{0} = {1}", name, expr),
             Node::If(ref condition, ref consequence, ref alternative) => write!(f, "if ({0}) {1} else {2}", condition, consequence, alternative),
             Node::Sequence(ref head, ref more) => write!(f, "{0}; {1}", head, more),
+            Node::While(ref cond, ref body) => write!(f, "while ({0}) {1}", cond, body)
         }
     }
 }

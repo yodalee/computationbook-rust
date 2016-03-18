@@ -33,7 +33,7 @@ impl Display for Environment {
         for (key, val) in self.vars.iter() {
             parts.push(format!("key: {0} = val: {1}", key, val))
         };
-        let text = parts.connect(", ");
+        let text = parts.join(", ");
         write!(f, "{}", text)
     }
 }
