@@ -26,3 +26,14 @@ impl Environment {
         }
     }
 }
+
+impl Display for Environment {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        let mut parts = Vec::new();
+        for (key, val) in self.vars.iter() {
+            parts.push(format!("key: {0} = val: {1}", key, val))
+        };
+        let text = parts.connect(", ");
+        write!(f, "{}", text)
+    }
+}

@@ -13,6 +13,7 @@ pub enum Node {
     LessThan(Box<Node>, Box<Node>),
     Variable(String),
     DoNothing,
+    Assign(String, Box<Node>),
 }
 
 impl Node {
@@ -23,6 +24,7 @@ impl Node {
     pub fn lessthan(left: Box<Node>, right: Box<Node>) -> Box<Node> { Box::new(Node::LessThan(left, right)) }
     pub fn variable(name: &str) -> Box<Node> { Box::new(Node::Variable(name.to_string())) }
     pub fn donothing() -> Box<Node> { Box::new(Node::DoNothing) }
+    pub fn assign(name: &str, expr: Box<Node>) -> Box<Node> { Box::new(Node::Assign(name.to_string(), expr)) }
 
     pub fn reducible(&self) -> bool {
         match *self {
@@ -70,6 +72,14 @@ impl Node {
             Node::Variable(ref name) => {
                 environment.get(&name)
             }
+            Node::Assign(ref name, ref expr) => {
+                if expr.reducible() {
+                    Node::assign(name, expr.reduce(environment))
+                } else {
+                    environment.add(name, expr.clone());
+                    Node::donothing()
+                }
+            }
             _ => panic!("Non reducible type found: {}", *self)
         }
     }
@@ -85,6 +95,7 @@ impl Display for Node {
             Node::LessThan(ref l, ref r) => write!(f, "{0} < {1}", l, r),
             Node::Variable(ref name) => write!(f, "{}", name),
             Node::DoNothing => write!(f, "do-nothing"),
+            Node::Assign(ref name, ref expr) => write!(f, "{0} = {1}", name, expr),
         }
     }
 }

@@ -8,12 +8,12 @@ use environment::Environment;
 
 pub fn main() {
     let n = Node::number(3);
-    print!("{}\n", n);
-    print!("{}\n", n.reducible());
+    println!("{}", n);
+    println!("{}", n.reducible());
 
     let m = Node::add(Node::multiply(Node::number(1), Node::number(2)), Node::multiply(Node::number(3), Node::number(4)));
-    print!("{}\n", m);
-    print!("{}\n", m.reducible());
+    println!("{}", m);
+    println!("{}", m.reducible());
 
     let mut machine = Machine::new_with_empty_env(m);
     machine.run();
@@ -27,4 +27,17 @@ pub fn main() {
 
     machine = Machine::new(Node::add(Node::variable("x"), Node::variable("y")), env);
     machine.run();
+
+    let mut statement = Node::assign("x", Node::add(Node::variable("x"), Node::number(1)));
+    let mut env = Environment::new();
+    env.add("x", Node::number(2));
+
+    println!("{}", statement.reducible());
+    statement = statement.reduce(&mut env);
+    println!("{0}; {1}", statement, env);
+    statement = statement.reduce(&mut env);
+    println!("{0}; {1}", statement, env);
+    statement = statement.reduce(&mut env);
+    println!("{0}; {1}", statement, env);
+    println!("{}", statement.reducible());
 }
