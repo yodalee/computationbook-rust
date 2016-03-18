@@ -64,9 +64,9 @@ impl Node {
             }
             Node::Multiply(ref l, ref r) => {
                 if l.reducible() {
-                    Node::add(l.reduce(environment), r.clone())
+                    Node::multiply(l.reduce(environment), r.clone())
                 } else if r.reducible() {
-                    Node::add(l.clone(), r.reduce(environment))
+                    Node::multiply(l.clone(), r.reduce(environment))
                 } else {
                     Node::number(l.value() * r.value())
                 }
