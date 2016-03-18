@@ -1,5 +1,7 @@
+mod machine;
 mod syntax;
 
+use machine::Machine;
 use syntax::Node;
 
 pub fn main() {
@@ -11,8 +13,6 @@ pub fn main() {
     print!("{}\n", m);
     print!("{}\n", m.reducible());
 
-    while(m.reducible()) {
-        m = m.reduce();
-        print!("{}\n", m);
-    }
+    let mut machine = Machine::new(m);
+    machine.run();
 }
