@@ -7,7 +7,12 @@ pub fn main() {
     print!("{}\n", n);
     print!("{}\n", n.reducible());
 
-    let m = Node::multiply(Node::add(Node::number(1), Node::number(2)), Node::add(Node::number(3), Node::number(4)));
+    let mut m = Node::multiply(Node::add(Node::number(1), Node::number(2)), Node::add(Node::number(3), Node::number(4)));
     print!("{}\n", m);
     print!("{}\n", m.reducible());
+
+    while(m.reducible()) {
+        m = m.reduce();
+        print!("{}\n", m);
+    }
 }
