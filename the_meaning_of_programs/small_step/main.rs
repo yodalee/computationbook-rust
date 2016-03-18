@@ -40,4 +40,29 @@ pub fn main() {
     statement = statement.reduce(&mut env);
     println!("{0}; {1}", statement, env);
     println!("{}", statement.reducible());
+
+    env = Environment::new();
+    env.add("x", Node::boolean(true));
+
+    machine = Machine::new(
+        Node::if_cond_else(
+            Node::variable("x"),
+            Node::assign("y", Node::number(1)),
+            Node::assign("y", Node::number(2))
+        ), env
+    );
+    machine.run();
+    println!("{}", machine.environment);
+
+    env = Environment::new();
+    env.add("x", Node::boolean(false));
+    machine = Machine::new(
+        Node::if_cond_else(
+            Node::variable("x"),
+            Node::assign("y", Node::number(1)),
+            Node::donothing()
+        ), env
+    );
+    machine.run();
+    println!("{}", machine.environment);
 }

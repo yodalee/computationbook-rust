@@ -2,7 +2,7 @@ use syntax::Node;
 use environment::Environment;
 
 pub struct Machine {
-    environment: Environment,
+    pub environment: Environment,
     expression: Box<Node>,
 }
 

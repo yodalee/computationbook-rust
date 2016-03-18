@@ -14,6 +14,7 @@ pub enum Node {
     Variable(String),
     DoNothing,
     Assign(String, Box<Node>),
+    If(Box<Node>, Box<Node>, Box<Node>),
 }
 
 impl Node {
@@ -25,6 +26,7 @@ impl Node {
     pub fn variable(name: &str) -> Box<Node> { Box::new(Node::Variable(name.to_string())) }
     pub fn donothing() -> Box<Node> { Box::new(Node::DoNothing) }
     pub fn assign(name: &str, expr: Box<Node>) -> Box<Node> { Box::new(Node::Assign(name.to_string(), expr)) }
+    pub fn if_cond_else(condition: Box<Node>, consequence: Box<Node>, alternative: Box<Node>) -> Box<Node> { Box::new(Node::If(condition, consequence, alternative)) }
 
     pub fn reducible(&self) -> bool {
         match *self {
@@ -37,6 +39,13 @@ impl Node {
         match *self {
             Node::Number(value) => { value },
             _ => panic!("Type has no value: {}", *self)
+        }
+    }
+
+    pub fn eval(&self) -> bool {
+        match *self {
+            Node::Boolean(b) => { b },
+            _ => panic!("Type cannot eval to boolean {}", *self)
         }
     }
 
@@ -80,6 +89,17 @@ impl Node {
                     Node::donothing()
                 }
             }
+            Node::If(ref condition, ref consequence, ref alternative) => {
+                if condition.reducible() {
+                    Node::if_cond_else(condition.reduce(environment), consequence.clone(), alternative.clone())
+                } else {
+                    if condition.eval() {
+                        consequence.clone()
+                    } else {
+                        alternative.clone()
+                    }
+                }
+            }
             _ => panic!("Non reducible type found: {}", *self)
         }
     }
@@ -96,6 +116,7 @@ impl Display for Node {
             Node::Variable(ref name) => write!(f, "{}", name),
             Node::DoNothing => write!(f, "do-nothing"),
             Node::Assign(ref name, ref expr) => write!(f, "{0} = {1}", name, expr),
+            Node::If(ref condition, ref consequence, ref alternative) => write!(f, "if ({0}) {1} else {2}", condition, consequence, alternative),
         }
     }
 }
