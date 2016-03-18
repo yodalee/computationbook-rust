@@ -12,6 +12,13 @@ impl Node {
     pub fn number(value: i64) -> Box<Node> { Box::new(Node::Number(value)) }
     pub fn add(left: Box<Node>, right: Box<Node>) -> Box<Node> { Box::new(Node::Add(left, right)) }
     pub fn multiply(left: Box<Node>, right: Box<Node>) -> Box<Node> { Box::new(Node::Multiply(left, right)) }
+
+    pub fn reducible(&self) -> bool {
+        match *self {
+            Node::Number(value) => false,
+            _ => true,
+        }
+    }
 }
 
 impl Display for Node {
