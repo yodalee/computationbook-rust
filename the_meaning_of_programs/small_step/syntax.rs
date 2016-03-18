@@ -12,6 +12,7 @@ pub enum Node {
     Boolean(bool),
     LessThan(Box<Node>, Box<Node>),
     Variable(String),
+    DoNothing,
 }
 
 impl Node {
@@ -21,10 +22,11 @@ impl Node {
     pub fn boolean(value: bool) -> Box<Node> { Box::new(Node::Boolean(value)) }
     pub fn lessthan(left: Box<Node>, right: Box<Node>) -> Box<Node> { Box::new(Node::LessThan(left, right)) }
     pub fn variable(name: &str) -> Box<Node> { Box::new(Node::Variable(name.to_string())) }
+    pub fn donothing() -> Box<Node> { Box::new(Node::DoNothing) }
 
     pub fn reducible(&self) -> bool {
         match *self {
-            Node::Number(_) | Node::Boolean(_) => false,
+            Node::Number(_) | Node::Boolean(_) | Node::DoNothing => false,
             _ => true,
         }
     }
@@ -82,6 +84,7 @@ impl Display for Node {
             Node::Boolean(value) => write!(f, "{}", value),
             Node::LessThan(ref l, ref r) => write!(f, "{0} < {1}", l, r),
             Node::Variable(ref name) => write!(f, "{}", name),
+            Node::DoNothing => write!(f, "do-nothing"),
         }
     }
 }
