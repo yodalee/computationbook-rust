@@ -32,4 +32,26 @@ pub fn main() {
     println!("{0} is callable? {1}", expr, expr.callable(expr.arguments()));
     expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::skisymbol("S"), x.clone()), y.clone()), z.clone());
     println!("{0} is callable? {1}", expr, expr.combinator().callable(expr.arguments()));
+
+    let swap = SKI::skicall(
+        SKI::skicall(
+            SKI::skisymbol("S"),
+            SKI::skicall(
+                SKI::skisymbol("K"),
+                SKI::skicall(
+                    SKI::skisymbol("S"),
+                    SKI::skisymbol("I")
+                ),
+            ),
+        ),
+        SKI::skisymbol("K"),
+    );
+    expr = SKI::skicall(SKI::skicall(swap.clone(), SKI::skisymbol("x")), SKI::skisymbol("y"));
+
+    println!("swap: {}", swap);
+    while expr.reducible() {
+        println!("{}", expr);
+        expr = expr.reduce();
+    }
+    println!("{}", expr);
 }

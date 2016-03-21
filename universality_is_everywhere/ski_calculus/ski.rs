@@ -40,6 +40,24 @@ impl SKI {
         }
     }
 
+    pub fn reducible(&self) -> bool {
+        match *self {
+            SKI::SKISymbol(_) => false,
+            SKI::SKICall(ref l, ref r) => l.reducible() || r.reducible() || self.combinator().callable(self.arguments()),
+        }
+    }
+
+    pub fn reduce(&self) -> Box<SKI> {
+        match *self {
+            SKI::SKICall(ref l, ref r) => {
+                if l.reducible() { SKI::skicall(l.reduce(), r.clone()) }
+                else if r.reducible() { SKI::skicall(l.clone(), r.reduce()) }
+                else { self.combinator().call(self.arguments()) }
+            },
+            _ => panic!("Cannot reduce on type: {}", *self)
+        }
+    }
+
     pub fn combinator(&self) -> Box<SKI> {
         match *self {
             SKI::SKISymbol(_) => Box::new(self.clone()),
