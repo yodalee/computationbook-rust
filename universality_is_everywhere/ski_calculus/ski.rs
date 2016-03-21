@@ -31,6 +31,15 @@ impl SKI {
         }
     }
 
+    pub fn callable(&self, arg: Vec<Box<SKI>>) -> bool {
+        match *self {
+            SKI::SKISymbol(ref name) if name == "S" => { arg.len() == 3 },
+            SKI::SKISymbol(ref name) if name == "K" => { arg.len() == 2 },
+            SKI::SKISymbol(ref name) if name == "I" => { arg.len() == 1 },
+            _ => false,
+        }
+    }
+
     pub fn combinator(&self) -> Box<SKI> {
         match *self {
             SKI::SKISymbol(_) => Box::new(self.clone()),
