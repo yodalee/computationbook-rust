@@ -15,6 +15,34 @@ impl SKI {
     pub fn skicall(l: Box<SKI>, r: Box<SKI>) -> Box<SKI> {
         Box::new(SKI::SKICall(l, r))
     }
+
+    pub fn call(&self, arg: Vec<Box<SKI>>) -> Box<SKI> {
+        match *self {
+            SKI::SKISymbol(ref name) if name == "S" => {
+                SKI::skicall(
+                    SKI::skicall(arg[0].clone(), arg[2].clone()),
+                    SKI::skicall(arg[1].clone(), arg[2].clone())
+                )
+            },
+            SKI::SKISymbol(ref name) if name == "K" || name == "I" => {
+                arg[0].clone()
+            },
+            _ => panic!("Only Symbol S, K, I is callable")
+        }
+    }
+
+    pub fn left(&self) -> Box<SKI> {
+        match *self {
+            SKI::SKICall(ref l, ref r) => l.clone(),
+            _ => panic!("Type has no left: {}", *self)
+        }
+    }
+    pub fn right(&self) -> Box<SKI> {
+        match *self {
+            SKI::SKICall(ref l, ref r) => r.clone(),
+            _ => panic!("Type has no left: {}", *self)
+        }
+    }
 }
 
 impl Display for SKI {
