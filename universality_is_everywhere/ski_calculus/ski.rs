@@ -31,6 +31,26 @@ impl SKI {
         }
     }
 
+    pub fn combinator(&self) -> Box<SKI> {
+        match *self {
+            SKI::SKISymbol(_) => Box::new(self.clone()),
+            SKI::SKICall(ref l, ref r) => l.combinator()
+        }
+    }
+
+    pub fn arguments(&self) -> Vec<Box<SKI>> {
+        match *self {
+            SKI::SKISymbol(_) => {
+                Vec::new()
+            },
+            SKI::SKICall(ref l, ref r) => {
+                let mut arg = l.arguments();
+                arg.push(r.clone());
+                arg
+            }
+        }
+    }
+
     pub fn left(&self) -> Box<SKI> {
         match *self {
             SKI::SKICall(ref l, ref r) => l.clone(),
