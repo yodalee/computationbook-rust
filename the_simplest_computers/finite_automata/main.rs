@@ -7,6 +7,7 @@ mod dfadesign;
 
 mod nfarulebook;
 mod nfa;
+mod nfadesign;
 
 use farule::{FARule};
 use dfarulebook::{DFARulebook};
@@ -15,6 +16,7 @@ use dfadesign::{DFADesign};
 
 use nfarulebook::{NFARulebook};
 use nfa::{NFA};
+use nfadesign::{NFADesign};
 
 pub fn main() {
     println!("*****************");
@@ -79,4 +81,7 @@ pub fn main() {
     println!("{}", nfa.accepting());
     nfa.read_string("bbbbb");
     println!("{}", nfa.accepting());
+
+    let mut nfa_design = NFADesign::new(1, 4, &rulebook);
+    println!("accept bab: {}, bbbbb: {}, bbabb: {}", nfa_design.accept("bab"), nfa_design.accept("bbbbb"), nfa_design.accept("bbabb"));
 }
