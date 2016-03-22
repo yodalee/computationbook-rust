@@ -1,5 +1,6 @@
 use dfarulebook::{DFARulebook};
 
+#[derive(Clone)]
 pub struct DFA {
     current_state: u32,
     accept_states: Vec<u32>,
@@ -20,5 +21,11 @@ impl DFA {
 
     pub fn read_character(&mut self, character: char) {
         self.current_state = self.rulebook.next_state(self.current_state, character);
+    }
+
+    pub fn read_string(&mut self, s: &str) {
+        for c in s.chars() {
+            self.read_character(c);
+        }
     }
 }

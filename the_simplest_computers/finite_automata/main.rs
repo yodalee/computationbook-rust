@@ -1,10 +1,12 @@
 mod farule;
 mod dfarulebook;
 mod dfa;
+mod dfadesign;
 
 use farule::{FARule};
 use dfarulebook::{DFARulebook};
 use dfa::{DFA};
+use dfadesign::{DFADesign};
 
 pub fn main() {
     let mut rulebook = DFARulebook::new(
@@ -31,4 +33,11 @@ pub fn main() {
     dfa.read_character('b');
     println!("{}", dfa.accepting());
 
+    dfa = DFA::new(1, vec![3], &rulebook);
+    println!("{}", dfa.accepting());
+    dfa.read_string("baaab");
+    println!("{}", dfa.accepting());
+
+    let mut dfa_design = DFADesign::new(1, vec![3], &rulebook);
+    println!("accept a: {}, baa: {}, baba: {}", dfa_design.accept("a"), dfa_design.accept("baa"), dfa_design.accept("baba"));
 }
