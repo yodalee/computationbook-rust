@@ -8,12 +8,12 @@ pub struct NFADesign {
 }
 
 impl NFADesign {
-    pub fn new(start_state: u32, accept_states: u32, rulebook: &NFARulebook) -> Self {
+    pub fn new(start_state: u32, accept_states: &HashSet<u32>, rulebook: &NFARulebook) -> Self {
         NFADesign{
             nfa: NFA::new(
-                 [start_state].into_iter().cloned().collect::<HashSet<u32>>(),
-                 accept_states,
-                 &rulebook.clone())
+                 &[start_state].into_iter().cloned().collect::<HashSet<u32>>(),
+                 &accept_states,
+                 &rulebook)
         }
     }
 

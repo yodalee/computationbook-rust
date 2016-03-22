@@ -18,6 +18,10 @@ use nfarulebook::{NFARulebook};
 use nfa::{NFA};
 use nfadesign::{NFADesign};
 
+fn toHashSet(arr: &[u32]) -> HashSet<u32> {
+    arr.iter().cloned().collect::<HashSet<u32>>()
+}
+
 pub fn main() {
     println!("*****************");
     println!("DFA demonstration");
@@ -64,10 +68,19 @@ pub fn main() {
     println!("{:?}", rulebook.next_states(&[1,2].iter().cloned().collect::<HashSet<u32>>(), 'a'));
     println!("{:?}", rulebook.next_states(&[1,3].iter().cloned().collect::<HashSet<u32>>(), 'b'));
 
-    println!("{}", NFA::new([1].iter().cloned().collect::<HashSet<u32>>(), 4, &rulebook).accepting());
-    println!("{}", NFA::new([1,2,4].iter().cloned().collect::<HashSet<u32>>(), 4, &rulebook).accepting());
+    let four: HashSet<u32> = [4].iter().cloned().collect();
+    println!("{}", NFA::new(
+            &toHashSet(&[1]),
+            &four,
+            &rulebook).accepting());
+    println!("{}", NFA::new(
+            &toHashSet(&[1,2,4]),
+            &four,
+            &rulebook).accepting());
 
-    let mut nfa = NFA::new([1].iter().cloned().collect::<HashSet<u32>>(), 4, &rulebook);
+    let mut nfa = NFA::new(
+        &toHashSet(&[1]),
+        &four, &rulebook);
 
     println!("{}", nfa.accepting());
     nfa.read_character('b');
@@ -77,13 +90,19 @@ pub fn main() {
     nfa.read_character('b');
     println!("{}", nfa.accepting());
 
-    let mut nfa = NFA::new([1].iter().cloned().collect::<HashSet<u32>>(), 4, &rulebook);
+    let mut nfa = NFA::new(
+        &toHashSet(&[1]),
+        &four,
+        &rulebook);
     println!("{}", nfa.accepting());
     nfa.read_string("bbbbb");
     println!("{}", nfa.accepting());
 
-    let mut nfa_design = NFADesign::new(1, 4, &rulebook);
-    println!("accept bab: {}, bbbbb: {}, bbabb: {}", nfa_design.accept("bab"), nfa_design.accept("bbbbb"), nfa_design.accept("bbabb"));
+    let mut nfa_design = NFADesign::new(1, &toHashSet(&[4]), &rulebook);
+    println!("accept bab: {}, bbbbb: {}, bbabb: {}",
+             nfa_design.accept("bab"),
+             nfa_design.accept("bbbbb"),
+             nfa_design.accept("bbabb"));
 
     println!("********************************");
     println!("NFA with free move demonstration");
@@ -91,5 +110,10 @@ pub fn main() {
     let rulebook = NFARulebook::new(
         vec![FARule::new(1, '\0', 2), FARule::new(1, '\0', 4), FARule::new(2, 'a', 3), FARule::new(3, 'a', 2),
              FARule::new(4, 'a', 5), FARule::new(5, 'a', 6), FARule::new(6, 'a', 4)]);
-    println!("{:?}", rulebook.follow_free_moves([1].iter().cloned().collect::<HashSet<u32>>()));
+    println!("{:?}", rulebook.next_states(&toHashSet(&[1]), '\0'));
+    println!("{:?}", rulebook.follow_free_moves(&toHashSet(&[1])));
+
+    nfa_design = NFADesign::new(1, &toHashSet(&[2, 4]), &rulebook);
+    println!("accept aa: {}, aaa: {}, aaaaa: {}, aaaaaa: {}",
+             nfa_design.accept("aa"), nfa_design.accept("aaa"), nfa_design.accept("aaaaa"), nfa_design.accept("aaaaaa"));
 }
