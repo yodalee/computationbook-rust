@@ -9,6 +9,8 @@ Re-implement by language [Rust](https://github.com/rust-lang/rust).
     * [small-step operational semantics](the_meaning_of_programs/reduce.rs)
     * [big-step operational semantics](the_meaning_of_programs/evaluate.rs)
     * [denotational semantics](the_meaning_of_programs/denotational.rs)
+* Chapter 3: [The Simplest Computers](the_simplest_computers)
+    * [deterministic and nondeterministic finite automata](the_simplest_computers/finite_automata)
 * Chapter 5: [The Ultimate Machine](the_ultimate_machine)
     * [deterministic Turing machines](the_ultimate_machine)
 * Chapter 7: [Universality is Everywhere](universality_is_everywhere)
