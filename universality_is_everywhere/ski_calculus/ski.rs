@@ -58,6 +58,27 @@ impl SKI {
         }
     }
 
+    pub fn as_function_of(&self, name: &str) -> Box<SKI> {
+        match *self {
+            SKI::SKISymbol(ref n) if n == "S" || n == "K" || n == "I" => {
+                SKI::skicall(SKI::skisymbol("K"), Box::new(self.clone()))
+            },
+            SKI::SKISymbol(ref n) => {
+                if n == name { SKI::skisymbol("I") }
+                else { SKI::skicall(SKI::skisymbol("K"), Box::new(self.clone())) }
+            },
+            SKI::SKICall(ref l, ref r) => {
+                SKI::skicall(
+                    SKI::skicall(
+                        SKI::skisymbol("S"),
+                        l.as_function_of(name),
+                    ),
+                r.as_function_of(name),
+                )
+            },
+        }
+    }
+
     pub fn combinator(&self) -> Box<SKI> {
         match *self {
             SKI::SKISymbol(_) => Box::new(self.clone()),

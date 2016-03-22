@@ -54,4 +54,27 @@ pub fn main() {
         expr = expr.reduce();
     }
     println!("{}", expr);
+
+    let mut original = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("K")), SKI::skisymbol("I"));
+    println!("{}", original);
+    let mut function = original.as_function_of("x");
+    println!("{}", function);
+    println!("{}", function.reducible());
+    expr = SKI::skicall(function.clone(), y.clone());
+    while expr.reducible() {
+        println!("{}", expr);
+        expr = expr.reduce();
+    }
+    println!("expr: {} == original: {}", expr, original);
+
+    let mut original = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("x")), SKI::skisymbol("I"));
+    println!("{}", original);
+    let mut function = original.as_function_of("x");
+    println!("{}", function);
+    expr = SKI::skicall(function.clone(), y.clone());
+    while expr.reducible() {
+        println!("{}", expr);
+        expr = expr.reduce();
+    }
+    println!("expr reduce: {} != original: {}", expr, original);
 }
