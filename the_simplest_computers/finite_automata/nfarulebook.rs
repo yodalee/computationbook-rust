@@ -11,7 +11,7 @@ impl NFARulebook {
     pub fn new(rules: Vec<FARule>) -> Self {
         NFARulebook{rules: rules}
     }
-    pub fn next_states(&self, states: HashSet<u32>, character: char) -> HashSet<u32> {
+    pub fn next_states(&self, states: &HashSet<u32>, character: char) -> HashSet<u32> {
         let mut next_states: HashSet<u32> = HashSet::new();
         for state in states.iter() {
             for next_state in self.follow_rules_for(*state, character) {
