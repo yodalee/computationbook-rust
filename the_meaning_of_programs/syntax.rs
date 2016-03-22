@@ -32,13 +32,6 @@ impl Node {
     pub fn sequence(head: Box<Node>, more: Box<Node>) -> Box<Node> { Box::new(Node::Sequence(head, more)) }
     pub fn while_node(cond: Box<Node>, body: Box<Node>) -> Box<Node> { Box::new(Node::While(cond, body)) }
 
-    pub fn reducible(&self) -> bool {
-        match *self {
-            Node::Number(_) | Node::Boolean(_) | Node::DoNothing => false,
-            _ => true,
-        }
-    }
-
     pub fn value(&self) -> i64 {
         match *self {
             Node::Number(value) => { value },
@@ -48,53 +41,8 @@ impl Node {
 
     pub fn condition(&self) -> bool {
         match *self {
-            Node::Boolean(value) => { value },
-            _ => panic!("Type cannot be boolean: {}", *self)
-        }
-    }
-
-    pub fn evaluate(&self, environment: &mut Environment) -> Box<Node> {
-        match *self {
-            Node::Number(v) => { Node::number(v) }
-            Node::Boolean(v) => { Node::boolean(v) }
-            Node::DoNothing => { Node::donothing() }
-            Node::Add(ref l, ref r) => {
-                Node::number(l.evaluate(environment).value() + r.evaluate(environment).value())
-            }
-            Node::Multiply(ref l, ref r) => {
-                Node::number(l.evaluate(environment).value() * r.evaluate(environment).value())
-            }
-            Node::LessThan(ref l, ref r) => {
-                Node::boolean(l.evaluate(environment).value() < r.evaluate(environment).value())
-            }
-            Node::Variable(ref name) => {
-                environment.get(&name)
-            }
-            Node::Assign(ref name, ref expr) => {
-                let reduce = expr.evaluate(environment);
-                environment.add(name, reduce.clone());
-                Node::donothing()
-            }
-            Node::If(ref condition, ref consequence, ref alternative) => {
-                if condition.evaluate(environment).condition() {
-                    consequence.evaluate(environment)
-                } else {
-                    alternative.evaluate(environment)
-                }
-            }
-            Node::Sequence(ref head, ref more) => {
-                head.evaluate(environment);
-                more.evaluate(environment);
-                Node::donothing()
-            }
-            Node::While(ref cond, ref body) => {
-                if cond.evaluate(environment).condition() {
-                    body.evaluate(environment);
-                    self.evaluate(environment)
-                } else {
-                    Node::donothing()
-                }
-            }
+            Node::Boolean(b) => { b },
+            _ => panic!("Type cannot eval to boolean {}", *self)
         }
     }
 }

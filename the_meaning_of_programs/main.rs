@@ -1,12 +1,21 @@
 mod machine;
 mod syntax;
 mod environment;
+mod reduce;
+mod evaluate;
+mod denotational;
 
 use machine::Machine;
 use syntax::Node;
 use environment::Environment;
+use reduce::Reduce;
+use evaluate::Evaluate;
+use denotational::Denotational;
 
 pub fn main() {
+    println!("************************");
+    println!("Small step demonstration");
+    println!("************************");
     let n = Node::number(3);
     println!("{}", n);
     println!("{}", n.reducible());
@@ -84,5 +93,54 @@ pub fn main() {
         ), env
     );
 
-    machine.run()
+    machine.run();
+    println!("{}", machine.environment);
+    println!("**********************");
+    println!("Big step demonstration");
+    println!("**********************");
+    let mut env = Environment::new();
+
+    let mut n = Node::number(3);
+    println!("{}", n.evaluate(&mut env));
+
+    env.add("x", Node::number(23));
+    n = Node::variable("x");
+    println!("{}", n.evaluate(&mut env));
+
+    env.add("x", Node::number(2));
+    env.add("y", Node::number(5));
+    n = Node::lessthan(Node::add(Node::variable("x"), Node::number(2)), Node::variable("y"));
+    println!("{}", n.evaluate(&mut env));
+
+    env = Environment::new();
+    let mut statement = Node::sequence(
+        Node::assign("x", Node::add(Node::number(1), Node::number(1))),
+        Node::assign("y", Node::add(Node::variable("x"), Node::number(3)))
+    );
+    println!("{}", statement.evaluate(&mut env));
+    println!("{}", env);
+
+    env = Environment::new();
+    statement = Node::while_node(
+        Node::lessthan(Node::variable("x"), Node::number(5)),
+        Node::assign("x", Node::multiply(Node::variable("x"), Node::number(3))),
+    );
+    env.add("x", Node::number(1));
+    println!("{}", statement.evaluate(&mut env));
+    println!("{}", env);
+
+    println!("*********************");
+    println!("to_ruby demonstration");
+    println!("*********************");
+
+    println!("{}", Node::number(5).to_ruby());
+    println!("{}", Node::boolean(false).to_ruby());
+    let mut expr = Node::variable("x");
+    println!("{}", expr.to_ruby());
+    println!("{}", Node::add(Node::variable("x"), Node::number(1)).to_ruby());
+    println!("{}", Node::lessthan(Node::add(Node::variable("x"), Node::number(1)), Node::number(3)).to_ruby());
+    println!("{}", Node::assign("y", Node::add(Node::variable("x"), Node::number(1))).to_ruby());
+    println!("{}", Node::while_node(
+            Node::lessthan(Node::variable("x"), Node::number(5)),
+            Node::assign("x", Node::multiply(Node::variable("x"), Node::number(3)))).to_ruby());
 }
