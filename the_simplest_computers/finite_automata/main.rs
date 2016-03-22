@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 mod farule;
 mod dfarulebook;
 mod dfa;
@@ -54,7 +56,7 @@ pub fn main() {
     let rulebook = NFARulebook::new(
         vec![FARule::new(1, 'a', 1), FARule::new(1, 'b', 1), FARule::new(1, 'b', 2), FARule::new(2, 'a', 3),
              FARule::new(2, 'b', 3), FARule::new(3, 'a', 4), FARule::new(3, 'b', 4)]);
-    println!("{:?}", rulebook.next_states(vec![1], 'b'));
-    println!("{:?}", rulebook.next_states(vec![1,2], 'a'));
-    println!("{:?}", rulebook.next_states(vec![1,3], 'b'));
+    println!("{:?}", rulebook.next_states([1].into_iter().cloned().collect::<HashSet<u32>>(), 'b'));
+    println!("{:?}", rulebook.next_states([1,2].into_iter().cloned().collect::<HashSet<u32>>(), 'a'));
+    println!("{:?}", rulebook.next_states([1,3].into_iter().cloned().collect::<HashSet<u32>>(), 'b'));
 }
