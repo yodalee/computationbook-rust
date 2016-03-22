@@ -1,5 +1,6 @@
 use farule::FARule;
 
+#[derive(Clone)]
 pub struct DFARulebook {
     rules: Vec<FARule>,
 }

@@ -2,6 +2,7 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use std::fmt::Result;
 
+#[derive(Clone)]
 pub struct FARule {
     state: u32,
     character: char,
