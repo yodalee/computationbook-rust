@@ -7,3 +7,7 @@ pub fn FIVE<F, T>(p: F, x: T) -> T where F: Fn(T) -> T { p(p(p(p(p(x))))) }
 pub fn FIFTEEN<F, T>(p: F, x: T) -> T where F: Fn(T) -> T { p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(x))))))))))))))) }
 pub fn HUNDRED<F, T>(p: F, x: T) -> T where F: Fn(T) -> T { p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(x)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) }
 
+// Boolean
+pub fn TRUE<T>(x: T, y: T) -> T { x }
+pub fn FALSE<T>(x: T, y: T) -> T { y }
+pub fn IF<F>(b:F) -> F { b }
