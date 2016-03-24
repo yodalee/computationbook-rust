@@ -33,4 +33,10 @@ pub fn main() {
     pattern = Regex::repeat(Regex::literal('a'));
     println!("'{}' accept? '': {}, a: {}, aaaa: {}, b: {}",
              pattern, pattern.matches(""), pattern.matches("a"), pattern.matches("aaaa"), pattern.matches("b"));
+
+    pattern = Regex::repeat(Regex::concatenate(Regex::literal('a'), Regex::choose(Regex::empty(), Regex::literal('b'))));
+    println!("'{}' accept? '': {}, a: {}, ab: {}, aba: {}",
+             pattern, pattern.matches(""), pattern.matches("a"), pattern.matches("ab"), pattern.matches("aba"));
+    println!("'{}' accept? abab: {}, abaab: {}, abba: {}",
+             pattern, pattern.matches("abab"), pattern.matches("abaab"), pattern.matches("abba"));
 }
