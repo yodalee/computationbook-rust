@@ -29,4 +29,8 @@ pub fn main() {
 
     pattern = Regex::choose(Regex::literal('a'), Regex::literal('b'));
     println!("'{}' accept? a: {}, b: {}, c: {}", pattern, pattern.matches("a"), pattern.matches("b"), pattern.matches("c"));
+
+    pattern = Regex::repeat(Regex::literal('a'));
+    println!("'{}' accept? '': {}, a: {}, aaaa: {}, b: {}",
+             pattern, pattern.matches(""), pattern.matches("a"), pattern.matches("aaaa"), pattern.matches("b"));
 }

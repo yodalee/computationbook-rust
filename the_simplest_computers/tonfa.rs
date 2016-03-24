@@ -74,8 +74,26 @@ impl ToNFA for Regex {
                     &NFARulebook::new(rule1)
                 )
             },
-            _ => panic!("XD"),
-            //Regex::Repeat(ref p) => {},
+            Regex::Repeat(ref p) => {
+                let pattern_nfa = p.to_nfa_design();
+
+                let start_state = 0;
+                let mut accept_state = pattern_nfa.accept_state()
+                    .iter().map(|x| x+1).collect::<HashSet<u32>>();
+                let mut rules = pattern_nfa.rules();
+                for r in rules.iter_mut() { r.shift(1) }
+
+                rules.extend(accept_state.iter().map(|x| FARule::new(*x, '\0', start_state)));
+                rules.push(FARule::new(start_state, '\0', 1));
+
+                accept_state.insert(start_state);
+
+                NFADesign::new(
+                    start_state,
+                    &accept_state,
+                    &NFARulebook::new(rules)
+                )
+            },
         }
     }
 
