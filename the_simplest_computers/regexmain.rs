@@ -25,7 +25,8 @@ pub fn main() {
 
     println!("Concatenate");
     pattern = Regex::concatenate(Regex::literal('a'), Regex::literal('b'));
-    println!("{}", pattern.matches("a"));
-    println!("{}", pattern.matches("ab"));
-    println!("{}", pattern.matches("abc"));
+    println!("'{}' accept? a: {}, ab: {}, abc: {}", pattern, pattern.matches("a"), pattern.matches("ab"), pattern.matches("abc"));
+
+    pattern = Regex::choose(Regex::literal('a'), Regex::literal('b'));
+    println!("'{}' accept? a: {}, b: {}, c: {}", pattern, pattern.matches("a"), pattern.matches("b"), pattern.matches("c"));
 }

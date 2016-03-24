@@ -32,13 +32,13 @@ impl ToNFA for Regex {
                 let first = l.to_nfa_design();
                 let second = r.to_nfa_design();
                 let start_state = first.start_state();
-                let accept_state = second.accept_state().iter().map(|x| x+first.size).collect::<Vec<u32>>();
+                let accept_state = second.accept_state().iter().map(|x| x+first.size).collect::<HashSet<u32>>();
 
                 let mut rule1 = first.rules();
                 let mut rule2 = second.rules();
                 for r in rule2.iter_mut() { r.shift(first.size) }
 
-                let mut extrarule = first.accept_state()
+                let extrarule = first.accept_state()
                     .iter().map(|state|
                         FARule::new(*state, '\0', second.start_state()))
                     .collect::<Vec<FARule>>();
@@ -48,13 +48,33 @@ impl ToNFA for Regex {
 
                 NFADesign::new(
                     start_state,
-                    &toHashSet(&accept_state),
+                    &accept_state,
+                    &NFARulebook::new(rule1)
+                )
+            },
+            Regex::Choose(ref l, ref r) => {
+                let first = l.to_nfa_design();
+                let second = r.to_nfa_design();
+                let start_state = 0;
+                let accept_state1 = first.accept_state().iter().map(|x| x+1).collect::<HashSet<u32>>();
+                let accept_state2 = second.accept_state().iter().map(|x| x+first.size+1).collect::<HashSet<u32>>();
+                let accept_state = accept_state1.union(&accept_state2).cloned().collect::<HashSet<u32>>();
+
+                let mut rule1 = first.rules();
+                for r in rule1.iter_mut() { r.shift(1) }
+                let mut rule2 = second.rules();
+                for r in rule2.iter_mut() { r.shift(1+first.size) }
+                let extrarule = vec![FARule::new(0, '\0', 1), FARule::new(0, '\0', first.size+1)];
+                rule1.extend_from_slice(&rule2);
+                rule1.extend_from_slice(&extrarule);
+
+                NFADesign::new(
+                    start_state,
+                    &accept_state,
                     &NFARulebook::new(rule1)
                 )
             },
             _ => panic!("XD"),
-            //Regex::Concatenate(ref l, ref r) => {},
-            //Regex::Choose(ref l, ref r) => {},
             //Regex::Repeat(ref p) => {},
         }
     }
