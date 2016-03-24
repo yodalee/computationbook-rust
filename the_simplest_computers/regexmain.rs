@@ -10,7 +10,7 @@ use regex::{Regex};
 use tonfa::{ToNFA};
 
 pub fn main() {
-    let pattern = Regex::repeat(Regex::choose(Regex::concatenate(Regex::literal('a'), Regex::literal('b')), Regex::literal('a')));
+    let mut pattern = Regex::repeat(Regex::choose(Regex::concatenate(Regex::literal('a'), Regex::literal('b')), Regex::literal('a')));
     println!("{}", pattern);
 
     let mut nfadesign = Regex::empty().to_nfa_design();
@@ -22,4 +22,10 @@ pub fn main() {
     println!("{}", nfadesign.accept("b"));
     println!("{}", Regex::empty().matches("a"));
     println!("{}", Regex::literal('a').matches("a"));
+
+    println!("Concatenate");
+    pattern = Regex::concatenate(Regex::literal('a'), Regex::literal('b'));
+    println!("{}", pattern.matches("a"));
+    println!("{}", pattern.matches("ab"));
+    println!("{}", pattern.matches("abc"));
 }
