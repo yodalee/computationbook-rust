@@ -33,4 +33,6 @@ impl NFARulebook {
             self.follow_free_moves(&states.union(&more_states).cloned().collect())
         }
     }
+
+    pub fn rules(&self) -> Vec<FARule> { self.rules.clone() }
 }
