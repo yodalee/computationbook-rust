@@ -4,9 +4,9 @@ use std::fmt::Result;
 
 #[derive(Clone)]
 pub struct FARule {
-    state: u32,
+    pub state: u32,
     character: char,
-    next_state: u32,
+    pub next_state: u32,
 }
 
 impl FARule {
@@ -20,6 +20,11 @@ impl FARule {
 
     pub fn follow(&self) -> u32 {
         self.next_state
+    }
+
+    pub fn shift(&mut self, shift: u32) {
+        self.state = self.state + shift;
+        self.next_state = self.next_state + shift;
     }
 }
 

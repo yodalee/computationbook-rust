@@ -5,8 +5,8 @@ use nfarulebook::{NFARulebook};
 #[derive(Clone)]
 pub struct NFA {
     current_state: HashSet<u32>,
-    accept_states: HashSet<u32>,
-    rulebook: NFARulebook,
+    pub accept_states: HashSet<u32>,
+    pub rulebook: NFARulebook,
 }
 
 impl NFA {

@@ -8,6 +8,7 @@ mod dfadesign;
 mod nfarulebook;
 mod nfa;
 mod nfadesign;
+mod helper;
 
 use farule::{FARule};
 use dfarulebook::{DFARulebook};
@@ -18,9 +19,7 @@ use nfarulebook::{NFARulebook};
 use nfa::{NFA};
 use nfadesign::{NFADesign};
 
-fn toHashSet(arr: &[u32]) -> HashSet<u32> {
-    arr.iter().cloned().collect::<HashSet<u32>>()
-}
+use helper::{toHashSet};
 
 pub fn main() {
     println!("*****************");
