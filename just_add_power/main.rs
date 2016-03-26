@@ -54,6 +54,14 @@ pub fn main() {
     println!("accept: '(((((((((())))))))))': {}", dpda_design.accept("(((((((((())))))))))"));
     println!("accept: '()(())((()))(()(()))': {}", dpda_design.accept("()(())((()))(()(()))"));
     println!("accept: '(()(()(()()(()()))()': {}", dpda_design.accept("(()(()(()()(()()))()"));
+
     //blow up println!("accept: '())': {}", dpda_design.accept("())"));
+
+    dpda = DPDA::new(&PDAConfiguration::new(1, &['$']), &[1], &rulebook);
+    dpda.read_string("())");
+    println!("{}", dpda.config);
+    println!("accept? {}", dpda.accept());
+    println!("stuck? {}", dpda.is_stuck());
+    println!("{}", dpda_design.accept("())"));
 }
 

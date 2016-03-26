@@ -17,7 +17,14 @@ impl DPDA {
     }
 
     pub fn accept(&self) -> bool {
-        self.accept_states.iter().find(|&&x| x == self.current_config().state).is_some()
+        match self.current_config().state {
+            Some(state) => self.accept_states.iter().find(|&&x| x == state).is_some(),
+            None => false,
+        }
+    }
+
+    pub fn is_stuck(&self) -> bool {
+        self.config.is_stuck()
     }
 
     pub fn read_character(&mut self, c: char) {
@@ -26,7 +33,9 @@ impl DPDA {
 
     pub fn read_string(&mut self, s: &str) {
         for c in s.chars() {
-            self.read_character(c)
+            if !self.config.is_stuck() {
+                self.read_character(c)
+            }
         }
     }
 }

@@ -23,8 +23,8 @@ impl PDARule {
             push_char: push_char.to_vec()}
     }
     pub fn applies_to(&self, config: &PDAConfiguration, c: char) -> bool {
-        match config.stack.last() {
-            Some(&top) => { self.state == config.state && self.pop_char == top && self.character == c },
+        !config.is_stuck() && match config.stack.last() {
+            Some(&top) => { self.state == config.state.unwrap() && self.pop_char == top && self.character == c },
             None => false,
         }
     }

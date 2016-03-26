@@ -15,7 +15,7 @@ impl DPDARulebook {
     pub fn next_config(&self, config: &PDAConfiguration, c: char) -> PDAConfiguration {
         match self.rule_for(config, c) {
             Some(rule)  => rule.follow(config),
-            None => panic!("No valid next config"),
+            None => config.stuck(),
         }
     }
 
