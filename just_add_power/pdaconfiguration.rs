@@ -2,6 +2,7 @@ use std::fmt::Display;
 use std::fmt::Result;
 use std::fmt::Formatter;
 
+#[derive(Clone)]
 pub struct PDAConfiguration {
     pub state: u32,
     pub stack: Vec<char>,

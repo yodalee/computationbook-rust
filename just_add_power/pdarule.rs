@@ -4,6 +4,7 @@ use std::fmt::Formatter;
 
 use pdaconfiguration::{PDAConfiguration};
 
+#[derive(Clone)]
 pub struct PDARule {
     state: u32,
     character: char,
