@@ -2,11 +2,13 @@ mod pdaconfiguration;
 mod pdarule;
 mod dpdarulebook;
 mod dpda;
+mod dpdadesign;
 
 use pdarule::{PDARule};
 use pdaconfiguration::{PDAConfiguration};
 use dpdarulebook::{DPDARulebook};
 use dpda::{DPDA};
+use dpdadesign::{DPDADesign};
 
 pub fn main() {
     let mut rule = PDARule::new(1, '(', 2, '$', &['b', '$']);
@@ -36,6 +38,10 @@ pub fn main() {
     println!("{}", config);
     println!("{}", rulebook.follow_free_moves(&config));
 
+    //blow up
+    //DPDARulebook::new(&[PDARule::new(1, '\0', 1, '$', &['$'])])
+    //    .follow_free_moves(&PDAConfiguration::new(1, &['$']));
+
     dpda = DPDA::new(&PDAConfiguration::new(1, &['$']), &[1], &rulebook);
     dpda.read_string("(()(");
     println!("accept? {}", dpda.accept());
@@ -43,5 +49,11 @@ pub fn main() {
     dpda.read_string("))()");
     println!("accept? {}", dpda.accept());
     println!("config: {}", dpda.current_config());
+
+    let mut dpda_design = DPDADesign::new(1, '$', &[1], &rulebook);
+    println!("accept: '(((((((((())))))))))': {}", dpda_design.accept("(((((((((())))))))))"));
+    println!("accept: '()(())((()))(()(()))': {}", dpda_design.accept("()(())((()))(()(()))"));
+    println!("accept: '(()(()(()()(()()))()': {}", dpda_design.accept("(()(()(()()(()()))()"));
+    //blow up println!("accept: '())': {}", dpda_design.accept("())"));
 }
 
