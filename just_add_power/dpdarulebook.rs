@@ -22,5 +22,17 @@ impl DPDARulebook {
     pub fn rule_for(&self, config: &PDAConfiguration, c: char) -> Option<&PDARule> {
         self.rules.iter().find(|rule| rule.applies_to(config, c))
     }
+
+    pub fn applies_to(&self, config: &PDAConfiguration, c: char) -> bool {
+        self.rule_for(config, c).is_some()
+    }
+
+    pub fn follow_free_moves(&self, config: &PDAConfiguration) -> PDAConfiguration {
+        if self.applies_to(config, '\0') {
+            self.follow_free_moves(&self.next_config(config, '\0'))
+        } else {
+            config.clone()
+        }
+    }
 }
 

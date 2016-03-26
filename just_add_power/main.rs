@@ -31,5 +31,17 @@ pub fn main() {
     dpda.read_string("(()");
     println!("accept '(()' {}", dpda.accept());
     println!("config {}", dpda.config);
+
+    config = PDAConfiguration::new(2, &['$']);
+    println!("{}", config);
+    println!("{}", rulebook.follow_free_moves(&config));
+
+    dpda = DPDA::new(&PDAConfiguration::new(1, &['$']), &[1], &rulebook);
+    dpda.read_string("(()(");
+    println!("accept? {}", dpda.accept());
+    println!("config: {}", dpda.current_config());
+    dpda.read_string("))()");
+    println!("accept? {}", dpda.accept());
+    println!("config: {}", dpda.current_config());
 }
 
