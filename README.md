@@ -13,7 +13,7 @@ Re-implement by language [Rust](https://github.com/rust-lang/rust).
     * [deterministic and nondeterministic finite automata](the_simplest_computers)
     * [regular expressions](the_simplest_computers)
 * Chapter 4: [Just Add Power](just_add_power)
-    * [deterministic pushdown automata](just_add_power)
+    * [deterministic and non-deterministic pushdown automata](just_add_power)
 * Chapter 5: [The Ultimate Machine](the_ultimate_machine)
     * [deterministic Turing machines](the_ultimate_machine)
 * Chapter 7: [Universality is Everywhere](universality_is_everywhere)
