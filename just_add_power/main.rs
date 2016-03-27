@@ -5,6 +5,7 @@ mod dpda;
 mod dpdadesign;
 mod npdarulebook;
 mod npda;
+mod npdadesign;
 mod helper;
 
 use pdarule::{PDARule};
@@ -14,6 +15,7 @@ use dpda::{DPDA};
 use dpdadesign::{DPDADesign};
 use npdarulebook::{NPDARulebook};
 use npda::{NPDA};
+use npdadesign::{NPDADesign};
 use helper::{toHashSet};
 
 pub fn main() {
@@ -129,5 +131,8 @@ pub fn main() {
     for config in npda.current_config().iter() {
         println!("{}", config);
     }
-}
 
+    let mut npda_design = NPDADesign::new(1, '$', &[3], &rulebook);
+    println!("accept abba? {}, babbaabbab? {}, abb? {}, baabaa? {}",
+        npda_design.accept("abba"), npda_design.accept("babbaabbab"), npda_design.accept("abb"), npda_design.accept("baabaa"));
+}
