@@ -2,7 +2,7 @@ use std::fmt::Display;
 use std::fmt::Result;
 use std::fmt::Formatter;
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PDAConfiguration {
     pub state: Option<u32>,
     pub stack: Vec<char>,
