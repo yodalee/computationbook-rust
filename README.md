@@ -18,3 +18,6 @@ Re-implement by language [Rust](https://github.com/rust-lang/rust).
     * [deterministic Turing machines](the_ultimate_machine)
 * Chapter 7: [Universality is Everywhere](universality_is_everywhere)
     * [tag systems](universality_is_everywhere/tag_systems)
+* Chapter 9: [Programming in Toyland](programming_in_toyland)
+    * [abstract interpretation: arithmetic with signs](programming_in_toyland/signs)
+    * [type systems](programming_in_toyland/types)
