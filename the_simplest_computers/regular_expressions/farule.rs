@@ -1,30 +1,41 @@
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::fmt::Result;
+use std::rc::Rc;
+
+#[derive(Eq, Hash)]
+pub struct State;
+
+impl PartialEq for State {
+    fn eq(&self, rhs: &Self) -> bool {
+        self as *const _ == rhs as *const _
+    }
+}
 
 #[derive(Clone)]
 pub struct FARule {
-    pub state: u32,
+    pub state: Rc<State>,
     character: char,
-    pub next_state: u32,
+    pub next_state: Rc<State>,
 }
 
 impl FARule {
-    pub fn new(state: u32, character: char, next_state: u32) -> Self {
-        FARule{state: state, character: character, next_state: next_state}
+    pub fn new(state: &Rc<State>, character: char, next_state: &Rc<State>) -> Self {
+        FARule{state: state.clone(), character: character, next_state: next_state.clone()}
     }
 
-    pub fn applies_to(&self, state: u32, character: char) -> bool {
-        self.state == state && self.character == character
+    pub fn applies_to(&self, state: &Rc<State>, character: char) -> bool {
+        self.state == *state && self.character == character
     }
 
-    pub fn follow(&self) -> u32 {
-        self.next_state
+    pub fn follow(&self) -> Rc<State> {
+        self.next_state.clone()
     }
+}
 
-    pub fn shift(&mut self, shift: u32) {
-        self.state = self.state + shift;
-        self.next_state = self.next_state + shift;
+impl Display for State {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "{}", self as *const _ as usize)
     }
 }
 

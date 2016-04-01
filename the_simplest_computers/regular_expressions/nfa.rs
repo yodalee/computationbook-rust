@@ -1,23 +1,25 @@
 use std::collections::HashSet;
+use std::rc::Rc;
 
+use farule::{State};
 use nfarulebook::{NFARulebook};
 
 #[derive(Clone)]
 pub struct NFA {
-    current_state: HashSet<u32>,
-    pub accept_states: HashSet<u32>,
+    current_state: HashSet<Rc<State>>,
+    pub accept_states: HashSet<Rc<State>>,
     pub rulebook: NFARulebook,
 }
 
 impl NFA {
-    pub fn new(current_state: &HashSet<u32>, accept_states: &HashSet<u32>, rulebook: &NFARulebook) -> Self {
+    pub fn new(current_state: &HashSet<Rc<State>>, accept_states: &HashSet<Rc<State>>, rulebook: &NFARulebook) -> Self {
         NFA{
             current_state: current_state.clone(),
             accept_states: accept_states.clone(),
             rulebook: rulebook.clone()}
     }
 
-    pub fn current_state(&self) -> HashSet<u32> {
+    pub fn current_state(&self) -> HashSet<Rc<State>> {
         self.rulebook.follow_free_moves(&self.current_state)
     }
 

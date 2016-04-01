@@ -1,5 +1,6 @@
 use std::collections::HashSet;
+use std::hash::Hash;
 
-pub fn toHashSet(arr: &[u32]) -> HashSet<u32> {
-    arr.iter().cloned().collect::<HashSet<u32>>()
+pub fn toHashSet<T: Clone+Eq+Hash>(arr: &[T]) -> HashSet<T> {
+    arr.iter().cloned().collect::<HashSet<T>>()
 }
