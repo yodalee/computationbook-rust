@@ -63,23 +63,22 @@ pub fn main() {
     let rulebook = NFARulebook::new(
         vec![FARule::new(1, 'a', 1), FARule::new(1, 'b', 1), FARule::new(1, 'b', 2), FARule::new(2, 'a', 3),
              FARule::new(2, 'b', 3), FARule::new(3, 'a', 4), FARule::new(3, 'b', 4)]);
-    println!("{:?}", rulebook.next_states(&[1].iter().cloned().collect::<HashSet<u32>>(), 'b'));
-    println!("{:?}", rulebook.next_states(&[1,2].iter().cloned().collect::<HashSet<u32>>(), 'a'));
-    println!("{:?}", rulebook.next_states(&[1,3].iter().cloned().collect::<HashSet<u32>>(), 'b'));
+    println!("{:?}", rulebook.next_states(&toHashSet(&[1]), 'b'));
+    println!("{:?}", rulebook.next_states(&toHashSet(&[1,2]), 'a'));
+    println!("{:?}", rulebook.next_states(&toHashSet(&[1,3]), 'b'));
 
-    let four: HashSet<u32> = [4].iter().cloned().collect();
     println!("{}", NFA::new(
             &toHashSet(&[1]),
-            &four,
+            &toHashSet(&[4]),
             &rulebook).accepting());
     println!("{}", NFA::new(
             &toHashSet(&[1,2,4]),
-            &four,
+            &toHashSet(&[4]),
             &rulebook).accepting());
 
     let mut nfa = NFA::new(
         &toHashSet(&[1]),
-        &four, &rulebook);
+        &toHashSet(&[4]), &rulebook);
 
     println!("{}", nfa.accepting());
     nfa.read_character('b');
@@ -91,7 +90,7 @@ pub fn main() {
 
     let mut nfa = NFA::new(
         &toHashSet(&[1]),
-        &four,
+        &toHashSet(&[4]),
         &rulebook);
     println!("{}", nfa.accepting());
     nfa.read_string("bbbbb");
