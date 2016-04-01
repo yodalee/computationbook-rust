@@ -7,14 +7,16 @@ use nfarulebook::{NFARulebook};
 use helper::{toHashSet};
 
 pub struct NFADesign {
+    pub start_state: Rc<State>,
     nfa: NFA,
 }
 
 impl NFADesign {
-    pub fn new(start_state: Rc<State>, accept_states: &HashSet<Rc<State>>, rulebook: &NFARulebook) -> Self {
+    pub fn new(start_state: &Rc<State>, accept_states: &HashSet<Rc<State>>, rulebook: &NFARulebook) -> Self {
         NFADesign{
+            start_state: start_state.clone(),
             nfa: NFA::new(
-                 &toHashSet(&[start_state]),
+                 &toHashSet(&[start_state.clone()]),
                  &accept_states,
                  &rulebook)
         }
@@ -26,6 +28,7 @@ impl NFADesign {
         to_nfa.accepting()
     }
 
+    pub fn start_state(&self) -> Rc<State> { self.start_state.clone() }
     pub fn accept_state(&self) -> HashSet<Rc<State>> { self.nfa.accept_states.clone() }
     pub fn rules(&self) -> Vec<FARule> { self.nfa.rulebook.rules() }
 }
