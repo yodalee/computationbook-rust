@@ -19,7 +19,7 @@ impl TagRule {
     }
 
     pub fn follow(&self, input: &str) -> String {
-        let mut buf = input.to_string() + &self.append_characters;
+        let buf = input.to_string() + &self.append_characters;
         buf
     }
 }

@@ -17,8 +17,8 @@ impl TagRulebook {
         match self.rule_for(input) {
             Some(rule) => unsafe {
                 let newString = rule.follow(input);
-                newString.slice_unchecked(self.deletion_number as usize,
-                                                 newString.len()).to_string()
+                newString.slice_unchecked(self.deletion_number as usize, newString.len())
+                    .to_string()
             },
             None => "".to_string(),
         }
@@ -30,9 +30,6 @@ impl TagRulebook {
 
     pub fn applies_to(&self, input: &str) -> bool {
         input.len() >= self.deletion_number as usize &&
-            match self.rule_for(input) {
-                Some(rule) => true,
-                None => false,
-        }
+            self.rule_for(input).is_some()
     }
 }
