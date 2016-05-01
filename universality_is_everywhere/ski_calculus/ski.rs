@@ -82,7 +82,7 @@ impl SKI {
     pub fn combinator(&self) -> Box<SKI> {
         match *self {
             SKI::SKISymbol(_) => Box::new(self.clone()),
-            SKI::SKICall(ref l, ref r) => l.combinator()
+            SKI::SKICall(ref l, _) => l.combinator()
         }
     }
 
@@ -101,13 +101,13 @@ impl SKI {
 
     pub fn left(&self) -> Box<SKI> {
         match *self {
-            SKI::SKICall(ref l, ref r) => l.clone(),
+            SKI::SKICall(ref l, _) => l.clone(),
             _ => panic!("Type has no left: {}", *self)
         }
     }
     pub fn right(&self) -> Box<SKI> {
         match *self {
-            SKI::SKICall(ref l, ref r) => r.clone(),
+            SKI::SKICall(_, ref r) => r.clone(),
             _ => panic!("Type has no left: {}", *self)
         }
     }

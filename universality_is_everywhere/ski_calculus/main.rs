@@ -3,14 +3,14 @@ mod ski;
 use ski::{SKI};
 
 pub fn main() {
-    let mut x = SKI::skisymbol("x");
+    let x = SKI::skisymbol("x");
     println!("{}", x);
 
     let mut expr = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("K")), SKI::skicall(SKI::skisymbol("I"), x.clone()));
     println!("{}", expr);
 
-    let mut y = SKI::skisymbol("y");
-    let mut z = SKI::skisymbol("z");
+    let y = SKI::skisymbol("y");
+    let z = SKI::skisymbol("z");
 
     expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::skisymbol("S"), x.clone()), y.clone()), z.clone());
 
@@ -67,9 +67,9 @@ pub fn main() {
     }
     println!("expr: {} == original: {}", expr, original);
 
-    let mut original = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("x")), SKI::skisymbol("I"));
+    original = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("x")), SKI::skisymbol("I"));
     println!("{}", original);
-    let mut function = original.as_function_of("x");
+    function = original.as_function_of("x");
     println!("{}", function);
     expr = SKI::skicall(function.clone(), y.clone());
     while expr.reducible() {
