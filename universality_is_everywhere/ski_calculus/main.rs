@@ -1,6 +1,10 @@
 mod ski;
+mod lambda;
+mod lc_to_ski;
 
 use ski::{SKI};
+use lambda::{Lambda};
+use lc_to_ski::{toSKI};
 
 pub fn main() {
     let x = SKI::skisymbol("x");
@@ -77,4 +81,24 @@ pub fn main() {
         expr = expr.reduce();
     }
     println!("expr reduce: {} != original: {}", expr, original);
+
+    let two = Lambda::lcfun("p", Lambda::lcfun("x", Lambda::lccall(Lambda::lcvar("p"), Lambda::lccall(Lambda::lcvar("p"), Lambda::lcvar("x")))));
+    println!("{} to SKI: {}", two, two.to_ski());
+    let (inc, zero) = (SKI::skisymbol("inc"), SKI::skisymbol("zero"));
+
+    expr = SKI::skicall(SKI::skicall(two.to_ski(), inc), zero);
+    while expr.reducible() {
+        println!("{}", expr);
+        expr = expr.reduce();
+    }
+    println!("{}", expr);
+
+    let identity = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("K")), SKI::skisymbol("K"));
+    println!("{}", identity);
+    expr = SKI::skicall(identity, SKI::skisymbol("x"));
+    while expr.reducible() {
+        println!("{}", expr);
+        expr = expr.reduce();
+    }
+    println!("{}", expr);
 }
