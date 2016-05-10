@@ -2,15 +2,37 @@ use std::fmt::Formatter;
 use std::fmt::Result;
 use std::fmt::Display;
 
+#[derive(Clone)]
+pub enum SKICombinator {
+    S,
+    K,
+    I
+}
+
+impl SKICombinator {
+    pub fn s() -> SKICombinator { SKICombinator::S }
+    pub fn k() -> SKICombinator { SKICombinator::K }
+    pub fn i() -> SKICombinator { SKICombinator::I }
+}
+
 
 #[derive(Clone)]
 pub enum SKI {
     SKISymbol(String),
     SKICall(Box<SKI>, Box<SKI>),
+    SKICombinator(SKICombinator),
 }
 
 impl SKI {
+    pub fn s() -> Box<SKI> { Box::new(SKI::SKICombinator(SKICombinator::s())) }
+    pub fn k() -> Box<SKI> { Box::new(SKI::SKICombinator(SKICombinator::k())) }
+    pub fn i() -> Box<SKI> { Box::new(SKI::SKICombinator(SKICombinator::i())) }
+
     pub fn skisymbol(name: &str) -> Box<SKI> {
+        if name == "S" || name == "K" || name == "I" {
+            panic!("S, K, I are preserved for SKICombinator");
+        }
+
         Box::new(SKI::SKISymbol(name.to_string()))
     }
     pub fn skicall(l: Box<SKI>, r: Box<SKI>) -> Box<SKI> {
@@ -45,6 +67,7 @@ impl SKI {
         match *self {
             SKI::SKISymbol(_) => false,
             SKI::SKICall(ref l, ref r) => l.reducible() || r.reducible() || self.combinator().callable(self.arguments()),
+            _ => false,
         }
     }
 
@@ -77,13 +100,15 @@ impl SKI {
                 r.as_function_of(name),
                 )
             },
+            _ => panic!(),
         }
     }
 
     pub fn combinator(&self) -> Box<SKI> {
         match *self {
             SKI::SKISymbol(_) => Box::new(self.clone()),
-            SKI::SKICall(ref l, _) => l.combinator()
+            SKI::SKICall(ref l, _) => l.combinator(),
+            _ => panic!(),
         }
     }
 
@@ -96,7 +121,8 @@ impl SKI {
                 let mut arg = l.arguments();
                 arg.push(r.clone());
                 arg
-            }
+            },
+            _ => panic!(),
         }
     }
 
@@ -119,6 +145,17 @@ impl Display for SKI {
         match *self {
             SKI::SKICall(ref l, ref r) => write!(f, "{0}[{1}]", l, r),
             SKI::SKISymbol(ref name) => write!(f, "{}", *name),
+            SKI::SKICombinator(ref c) => write!(f, "{}", c),
+        }
+    }
+}
+
+impl Display for SKICombinator {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        match *self {
+            SKICombinator::S => write!(f, "S"),
+            SKICombinator::K => write!(f, "K"),
+            SKICombinator::I => write!(f, "I"),
         }
     }
 }

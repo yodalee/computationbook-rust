@@ -2,7 +2,7 @@ mod ski;
 mod lambda;
 mod lc_to_ski;
 
-use ski::{SKI};
+use ski::{SKI, SKICombinator};
 use lambda::{Lambda};
 use lc_to_ski::{toSKI};
 
@@ -10,7 +10,7 @@ pub fn main() {
     let x = SKI::skisymbol("x");
     println!("{}", x);
 
-    let mut expr = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("K")), SKI::skicall(SKI::skisymbol("I"), x.clone()));
+    let mut expr = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::skicall(SKI::i(), x.clone()));
     println!("{}", expr);
 
     let y = SKI::skisymbol("y");
