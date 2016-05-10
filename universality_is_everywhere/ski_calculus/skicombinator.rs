@@ -16,6 +16,11 @@ impl SKICombinator {
     pub fn k() -> SKICombinator { SKICombinator::K }
     pub fn i() -> SKICombinator { SKICombinator::I }
 
+    pub fn as_function_of(&self, name: &str) -> Box<SKI> {
+        SKI::skicall(SKI::k(),
+            Box::new(SKI::SKICombinator(self.clone())))
+    }
+
     pub fn call(&self, arg: Vec<Box<SKI>>) -> Box<SKI> {
         match *self {
             SKICombinator::S => {

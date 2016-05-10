@@ -41,16 +41,16 @@ pub fn main() {
 
     let swap = SKI::skicall(
         SKI::skicall(
-            SKI::skisymbol("S"),
+            SKI::s(),
             SKI::skicall(
-                SKI::skisymbol("K"),
+                SKI::k(),
                 SKI::skicall(
-                    SKI::skisymbol("S"),
-                    SKI::skisymbol("I")
+                    SKI::s(),
+                    SKI::i()
                 ),
             ),
         ),
-        SKI::skisymbol("K"),
+        SKI::k(),
     );
     expr = SKI::skicall(SKI::skicall(swap.clone(), SKI::skisymbol("x")), SKI::skisymbol("y"));
 
@@ -61,7 +61,7 @@ pub fn main() {
     }
     println!("{}", expr);
 
-    let mut original = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("K")), SKI::skisymbol("I"));
+    let mut original = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::i());
     println!("{}", original);
     let mut function = original.as_function_of("x");
     println!("{}", function);
@@ -73,7 +73,7 @@ pub fn main() {
     }
     println!("expr: {} == original: {}", expr, original);
 
-    original = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("x")), SKI::skisymbol("I"));
+    original = SKI::skicall(SKI::skicall(SKI::s(), SKI::skisymbol("x")), SKI::i());
     println!("{}", original);
     function = original.as_function_of("x");
     println!("{}", function);
@@ -95,7 +95,7 @@ pub fn main() {
     }
     println!("{}", expr);
 
-    let identity = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), SKI::skisymbol("K")), SKI::skisymbol("K"));
+    let identity = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::k());
     println!("{}", identity);
     expr = SKI::skicall(identity, SKI::skisymbol("x"));
     while expr.reducible() {
