@@ -1,8 +1,10 @@
 mod ski;
+mod skicombinator;
 mod lambda;
 mod lc_to_ski;
 
-use ski::{SKI, SKICombinator};
+use ski::{SKI};
+use skicombinator::{SKICombinator};
 use lambda::{Lambda};
 use lc_to_ski::{toSKI};
 
@@ -16,7 +18,7 @@ pub fn main() {
     let y = SKI::skisymbol("y");
     let z = SKI::skisymbol("z");
 
-    expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::skisymbol("S"), x.clone()), y.clone()), z.clone());
+    expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone()), z.clone());
 
     let combinator = expr.left().left().left();
     let first_arg = expr.left().left().right();
@@ -32,9 +34,9 @@ pub fn main() {
 
     expr = SKI::skicall(SKI::skicall(x.clone(), y.clone()), z.clone());
     println!("{0} is callable? {1}", expr, expr.callable(expr.arguments()));
-    expr = SKI::skicall(SKI::skicall(SKI::skisymbol("S"), x.clone()), y.clone());
+    expr = SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone());
     println!("{0} is callable? {1}", expr, expr.callable(expr.arguments()));
-    expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::skisymbol("S"), x.clone()), y.clone()), z.clone());
+    expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone()), z.clone());
     println!("{0} is callable? {1}", expr, expr.combinator().callable(expr.arguments()));
 
     let swap = SKI::skicall(
