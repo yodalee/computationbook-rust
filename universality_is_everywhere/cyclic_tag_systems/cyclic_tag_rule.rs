@@ -6,7 +6,7 @@ use tag_rule::{TagRule};
 
 const FIRST_CHARACTER: char = '1';
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct CyclicTagRule {
     rule: TagRule,
 }

@@ -1,4 +1,5 @@
 use tag_rulebook::{TagRulebook};
+use tag_to_cyclic::{CyclicTagEncoder};
 
 pub struct TagSystem {
     pub current_string: String,

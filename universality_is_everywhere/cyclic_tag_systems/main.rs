@@ -12,7 +12,7 @@ use tag_system::{TagSystem};
 use cyclic_tag_rule::{CyclicTagRule};
 use cyclic_tag_rulebook::{CyclicTagRulebook};
 use cyclic_tag_system::{CyclicTagSystem};
-use tag_to_cyclic::{TagToCyclic};
+use tag_to_cyclic::{TagToCyclic, CyclicTagEncoder};
 
 pub fn main() {
     let rulebook = CyclicTagRulebook::new(&[CyclicTagRule::new("1"), CyclicTagRule::new("0010"), CyclicTagRule::new("10")].to_vec());
@@ -33,5 +33,12 @@ pub fn main() {
 
     let tagrulebook = TagRulebook::new(2, [TagRule::new('a', "ccdd"), TagRule::new('b', "dd")].to_vec());
     let tagsystem = TagSystem::new("aabbbb", tagrulebook);
-    println!("{:?}", tagsystem.alphabet())
+    println!("{:?}", tagsystem.alphabet());
+
+    let encoder = tagsystem.encoder();
+    println!("{}", encoder.encode_character('c'));
+    println!("{}", encoder.encode_string("cab"));
+
+    let rule = tagsystem.rulebook.rules[0].clone();
+    println!("{:?}", rule.to_cyclic(encoder));
 }
