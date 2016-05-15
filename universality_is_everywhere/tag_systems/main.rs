@@ -12,7 +12,7 @@ fn main() {
             TagRule::new('a', "aa"),
             TagRule::new('b', "bbbb")));
     let mut system = TagSystem::new("aabbbbbb", rulebook);
-    for i in 0..4 {
+    for _ in 0..4 {
         println!("{}", system.current_string);
         system.step()
     }

@@ -1,6 +1,7 @@
+#[derive(Debug, Clone)]
 pub struct TagRule {
-    first_char: char,
-    append_characters: String,
+    pub first_char: char,
+    pub append_characters: String,
 }
 
 impl TagRule {
