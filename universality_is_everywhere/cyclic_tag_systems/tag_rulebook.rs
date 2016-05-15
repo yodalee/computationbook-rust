@@ -1,7 +1,7 @@
 use tag_rule::{TagRule};
 
 pub struct TagRulebook {
-    deletion_number: i32,
+    pub deletion_number: i32,
     pub rules: Vec<TagRule>,
 }
 

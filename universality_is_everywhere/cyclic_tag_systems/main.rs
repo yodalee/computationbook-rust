@@ -40,5 +40,12 @@ pub fn main() {
     println!("{}", encoder.encode_string("cab"));
 
     let rule = tagsystem.rulebook.rules[0].clone();
-    println!("{:?}", rule.to_cyclic(encoder));
+    println!("{:?}", rule.to_cyclic(&encoder));
+
+    println!("{:?}", tagsystem.rulebook.cyclic_rules(&encoder));
+    println!("{:?}", tagsystem.rulebook.cyclic_padding_rules(&encoder));
+
+    let mut cyclic_system = tagsystem.to_cyclic(&encoder);
+
+    cyclic_system.run()
 }
