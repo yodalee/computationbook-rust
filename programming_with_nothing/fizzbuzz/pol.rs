@@ -3,6 +3,7 @@ use std::rc::Rc;
 pub enum Pol {
     C(Rc<Fn(Rp) -> Rp>),
     I(i32),
+    B(bool),
 }
 pub type Rp = Rc<Pol>;
 
