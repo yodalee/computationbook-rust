@@ -56,20 +56,20 @@ fn main() {
     // ************************************
     // Predicate
 
-    // isZero
+    // is_zero
     // |n| { n( |x| {FALSE})(TRUE) }
-    let isZero = {
+    let is_zero = {
         let _false = _false.clone();
         let _true  = _true.clone();
-        let retFalse = r!(move |_x: Rp| _false.clone());
+        let ret_false = r!(move |_x: Rp| _false.clone());
         r!(move |n: Rp| {
-            n.call(retFalse.clone()).call(_true.clone())
+            n.call(ret_false.clone()).call(_true.clone())
         })
     };
 
     println!("IS_ZERO zero:{} three:{}",
-             to_boolean(&isZero.call(zero.clone())),
-             to_boolean(&isZero.call(three.clone())));
+             to_boolean(&is_zero.call(zero.clone())),
+             to_boolean(&is_zero.call(three.clone())));
 
     // ************************************
     // Pair
@@ -107,7 +107,7 @@ fn main() {
              to_integer(&right.call(pairtest.clone())));
 
     // ************************************
-    // Arithmetic
+    // Numeric operation
 
     // increment
     // |n| { |p| { |x| { p(n(p)(x)) }  } }
@@ -115,14 +115,97 @@ fn main() {
         r!(move |p: Rp| {
             let n = n.clone();
             let p = p.clone();
-            r!(move |x| p.call(n.call(p.clone()).call(x)))
+            r!(move |x: Rp| p.call(n.call(p.clone()).call(x)))
         })
     });
 
+    // slide
+    // |p| { pair(right(p))(incr(right(p))) }
+    let slide = {
+        let pair = pair.clone();
+        let right = right.clone();
+        let incr = incr.clone();
+        r!(move |p: Rp| {
+            pair.call(right.call(p.clone()))
+                .call(incr.call(right.call(p.clone())))
+        })
+    };
+
+    // decrement
+    // |n| { left(n(slide)(pair(zero)(zero))) }
+    let decr = {
+        let left = left.clone();
+        let slide = slide.clone();
+        let pair = pair.clone();
+        let zero = zero.clone();
+        r!(move |n: Rp| {
+            left.call(n.call(slide.clone())
+                       .call(pair.call(zero.clone()).call(zero.clone())))
+        })
+    };
+
     // add
     // |m| { |n| { n(incr)(m) } }
-    let add = r!(move |m: Rp| {
+    let add = {
         let incr = incr.clone();
-        r!(move |n: Rp| n.call(incr.clone()).call(m.clone()))
-    });
+        r!(move |m: Rp| {
+            let incr = incr.clone();
+            let m = m.clone();
+            r!(move |n: Rp| {
+                n.call(incr.clone()).call(m.clone())
+            })
+        })
+    };
+
+    // substract
+    // |m| { |n| { n(decr)(m) } }
+    let substract = {
+        let decr = decr.clone();
+        r!(move |m: Rp| {
+            let decr = decr.clone();
+            r!(move |n: Rp| {
+                n.call(decr.clone()).call(m.clone())
+            })
+        })
+    };
+
+    // multiply
+    // |m| { |n| { n(add(m))(zero) } }
+    let multiply = {
+        let add = add.clone();
+        let zero = zero.clone();
+        r!(move |m: Rp| {
+            let add = add.clone();
+            let zero = zero.clone();
+            r!(move |n: Rp| {
+                n.call(add.clone().call(m.clone()).call(zero.clone()))
+            })
+        })
+    };
+
+    // power
+    // |m| { |n| { n(multiply(m))(one) } }
+    let power = {
+        let multiply = multiply.clone();
+        let one = one.clone();
+        r!(move |m: Rp| {
+            let multiply = multiply.clone();
+            let one = one.clone();
+            r!(move |n: Rp| {
+                n.call(multiply.clone().call(m.clone()).call(one.clone()))
+            })
+        })
+    };
+
+    println!("DECREMENT decr(5):{} decr(0):{} decr(100):{}",
+             to_integer(&decr.call(five.clone())),
+             to_integer(&decr.call(zero.clone())),
+             to_integer(&decr.call(hundred.clone())));
+
+    println!("ARITHMETIC 3+5:{} 5-3:{} 3*5:{} 3**5:{} 2*15: {}",
+             to_integer(&add.call(three.clone()).call(five.clone())),
+             to_integer(&substract.call(five.clone()).call(three.clone())),
+             to_integer(&multiply.call(three.clone()).call(five.clone())),
+             to_integer(&power.call(three.clone()).call(five.clone())),
+             to_integer(&multiply.call(two.clone()).call(zero.clone())));
 }
