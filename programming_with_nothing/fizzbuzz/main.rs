@@ -282,4 +282,42 @@ fn main() {
     println!("MOD 3%2:{} 5%3:{}",
              to_integer(&module.call(three.clone()).call(two.clone())),
              to_integer(&module.call(five.clone()).call(three.clone())));
+
+    // ************************************
+    // List
+
+    let empty = pair.call(_true.clone()).call(_true.clone());
+    let unshift = {
+        let _false = _false.clone();
+        let pair = pair.clone();
+        r!(move |l: Rp| {
+            let _false = _false.clone();
+            let pair = pair.clone();
+            r!(move |x: Rp| {
+                pair.call(_false.clone()).call(pair.call(x).call(l.clone()))
+            })
+        })
+    };
+    let is_empty = left.clone();
+    let first = {
+        let left = left.clone();
+        let right = right.clone();
+        r!(move |l: Rp| {
+            left.call(right.call(l.clone()))
+        })
+    };
+    let rest = {
+        let right = right.clone();
+        r!(move |l: Rp| {
+            right.call(right.clone().call(l.clone()))
+        })
+    };
+
+    let testlist = unshift.call(unshift.call(unshift.call(empty.clone()).call(three.clone())).call(two.clone())).call(one.clone());
+    println!("LIST [1, 2, 3]:[{}, {}, {}] list_is_empty:{}, empty_is_empty:{}",
+             to_integer(&first.call(testlist.clone())),
+             to_integer(&first.call(rest.call(testlist.clone()))),
+             to_integer(&first.call(rest.call(rest.call(testlist.clone())))),
+             to_boolean(&is_empty.call(testlist.clone())),
+             to_boolean(&is_empty.call(empty.clone())));
 }
