@@ -1,7 +1,7 @@
 use pol::{Pol, Rp};
 use std::rc::Rc;
 
-pub fn to_integer(p: Rp) -> i32 {
+pub fn to_integer(p: &Rp) -> i32 {
     // p(|n|{n+1})(0)
     let np1 = r!(|n: Rp| {
         let np1 = {
@@ -21,7 +21,7 @@ pub fn to_integer(p: Rp) -> i32 {
     }
 }
 
-pub fn to_boolean(p: Rp) -> bool {
+pub fn to_boolean(p: &Rp) -> bool {
     // p(true)(false)
     let ans = p.call(Rc::new(Pol::B(true))).call(Rc::new(Pol::B(false)));
     match ans.as_ref() {
