@@ -54,24 +54,6 @@ fn main() {
     println!("BOOLEAN (true)?1:0 :{}", to_integer(&_true.call(one.clone()).call(zero.clone())));
 
     // ************************************
-    // Predicate
-
-    // is_zero
-    // |n| { n( |x| {FALSE})(TRUE) }
-    let is_zero = {
-        let _false = _false.clone();
-        let _true  = _true.clone();
-        let ret_false = r!(move |_x: Rp| _false.clone());
-        r!(move |n: Rp| {
-            n.call(ret_false.clone()).call(_true.clone())
-        })
-    };
-
-    println!("IS_ZERO zero:{} three:{}",
-             to_boolean(&is_zero.call(zero.clone())),
-             to_boolean(&is_zero.call(three.clone())));
-
-    // ************************************
     // Pair
 
     // pair
@@ -157,9 +139,9 @@ fn main() {
         })
     };
 
-    // substract
+    // subtract
     // |m| { |n| { n(decr)(m) } }
-    let substract = {
+    let subtract = {
         let decr = decr.clone();
         r!(move |m: Rp| {
             let decr = decr.clone();
@@ -202,10 +184,102 @@ fn main() {
              to_integer(&decr.call(zero.clone())),
              to_integer(&decr.call(hundred.clone())));
 
-    println!("ARITHMETIC 3+5:{} 5-3:{} 3*5:{} 3**5:{} 2*15: {}",
+    println!("ARITHMETIC 3+5:{} 5-3:{} 3*5:{} 3**5:{}",
              to_integer(&add.call(three.clone()).call(five.clone())),
-             to_integer(&substract.call(five.clone()).call(three.clone())),
+             to_integer(&subtract.call(five.clone()).call(three.clone())),
              to_integer(&multiply.call(three.clone()).call(five.clone())),
-             to_integer(&power.call(three.clone()).call(five.clone())),
-             to_integer(&multiply.call(two.clone()).call(zero.clone())));
+             to_integer(&power.call(three.clone()).call(five.clone())));
+
+    // ************************************
+    // Predicate
+
+    // is_zero
+    // |n| { n( |x| {FALSE})(TRUE) }
+    let is_zero = {
+        let _false = _false.clone();
+        let _true  = _true.clone();
+        let ret_false = r!(move |_x: Rp| _false.clone());
+        r!(move |n: Rp| {
+            n.call(ret_false.clone()).call(_true.clone())
+        })
+    };
+
+    // is_le (less or equal)
+    // |m| { |n| { is_zero(subtract(m)(n)) } }
+    let is_le = {
+        let is_zero = is_zero.clone();
+        let subtract = subtract.clone();
+        r!(move |m: Rp| {
+            let is_zero = is_zero.clone();
+            let subtract = subtract.clone();
+            r!(move |n: Rp| {
+                is_zero.call(subtract.call(m.clone()).call(n.clone()))
+            })
+        })
+    };
+
+    println!("IS_ZERO zero:{} three:{}",
+             to_boolean(&is_zero.call(zero.clone())),
+             to_boolean(&is_zero.call(three.clone())));
+    println!("IS_LESS_OR_EQUAL 1<=2:{} 2<=2:{} 3<=2:{}",
+             to_boolean(&is_le.call(one.clone()).call(two.clone())),
+             to_boolean(&is_le.call(two.clone()).call(two.clone())),
+             to_boolean(&is_le.call(three.clone()).call(two.clone())));
+
+    // ************************************
+    // Mod
+
+    // Z combinator
+    let z = {
+        r!(move |f: Rp| {
+            let fcopy = f.clone();
+            r!(move |x: Rp| {
+                let f = fcopy.clone();
+                f.call(r!(move |y: Rp| {
+                    x.call(x.clone()).call(y.clone())
+                }))
+            }).call(r!(move |x: Rp| {
+                f.clone().call(r!(move |y: Rp| {
+                    x.call(x.clone()).call(y.clone())
+                }))
+            }))
+        })
+    };
+    // module
+    // z ( |m| { |n| { if(is_le(n)(m))(module(subtract(m)(n), n)(n)) } } )
+    let module = {
+        let _if = _if.clone();
+        let is_le = is_le.clone();
+        let subtract = subtract.clone();
+        z.call(
+            r!(move |f: Rp| {
+                let _if = _if.clone();
+                let is_le = is_le.clone();
+                let subtract = subtract.clone();
+                let f = f.clone();
+                r!(move |m: Rp| {
+                    let _if = _if.clone();
+                    let is_le = is_le.clone();
+                    let subtract = subtract.clone();
+                    let f = f.clone();
+                    r!(move |n: Rp| {
+                        let subtract = subtract.clone();
+                        let f = f.clone();
+                        let mcopy = m.clone();
+                        _if.call(is_le.call(n.clone()).call(m.clone()))
+                           .call(r!(move |x: Rp| {
+                               f.call(subtract.call(mcopy.clone()).call(n.clone()))
+                                .call(n.clone())
+                                .call(x.clone())
+                           }))
+                           .call(m.clone())
+                    })
+                })
+            })
+        )
+    };
+
+    println!("MOD 3%2:{} 5%3:{}",
+             to_integer(&module.call(three.clone()).call(two.clone())),
+             to_integer(&module.call(five.clone()).call(three.clone())));
 }
