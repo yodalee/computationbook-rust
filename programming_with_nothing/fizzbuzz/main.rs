@@ -54,6 +54,59 @@ fn main() {
     println!("BOOLEAN (true)?1:0 :{}", to_integer(&_true.call(one.clone()).call(zero.clone())));
 
     // ************************************
+    // Predicate
+
+    // isZero
+    // |n| { n( |x| {FALSE})(TRUE) }
+    let isZero = {
+        let _false = _false.clone();
+        let _true  = _true.clone();
+        let retFalse = r!(move |_x: Rp| _false.clone());
+        r!(move |n: Rp| {
+            n.call(retFalse.clone()).call(_true.clone())
+        })
+    };
+
+    println!("IS_ZERO zero:{} three:{}",
+             to_boolean(&isZero.call(zero.clone())),
+             to_boolean(&isZero.call(three.clone())));
+
+    // ************************************
+    // Pair
+
+    // pair
+    // |x| { |y| { |f| { f(x)(y) }}}
+    let pair = r!(move |x: Rp| {
+        r!(move |y: Rp| {
+            let x = x.clone();
+            let y = y.clone();
+            r!(move |f: Rp| { f.call(x.clone()).call(y.clone()) })
+        })
+    });
+
+    // left
+    // |p| { p(|x| { |y| { x }} ) }
+    let left = {
+        let _true  = _true.clone();
+        r!(move |p: Rp| {
+            p.call(_true.clone())
+        })
+    };
+    // right
+    // |p| { p(|x| { |y| { y }} ) }
+    let right = {
+        let _false  = _false.clone();
+        r!(move |p: Rp| {
+            p.call(_false.clone())
+        })
+    };
+
+    let pairtest = pair.call(three.clone()).call(five.clone());
+    println!("PAIR (3,5) left:{} three:{}",
+             to_integer(&left.call(pairtest.clone())),
+             to_integer(&right.call(pairtest.clone())));
+
+    // ************************************
     // Arithmetic
 
     // increment
