@@ -5,6 +5,7 @@ mod helper;
 use pol::{Pol, Rp};
 use helper::*;
 use std::rc::Rc;
+use std::vec::Vec;
 
 fn main() {
     // ************************************
@@ -246,7 +247,7 @@ fn main() {
         })
     };
     // module
-    // z ( |m| { |n| { if(is_le(n)(m))(module(subtract(m)(n), n)(n)) } } )
+    // z ( |m| { |n| { if(is_le(n)(m))( |x| {f(subtract(m)(n))(n)(x)} )(m)} } )
     let module = {
         let _if = _if.clone();
         let is_le = is_le.clone();
@@ -256,7 +257,6 @@ fn main() {
                 let _if = _if.clone();
                 let is_le = is_le.clone();
                 let subtract = subtract.clone();
-                let f = f.clone();
                 r!(move |m: Rp| {
                     let _if = _if.clone();
                     let is_le = is_le.clone();
@@ -286,7 +286,12 @@ fn main() {
     // ************************************
     // List
 
+    // empty
+    // pair(true)(true)
     let empty = pair.call(_true.clone()).call(_true.clone());
+
+    // unshift
+    // |l| { |x| { pair(false)(pair(x)(l)) } }
     let unshift = {
         let _false = _false.clone();
         let pair = pair.clone();
@@ -298,7 +303,12 @@ fn main() {
             })
         })
     };
+
+    // is_empty, left equivalent
     let is_empty = left.clone();
+
+    // first
+    // |l| { left(right(l)) }
     let first = {
         let left = left.clone();
         let right = right.clone();
@@ -306,6 +316,9 @@ fn main() {
             left.call(right.call(l.clone()))
         })
     };
+
+    // rest
+    // |l| { right(right(l)) }
     let rest = {
         let right = right.clone();
         r!(move |l: Rp| {
@@ -320,4 +333,65 @@ fn main() {
              to_integer(&first.call(rest.call(rest.call(testlist.clone())))),
              to_boolean(&is_empty.call(testlist.clone())),
              to_boolean(&is_empty.call(empty.clone())));
+
+    let array = to_array(&mut testlist.clone())
+        .iter()
+        .map(|x| to_integer(&x).to_string())
+        .collect::<Vec<String>>();
+    println!("LIST TO_ARRAY: [{}]", array.join(", "));
+
+    // ************************************
+    // Range
+
+    // range
+    // z ( |f| { |m| { |n| {
+    //   if(is_le(m)(n))(|x| { unshift(f(incr(m))(n))(m)(x) })(empty)
+    // } } } )
+    let range = {
+        let _if = _if.clone();
+        let is_le = is_le.clone();
+        let unshift = unshift.clone();
+        let incr = incr.clone();
+        let empty = empty.clone();
+        z.call(
+            r!(move |f: Rp| {
+                let _if = _if.clone();
+                let is_le = is_le.clone();
+                let unshift = unshift.clone();
+                let incr = incr.clone();
+                let empty = empty.clone();
+                r!(move |m: Rp| {
+                    let _if = _if.clone();
+                    let is_le = is_le.clone();
+                    let unshift = unshift.clone();
+                    let incr = incr.clone();
+                    let empty = empty.clone();
+                    let f = f.clone();
+                    r!(move |n: Rp| {
+                        let unshift = unshift.clone();
+                        let incr = incr.clone();
+                        let mcopy = m.clone();
+                        let f = f.clone();
+                        let empty = empty.clone();
+                        _if.call(is_le.call(m.clone()).call(n.clone()))
+                           .call(r!(move |x: Rp| {
+                               unshift
+                                   .call(f.call(incr.call(mcopy.clone()))
+                                          .call(n.clone()))
+                                   .call(mcopy.clone())
+                                   .call(x.clone())
+                           }))
+                           .call(empty)
+                    })
+                })
+            })
+        )
+    };
+
+    let one_to_five = range.call(one).call(five);
+    let array = to_array(&mut one_to_five.clone())
+        .iter()
+        .map(|x| to_integer(&x).to_string())
+        .collect::<Vec<String>>();
+    println!("RANGE(1-5): [{}]", array.join(", "));
 }
