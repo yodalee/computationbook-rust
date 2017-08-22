@@ -161,7 +161,7 @@ fn main() {
             let add = add.clone();
             let zero = zero.clone();
             r!(move |n: Rp| {
-                n.call(add.clone().call(m.clone()).call(zero.clone()))
+                n.call(add.call(m.clone()).call(zero.clone()))
             })
         })
     };
@@ -175,7 +175,7 @@ fn main() {
             let multiply = multiply.clone();
             let one = one.clone();
             r!(move |n: Rp| {
-                n.call(multiply.clone().call(m.clone()).call(one.clone()))
+                n.call(multiply.call(m.clone()).call(one.clone()))
             })
         })
     };
@@ -399,10 +399,100 @@ fn main() {
         )
     };
 
-    let one_to_five = range.call(one).call(five);
+    let one_to_five = range.call(one.clone()).call(five.clone());
     let array = to_array(&mut one_to_five.clone())
         .iter()
         .map(|x| to_integer(&x).to_string())
         .collect::<Vec<String>>();
     println!("RANGE(1-5): [{}]", array.join(", "));
+
+    // fold
+    // z ( |f| { |l| { |x| { |g| {
+    //   if(is_empty(l))(x)( |y| { g(f(rest(l))(x)(g))(first(l))(y) } )
+    // } } } } )
+    let fold = {
+        let _if = _if.clone();
+        let is_empty = is_empty.clone();
+        let rest = rest.clone();
+        let first = first.clone();
+        z.call(
+            r!(move |f: Rp| {
+                let _if = _if.clone();
+                let is_empty = is_empty.clone();
+                let rest = rest.clone();
+                let first = first.clone();
+                r!(move |l: Rp| {
+                    let _if = _if.clone();
+                    let is_empty = is_empty.clone();
+                    let rest = rest.clone();
+                    let first = first.clone();
+                    let f = f.clone();
+                    r!(move |x: Rp| {
+                        let _if = _if.clone();
+                        let is_empty = is_empty.clone();
+                        let first = first.clone();
+                        let rest = rest.clone();
+                        let f = f.clone();
+                        let l = l.clone();
+                        r!(move |g: Rp| {
+                            let first = first.clone();
+                            let rest = rest.clone();
+                            let f = f.clone();
+                            let l = l.clone();
+                            let x = x.clone();
+                            _if.call(is_empty.call(l.clone()))
+                               .call(x.clone())
+                               .call(r!(move |y| {
+                                   g.call(f.call(rest.call(l.clone()))
+                                           .call(x.clone())
+                                           .call(g.clone()))
+                                    .call(first.call(l.clone()))
+                                    .call(y)
+                               }))
+                        })
+                    })
+                })
+            })
+        )
+    };
+
+    println!("FOLD [1-5] with ADD base 0: {}",
+             to_integer(&fold
+                .call(one_to_five.clone())
+                .call(zero.clone())
+                .call(add.clone())));
+
+    // map
+    // |k| { |f| { fold(k)(empty)( |l| { |x| { unshift(l)(f(x)) }  } )
+    // } }
+    let map = {
+        let fold = fold.clone();
+        let unshift = unshift.clone();
+        let empty = empty.clone();
+        r!(move |k: Rp| {
+            let fold = fold.clone();
+            let unshift = unshift.clone();
+            let empty = empty.clone();
+            r!(move |f: Rp| {
+                let unshift = unshift.clone();
+                fold.call(k.clone())
+                    .call(empty.clone())
+                    .call(r!(move |l: Rp| {
+                        let unshift = unshift.clone();
+                        let f = f.clone();
+                        r!(move |x: Rp| {
+                            unshift.call(l.clone()).call(f.call(x))
+                        })
+                    }))
+            })
+        })
+    };
+
+    let two_to_six = map.call(one_to_five.clone()).call(incr.clone());
+    let array = to_array(&mut two_to_six.clone())
+        .iter()
+        .map(|x| to_integer(&x).to_string())
+        .collect::<Vec<String>>();
+    println!("map(incr, [1-5]): [{}]", array.join(", "));
+
 }
