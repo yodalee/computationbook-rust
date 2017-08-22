@@ -29,3 +29,8 @@ pub fn to_boolean(p: &Rp) -> bool {
         _ => panic!(),
     }
 }
+
+static CHARMAP: &'static str = "0123456789BFiuz";
+pub fn to_char(c: &Rp) -> char {
+    CHARMAP.chars().nth(to_integer(&c) as usize).unwrap()
+}

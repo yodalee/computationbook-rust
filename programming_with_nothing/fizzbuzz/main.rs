@@ -495,4 +495,27 @@ fn main() {
         .collect::<Vec<String>>();
     println!("map(incr, [1-5]): [{}]", array.join(", "));
 
+    let charb = add.call(five.clone()).call(five.clone());
+    let charf = incr.call(charb.clone());
+    let chari = incr.call(charf.clone());
+    let charu = incr.call(chari.clone());
+    let charz = incr.call(charu.clone());
+    let zz = unshift.call(unshift.call(
+            empty.clone()).call(charz.clone())).call(charz.clone());
+    let fizz = unshift.call(unshift.call(
+            zz.clone()).call(chari.clone())).call(charf.clone());
+    let buzz = unshift.call(unshift.call(
+            zz.clone()).call(charu.clone())).call(charb.clone());
+    let fizzbuzz = unshift.call(unshift.call(unshift.call(unshift.call(
+                    buzz.clone()).call(charz.clone())).call(charz.clone())).call(chari.clone())).call(charf.clone());
+
+    let to_string = |l: &Rp| -> String {
+        let out = to_array(&mut l.clone()).iter().map(|x| to_char(&x)).collect::<String>();
+        out
+    };
+
+    println!("Fizz:{}, Buzz:{}, FizzBuzz:{}",
+             to_string(&fizz.clone()),
+             to_string(&buzz.clone()),
+             to_string(&fizzbuzz.clone()));
 }
