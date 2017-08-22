@@ -161,7 +161,7 @@ fn main() {
             let add = add.clone();
             let zero = zero.clone();
             r!(move |n: Rp| {
-                n.call(add.call(m.clone()).call(zero.clone()))
+                n.call(add.call(m.clone())).call(zero.clone())
             })
         })
     };
