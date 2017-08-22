@@ -326,6 +326,17 @@ fn main() {
         })
     };
 
+    // to_array
+    // since it require lot of closure, put it here
+    let to_array = |p: &mut Rp| -> Vec<Rp> {
+        let mut out: Vec<Rp> = vec![];
+        while !to_boolean(&is_empty.call(p.clone())) {
+            out.push(first.call(p.clone()));
+            *p = rest.call(p.clone());
+        }
+        out
+    };
+
     let testlist = unshift.call(unshift.call(unshift.call(empty.clone()).call(three.clone())).call(two.clone())).call(one.clone());
     println!("LIST [1, 2, 3]:[{}, {}, {}] list_is_empty:{}, empty_is_empty:{}",
              to_integer(&first.call(testlist.clone())),
