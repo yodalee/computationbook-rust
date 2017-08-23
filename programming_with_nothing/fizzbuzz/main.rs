@@ -495,7 +495,8 @@ fn main() {
         .collect::<Vec<String>>();
     println!("map(incr, [1-5]): [{}]", array.join(", "));
 
-    let charb = add.call(five.clone()).call(five.clone());
+    let ten   = multiply.call(five.clone()).call(two.clone());
+    let charb = ten.clone();
     let charf = incr.call(charb.clone());
     let chari = incr.call(charf.clone());
     let charu = incr.call(chari.clone());
@@ -509,6 +510,7 @@ fn main() {
     let fizzbuzz = unshift.call(unshift.call(unshift.call(unshift.call(
                     buzz.clone()).call(charz.clone())).call(charz.clone())).call(chari.clone())).call(charf.clone());
 
+    // helper to_string
     let to_string = |l: &Rp| -> String {
         let out = to_array(&mut l.clone()).iter().map(|x| to_char(&x)).collect::<String>();
         out
@@ -518,4 +520,125 @@ fn main() {
              to_string(&fizz.clone()),
              to_string(&buzz.clone()),
              to_string(&fizzbuzz.clone()));
+
+    // div
+    // z ( |f| { |m| { |n| {
+    //   if(is_le(n)(m))( |x| {incr(f(subtract(m)(n))(n))(x)} )(zero)
+    // } } } )
+    let div = {
+        let _if = _if.clone();
+        let is_le = is_le.clone();
+        let incr = incr.clone();
+        let subtract = subtract.clone();
+        let zero = zero.clone();
+        z.call(
+            r!(move |f: Rp| {
+                let _if = _if.clone();
+                let is_le = is_le.clone();
+                let incr = incr.clone();
+                let subtract = subtract.clone();
+                let zero = zero.clone();
+                r!(move |m: Rp| {
+                    let _if = _if.clone();
+                    let is_le = is_le.clone();
+                    let incr = incr.clone();
+                    let subtract = subtract.clone();
+                    let zero = zero.clone();
+                    let f = f.clone();
+                    r!(move |n: Rp| {
+                        let incr = incr.clone();
+                        let subtract = subtract.clone();
+                        let f = f.clone();
+                        let m = m.clone();
+                        _if.call(is_le.call(n.clone()).call(m.clone()))
+                           .call(r!(move |x: Rp| {
+                               incr.call(f.call(subtract
+                                                .call(m.clone())
+                                                .call(n.clone()))
+                                          .call(n.clone()))
+                                   .call(x.clone())
+                           }))
+                           .call(zero.clone())
+                    })
+                })
+            })
+        )
+    };
+
+    // push
+    // |l| { |x| { fold(l)(unshift(empty)(x))(unshift) } }
+    let push = {
+        let empty = empty.clone();
+        let unshift = unshift.clone();
+        let fold = fold.clone();
+        r!(move |l: Rp| {
+            let empty = empty.clone();
+            let unshift = unshift.clone();
+            let fold = fold.clone();
+            r!(move |x: Rp| {
+                let empty = empty.clone();
+                fold.call(l.clone())
+                    .call(unshift.call(empty).call(x))
+                    .call(unshift.clone())
+            })
+        })
+    };
+
+    // to_digits
+    // z ( |f| { |n| {
+    //   push(
+    //      if(is_le(n)(decr(ten)))(empty)( |x| { f(div(n)(ten))(x) } )
+    //   )(
+    //      mod(n)(ten)
+    //   )
+    // } } )
+    let to_digits = {
+        let _if = _if.clone();
+        let is_le = is_le.clone();
+        let decr = decr.clone();
+        let empty = empty.clone();
+        let ten = ten.clone();
+        let push = push.clone();
+        let div = div.clone();
+        let module = module.clone();
+        z.call(
+            r!(move |f: Rp| {
+                let _if = _if.clone();
+                let is_le = is_le.clone();
+                let decr = decr.clone();
+                let empty = empty.clone();
+                let ten = ten.clone();
+                let push = push.clone();
+                let div = div.clone();
+                let module = module.clone();
+                r!(move |n: Rp| {
+                    let f = f.clone();
+                    let div = div.clone();
+                    let tencopy = ten.clone();
+                    let ncopy = n.clone();
+                    push.call(
+                        _if.call(is_le.call(n.clone()).call(decr.call(ten.clone())))
+                           .call(empty.clone())
+                           .call(r!(move |x: Rp| {
+                               f.call(div.call(ncopy.clone()).call(tencopy.clone())).call(x.clone())
+                           }))
+                    ).call(
+                        module.call(n.clone()).call(ten.clone())
+                    )
+                })
+            })
+        )
+    };
+
+    let array = to_array(&mut to_digits.call(five.clone()))
+        .iter()
+        .map(|x| to_integer(&x).to_string())
+        .collect::<Vec<String>>();
+    println!("digits 5:[{}]", array.join(", "));
+
+    let array = to_array(&mut to_digits.call(power.call(five.clone()).call(three.clone())))
+        .iter()
+        .map(|x| to_integer(&x).to_string())
+        .collect::<Vec<String>>();
+    println!("digits 5:[{}]", array.join(", "));
 }
