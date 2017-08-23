@@ -636,9 +636,33 @@ fn main() {
         .collect::<Vec<String>>();
     println!("digits 5:[{}]", array.join(", "));
 
-    let array = to_array(&mut to_digits.call(power.call(five.clone()).call(three.clone())))
+    let array = to_array(&mut to_digits.call(power.call(five.clone()).call(two.clone())))
         .iter()
         .map(|x| to_integer(&x).to_string())
         .collect::<Vec<String>>();
     println!("digits 5:[{}]", array.join(", "));
+
+    // finally fizzbuzz
+    let solution = {
+        map.call(range.call(one.clone()).call(hundred.clone()))
+           .call(r!(move |n:Rp| {
+               _if.call(is_zero.call(module.call(n.clone()).call(fifteen.clone())))
+                  .call(fizzbuzz.clone())
+                  .call(
+                      _if.call(is_zero.call(module.call(n.clone()).call(three.clone())))
+                         .call(fizz.clone())
+                         .call(
+                             _if.call(is_zero.call(module.call(n.clone()).call(five.clone())))
+                                .call(buzz.clone())
+                                .call(to_digits.call(n.clone()))
+                         )
+                  )
+           }))
+    };
+
+    let array = to_array(&mut solution.clone())
+        .iter()
+        .map(|x| to_string(x))
+        .collect::<Vec<String>>();
+    println!("fizzbuzz :[{}]", array.join(", "));
 }
