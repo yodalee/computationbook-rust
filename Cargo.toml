@@ -1,0 +1,44 @@
+[package]
+name = "computationbook-rust"
+version = "0.1.0"
+authors = ["yodalee <lc85301@gmail.com>"]
+
+[[bin]]
+name = "chap2_the_meaning_of_programs"
+path = "the_meaning_of_programs/main.rs"
+
+[[bin]]
+name = "chap3_finite_automata"
+path = "the_simplest_computers/finite_automata/main.rs"
+
+[[bin]]
+name = "chap3_regular_expressions"
+path = "the_simplest_computers/regular_expressions/main.rs"
+
+[[bin]]
+name = "chap4_just_add_power"
+path = "just_add_power/main.rs"
+
+[[bin]]
+name = "chap5_the_ultimate_machine"
+path = "the_ultimate_machine/main.rs"
+
+[[bin]]
+name = "chap6_fizzbuzz"
+path = "programming_with_nothing/fizzbuzz/main.rs"
+
+[[bin]]
+name = "chap6_lambda_calculus"
+path = "programming_with_nothing/lambda_calculus/main.rs"
+
+[[bin]]
+name = "chap7_tag_systesms"
+path = "universality_is_everywhere/tag_systems/main.rs"
+
+[[bin]]
+name = "chap9_signs"
+path = "programming_in_toyland/signs/main.rs"
+
+[[bin]]
+name = "chap8_types"
+path = "programming_in_toyland/types/main.rs"
