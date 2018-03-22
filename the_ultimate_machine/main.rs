@@ -4,7 +4,6 @@ mod tm_rule;
 mod dtm_rulebook;
 mod dtm;
 
-use std::vec;
 use std::collections::HashSet;
 
 use tape::{Tape};
@@ -35,7 +34,7 @@ pub fn main() {
     rule.follow(&mut config);
     println!("{}", config);
 
-    let mut tape = Tape::new("101", '1', "", '_');
+    let tape = Tape::new("101", '1', "", '_');
     let rulebook = DTMRulebook::new(vec!(
         TMRule::new(1, '0', 2, '1', Direction::Right),
         TMRule::new(1, '1', 1, '0', Direction::Left),
@@ -53,7 +52,7 @@ pub fn main() {
     rulebook.next_configuration(&mut config);
     println!("{}", config);
 
-    let mut tape = Tape::new("101", '1', "", '_');
+    let tape = Tape::new("101", '1', "", '_');
     let rulebook = DTMRulebook::new(vec!(
         TMRule::new(1, '0', 2, '1', Direction::Right),
         TMRule::new(1, '1', 1, '0', Direction::Left),
@@ -75,7 +74,7 @@ pub fn main() {
     println!("{}", dtm.current_configuration);
     println!("{}", dtm.accepting());
 
-    let mut tape = Tape::new("121", '1', "", '_');
+    let tape = Tape::new("121", '1', "", '_');
     let rulebook = DTMRulebook::new(vec!(
         TMRule::new(1, '0', 2, '1', Direction::Right),
         TMRule::new(1, '1', 1, '0', Direction::Left),

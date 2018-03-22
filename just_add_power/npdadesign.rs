@@ -1,5 +1,4 @@
-
-use helper::{toHashSet};
+use helper::{to_hashset};
 use pdaconfiguration::{PDAConfiguration};
 use npda::{NPDA};
 use npdarulebook::{NPDARulebook};
@@ -23,8 +22,8 @@ impl NPDADesign {
 
     pub fn accept(&self, s: &str) -> bool {
         let mut to_npda = NPDA::new(
-            &toHashSet(&[PDAConfiguration::new(self.start_state, &[self.bottom_char])]),
-            &toHashSet(&self.accept_state),
+            &to_hashset(&[PDAConfiguration::new(self.start_state, &[self.bottom_char])]),
+            &to_hashset(&self.accept_state),
             &self.rulebook
         );
         to_npda.read_string(s);

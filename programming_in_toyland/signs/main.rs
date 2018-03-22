@@ -5,7 +5,7 @@ mod sign;
 mod numeric;
 
 use sign::{Sign};
-use numeric::{hasSign};
+use numeric::{HasSign};
 
 fn calculate<T: Mul<T, Output=T>+Copy>(x: T, y: T, z: T) -> T {
     (x*y) * (x*z)

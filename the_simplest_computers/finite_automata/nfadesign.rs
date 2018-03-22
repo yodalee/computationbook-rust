@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use farule::{FARule};
 use nfa::{NFA};
 use nfarulebook::{NFARulebook};
-use helper::{toHashSet};
+use helper::{to_hashset};
 
 // start_state, size is preserved for regex
 pub struct NFADesign {
@@ -27,7 +27,7 @@ impl NFADesign {
             start_state: start_state,
             size: maxstate - start_state,
             nfa: NFA::new(
-                 &toHashSet(&[start_state]),
+                 &to_hashset(&[start_state]),
                  &accept_states,
                  &rulebook)
         }

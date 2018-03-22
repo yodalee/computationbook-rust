@@ -135,7 +135,7 @@ pub fn main() {
 
     println!("{}", Node::number(5).to_ruby());
     println!("{}", Node::boolean(false).to_ruby());
-    let mut expr = Node::variable("x");
+    let expr = Node::variable("x");
     println!("{}", expr.to_ruby());
     println!("{}", Node::add(Node::variable("x"), Node::number(1)).to_ruby());
     println!("{}", Node::lessthan(Node::add(Node::variable("x"), Node::number(1)), Node::number(3)).to_ruby());

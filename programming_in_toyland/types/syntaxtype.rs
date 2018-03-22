@@ -14,22 +14,22 @@ pub enum Type {
 }
 
 pub trait SyntaxType {
-    fn getType(&self, context: &mut Context) -> Option<Type>;
+    fn get_type(&self, context: &mut Context) -> Option<Type>;
 }
 
 impl SyntaxType for Node {
-    fn getType(&self, context: &mut Context) -> Option<Type> {
+    fn get_type(&self, context: &mut Context) -> Option<Type> {
         match *self {
             Node::Number(_) => Some(Type::Number),
             Node::Boolean(_) => Some(Type::Boolean),
             Node::Add(ref l, ref r) | Node::Multiply(ref l, ref r) => {
-                match (l.getType(context), r.getType(context)) {
+                match (l.get_type(context), r.get_type(context)) {
                     (Some(Type::Number), Some(Type::Number)) => Some(Type::Number),
                     _ => None,
                 }
             }
             Node::LessThan(ref l, ref r) => {
-                match (l.getType(context), r.getType(context)) {
+                match (l.get_type(context), r.get_type(context)) {
                     (Some(Type::Number), Some(Type::Number)) => Some(Type::Boolean),
                     _ => None,
                 }
@@ -41,25 +41,25 @@ impl SyntaxType for Node {
                 Some(Type::Void)
             }
             Node::Sequence(ref first, ref second) => {
-                match (first.getType(context), second.getType(context)) {
+                match (first.get_type(context), second.get_type(context)) {
                     (Some(Type::Void), Some(Type::Void)) => Some(Type::Void),
                     _ => None,
                 }
             }
             Node::If(ref cond, ref conse, ref alter) => {
-                match (cond.getType(context), conse.getType(context), alter.getType(context)) {
+                match (cond.get_type(context), conse.get_type(context), alter.get_type(context)) {
                     (Some(Type::Boolean), Some(Type::Void), Some(Type::Void)) => Some(Type::Void),
                     _ => None,
                 }
             }
             Node::While(ref cond, ref body) => {
-                match (cond.getType(context), body.getType(context)) {
+                match (cond.get_type(context), body.get_type(context)) {
                     (Some(Type::Boolean), Some(Type::Void)) => Some(Type::Void),
                     _ => None,
                 }
             }
             Node::Assign(ref name, ref expr) => {
-                let rtype = expr.getType(context);
+                let rtype = expr.get_type(context);
                 let ltype = context.get(name);
                 match (ltype, rtype) {
                     (Some(ref lt), Some(ref rt)) if lt == rt => Some(Type::Void),

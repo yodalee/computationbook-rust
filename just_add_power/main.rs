@@ -16,13 +16,13 @@ use dpdadesign::{DPDADesign};
 use npdarulebook::{NPDARulebook};
 use npda::{NPDA};
 use npdadesign::{NPDADesign};
-use helper::{toHashSet};
+use helper::{to_hashset};
 
 pub fn main() {
     println!("************************************");
     println!("Demo Deterministic PushDown Automata");
     println!("************************************");
-    let mut rule = PDARule::new(1, '(', 2, '$', &['b', '$']);
+    let rule = PDARule::new(1, '(', 2, '$', &['b', '$']);
     println!("{}", rule);
     let mut config = PDAConfiguration::new(1, &['$']);
     println!("{}", config);
@@ -101,7 +101,7 @@ pub fn main() {
     println!("Demo Non-Deterministic PushDown Automata");
     println!("****************************************");
 
-    let mut rulebook = NPDARulebook::new(&[
+    let rulebook = NPDARulebook::new(&[
         PDARule::new(1, 'a', 1, '$', &['a', '$']),
         PDARule::new(1, 'a', 1, 'a', &['a', 'a']),
         PDARule::new(1, 'a', 1, 'b', &['a', 'b']),
@@ -116,7 +116,7 @@ pub fn main() {
         PDARule::new(2, '\0', 3, '$', &['$'])
     ]);
     config = PDAConfiguration::new(1, &['$']);
-    let mut npda = NPDA::new(&toHashSet(&[config]), &toHashSet(&[3]), &rulebook);
+    let mut npda = NPDA::new(&to_hashset(&[config]), &to_hashset(&[3]), &rulebook);
     println!("{}", npda.accept());
     for config in npda.current_config().iter() {
         println!("{}", config);
@@ -132,7 +132,7 @@ pub fn main() {
         println!("{}", config);
     }
 
-    let mut npda_design = NPDADesign::new(1, '$', &[3], &rulebook);
+    let npda_design = NPDADesign::new(1, '$', &[3], &rulebook);
     println!("accept abba? {}, babbaabbab? {}, abb? {}, baabaa? {}",
         npda_design.accept("abba"), npda_design.accept("babbaabbab"), npda_design.accept("abb"), npda_design.accept("baabaa"));
 }

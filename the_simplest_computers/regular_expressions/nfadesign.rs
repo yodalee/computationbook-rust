@@ -4,7 +4,7 @@ use std::rc::Rc;
 use farule::{FARule, State};
 use nfa::{NFA};
 use nfarulebook::{NFARulebook};
-use helper::{toHashSet};
+use helper::{to_hashset};
 
 pub struct NFADesign {
     pub start_state: Rc<State>,
@@ -16,7 +16,7 @@ impl NFADesign {
         NFADesign{
             start_state: start_state.clone(),
             nfa: NFA::new(
-                 &toHashSet(&[start_state.clone()]),
+                 &to_hashset(&[start_state.clone()]),
                  &accept_states,
                  &rulebook)
         }

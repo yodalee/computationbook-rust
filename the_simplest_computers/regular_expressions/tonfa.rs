@@ -1,10 +1,9 @@
-use std::collections::HashSet;
 use std::rc::Rc;
 
 use nfadesign::{NFADesign};
 use nfarulebook::{NFARulebook};
 use regex::{Regex};
-use helper::{toHashSet};
+use helper::{to_hashset};
 use farule::{State, FARule};
 
 pub trait ToNFA {
@@ -19,7 +18,7 @@ impl ToNFA for Regex {
                 let start_state = Rc::new(State{});
                 NFADesign::new(
                     &start_state,
-                    &toHashSet(&[start_state.clone()]),
+                    &to_hashset(&[start_state.clone()]),
                     &NFARulebook::new(vec![])
                 )
             },
@@ -29,7 +28,7 @@ impl ToNFA for Regex {
                 let rule = FARule::new(&start_state, c, &accept_state);
                 NFADesign::new(
                     &start_state,
-                    &toHashSet(&[accept_state]),
+                    &to_hashset(&[accept_state]),
                     &NFARulebook::new(
                         vec![rule]),
                 )

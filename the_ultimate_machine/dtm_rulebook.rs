@@ -1,4 +1,3 @@
-use std::fmt;
 use tm_rule::{TMRule};
 use tm_configuration::{TMConfiguration};
 
@@ -23,9 +22,6 @@ impl DTMRulebook {
     }
 
     pub fn applies_to(&self, config: &TMConfiguration) -> bool{
-        match self.rule_for(config) {
-            Some(rule) => true,
-            None => false,
-        }
+        self.rule_for(config).is_some()
     }
 }

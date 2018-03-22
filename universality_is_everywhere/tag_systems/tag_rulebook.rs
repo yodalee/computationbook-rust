@@ -16,8 +16,8 @@ impl TagRulebook {
     pub fn next_string(&self, input: &str) -> String {
         match self.rule_for(input) {
             Some(rule) => unsafe {
-                let newString = rule.follow(input);
-                newString.slice_unchecked(self.deletion_number as usize, newString.len())
+                let newstr = rule.follow(input);
+                newstr.slice_unchecked(self.deletion_number as usize, newstr.len())
                     .to_string()
             },
             None => "".to_string(),
