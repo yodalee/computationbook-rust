@@ -1,5 +1,5 @@
-use syntax::{Node};
-use environment::{Environment};
+use simple::syntax::{Node};
+use simple::environment::{Environment};
 
 pub trait Evaluate {
     fn evaluate(&self, environment: &mut Environment) -> Box<Node>;

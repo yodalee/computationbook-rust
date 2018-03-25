@@ -2,7 +2,7 @@ use std::fmt::Display;
 use std::fmt::Result;
 use std::fmt::Formatter;
 
-use syntax::Node;
+use simple::syntax::Node;
 
 use std::collections::HashMap;
 

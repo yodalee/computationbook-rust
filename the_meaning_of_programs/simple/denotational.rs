@@ -1,4 +1,4 @@
-use syntax::{Node};
+use simple::syntax::{Node};
 
 pub trait Denotational {
     fn to_ruby(&self) -> String;
