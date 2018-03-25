@@ -33,4 +33,8 @@ impl Machine {
         }
         println!("{}", self.expression);
     }
+
+    pub fn get_expression(&self) -> Box<Node> {
+        self.expression.clone()
+    }
 }
