@@ -1,44 +1,77 @@
-mod regex;
-mod tonfa;
-mod farule;
-mod nfadesign;
-mod nfarulebook;
+pub mod regex;
+pub mod tonfa;
 mod nfa;
 mod helper;
 
-use regex::{Regex};
-use tonfa::{ToNFA};
+#[cfg(test)]
+mod tests {
+    use regex::{Regex};
+    use tonfa::{ToNFA};
+
+
+    #[test]
+    fn test_regex_pattern() {
+        let pattern = Regex::repeat(Regex::choose(Regex::concatenate(Regex::literal('a'), Regex::literal('b')), Regex::literal('a')));
+        assert_eq!("(ab|a)*", format!("{}", pattern));
+    }
+
+    #[test]
+    fn test_regex_empty() {
+        let pattern = Regex::empty();
+        println!("Regex '{}'", pattern);
+        assert!(pattern.matches(""));
+        assert!(!pattern.matches("a"));
+    }
+
+    #[test]
+    fn test_regex_literal() {
+        let pattern = Regex::literal('a');
+        println!("Regex '{}'", pattern);
+        assert!(!pattern.matches(""));
+        assert!(pattern.matches("a"));
+        assert!(!pattern.matches("b"));
+    }
+
+    #[test]
+    fn test_regex_concatenate() {
+        let pattern = Regex::concatenate(Regex::literal('a'), Regex::literal('b'));
+        println!("Regex '{}'", pattern);
+        assert!(!pattern.matches("a"));
+        assert!(pattern.matches("ab"));
+        assert!(!pattern.matches("abc"));
+    }
+
+    #[test]
+    fn test_regex_choose() {
+        let pattern = Regex::choose(Regex::literal('a'), Regex::literal('b'));
+        println!("Regex '{}'", pattern);
+        assert!(pattern.matches("a"));
+        assert!(pattern.matches("b"));
+        assert!(!pattern.matches("c"));
+    }
+
+    #[test]
+    fn test_regex_repeat() {
+        let pattern = Regex::repeat(Regex::literal('a'));
+        println!("Regex '{}'", pattern);
+        assert!(pattern.matches("a"));
+        assert!(pattern.matches("aaaa"));
+        assert!(!pattern.matches("b"));
+    }
+
+    #[test]
+    fn test_regex_complex() {
+        let pattern = Regex::repeat(Regex::concatenate(Regex::literal('a'), Regex::choose(Regex::empty(), Regex::literal('b'))));
+        println!("Regex '{}'", pattern);
+        assert!(pattern.matches(""));
+        assert!(pattern.matches("a"));
+        assert!(pattern.matches("ab"));
+        assert!(pattern.matches("aba"));
+        assert!(pattern.matches("abab"));
+        assert!(pattern.matches("abaab"));
+        assert!(!pattern.matches("abba"));
+    }
+}
 
 pub fn main() {
-   let mut pattern = Regex::repeat(Regex::choose(Regex::concatenate(Regex::literal('a'), Regex::literal('b')), Regex::literal('a')));
-   println!("{}", pattern);
-
-   let mut nfadesign = Regex::empty().to_nfa_design();
-   println!("Empty");
-   println!("'{}' accept? '': {}, a: {}", Regex::empty(), nfadesign.accept(""), nfadesign.accept("a"));
-
-   nfadesign = Regex::literal('a').to_nfa_design();
-   println!("Literal");
-   println!("'{}' accept? '': {}, a: {}, b: {}",
-            Regex::literal('a'), nfadesign.accept(""), nfadesign.accept("a"), nfadesign.accept("b"));
-
-   println!("{}", Regex::empty().matches("a"));
-   println!("{}", Regex::literal('a').matches("a"));
-
-   println!("Concatenate");
-   pattern = Regex::concatenate(Regex::literal('a'), Regex::literal('b'));
-   println!("'{}' accept? a: {}, ab: {}, abc: {}", pattern, pattern.matches("a"), pattern.matches("ab"), pattern.matches("abc"));
-
-   pattern = Regex::choose(Regex::literal('a'), Regex::literal('b'));
-   println!("'{}' accept? a: {}, b: {}, c: {}", pattern, pattern.matches("a"), pattern.matches("b"), pattern.matches("c"));
-
-   pattern = Regex::repeat(Regex::literal('a'));
-   println!("'{}' accept? '': {}, a: {}, aaaa: {}, b: {}",
-            pattern, pattern.matches(""), pattern.matches("a"), pattern.matches("aaaa"), pattern.matches("b"));
-
-   pattern = Regex::repeat(Regex::concatenate(Regex::literal('a'), Regex::choose(Regex::empty(), Regex::literal('b'))));
-   println!("'{}' accept? '': {}, a: {}, ab: {}, aba: {}",
-            pattern, pattern.matches(""), pattern.matches("a"), pattern.matches("ab"), pattern.matches("aba"));
-   println!("'{}' accept? abab: {}, abaab: {}, abba: {}",
-            pattern, pattern.matches("abab"), pattern.matches("abaab"), pattern.matches("abba"));
 }

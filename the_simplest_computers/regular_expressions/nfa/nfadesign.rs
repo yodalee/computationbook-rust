@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 use std::rc::Rc;
 
-use farule::{FARule, State};
-use nfa::{NFA};
-use nfarulebook::{NFARulebook};
+use nfa::farule::{FARule, State};
+use nfa::nfa::{NFA};
+use nfa::nfarulebook::{NFARulebook};
 use helper::{to_hashset};
 
 pub struct NFADesign {

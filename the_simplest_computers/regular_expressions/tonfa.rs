@@ -1,10 +1,10 @@
 use std::rc::Rc;
 
-use nfadesign::{NFADesign};
-use nfarulebook::{NFARulebook};
-use regex::{Regex};
+use nfa::farule::{State, FARule};
+use nfa::nfadesign::{NFADesign};
+use nfa::nfarulebook::{NFARulebook};
 use helper::{to_hashset};
-use farule::{State, FARule};
+use regex::{Regex};
 
 pub trait ToNFA {
     fn to_nfa_design(&self) -> NFADesign;
