@@ -1,33 +1,24 @@
 use std::collections::HashSet;
+use std::hash::Hash;
 
 use farule::{FARule};
 use nfa::{NFA};
 use nfarulebook::{NFARulebook};
 use helper::{to_hashset};
 
-// start_state, size is preserved for regex
-pub struct NFADesign {
-    start_state: u32,
-    pub size: u32,
-    nfa: NFA,
+pub struct NFADesign<T> {
+    start_state: T,
+    nfa: NFA<T>,
 }
 
-impl NFADesign {
-    pub fn new(start_state: u32, accept_states: &HashSet<u32>, rulebook: &NFARulebook) -> Self {
-        let mut maxstate:u32 = 0;
-        for r in rulebook.rules().iter() {
-            if r.state > maxstate {
-                maxstate = r.state
-            }
-            if r.next_state > maxstate {
-                maxstate = r.next_state
-            }
-        }
+impl<T: Eq + Clone + Hash> NFADesign<T> {
+    pub fn new(start_state: T,
+               accept_states: &HashSet<T>,
+               rulebook: &NFARulebook<T>) -> Self {
         NFADesign{
-            start_state: start_state,
-            size: maxstate - start_state,
+            start_state: start_state.clone(),
             nfa: NFA::new(
-                 &to_hashset(&[start_state]),
+                 &to_hashset(&[start_state.clone()]),
                  &accept_states,
                  &rulebook)
         }
@@ -39,7 +30,7 @@ impl NFADesign {
         to_nfa.accepting()
     }
 
-    pub fn start_state(&self) -> u32 { self.start_state }
-    pub fn accept_state(&self) -> HashSet<u32> { self.nfa.accept_states.clone() }
-    pub fn rules(&self) -> Vec<FARule> { self.nfa.rulebook.rules() }
+    pub fn start_state(&self) -> T { self.start_state.clone() }
+    pub fn accept_state(&self) -> HashSet<T> { self.nfa.accept_states.clone() }
+    pub fn rules(&self) -> Vec<FARule<T>> { self.nfa.rulebook.rules() }
 }
