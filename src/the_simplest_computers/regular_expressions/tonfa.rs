@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use the_simplest_computers::helper::{to_hashset};
+use helper::{to_hashset};
 
 use the_simplest_computers::finite_automata::farule::{FARule};
 use the_simplest_computers::finite_automata::nfadesign::{NFADesign};

@@ -15,7 +15,7 @@ mod tests {
     use super::nfarulebook::*;
     use super::nfa::*;
     use super::nfadesign::*;
-    use the_simplest_computers::helper::*;
+    use helper::*;
 
     #[test]
     fn test_dfa_rulebook() {

@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::hash::Hash;
 
-use the_simplest_computers::helper::{to_hashset};
+use helper::{to_hashset};
 
 use super::farule::{FARule};
 use super::nfa::{NFA};
