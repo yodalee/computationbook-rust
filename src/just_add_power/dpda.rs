@@ -1,5 +1,5 @@
-use pdaconfiguration::{PDAConfiguration};
-use dpdarulebook::{DPDARulebook};
+use super::pdaconfiguration::{PDAConfiguration};
+use super::dpdarulebook::{DPDARulebook};
 
 pub struct DPDA {
     pub config: PDAConfiguration,

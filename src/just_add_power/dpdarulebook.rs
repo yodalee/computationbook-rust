@@ -1,6 +1,6 @@
 
-use pdarule::{PDARule};
-use pdaconfiguration::{PDAConfiguration};
+use super::pdarule::{PDARule};
+use super::pdaconfiguration::{PDAConfiguration};
 
 #[derive(Clone)]
 pub struct DPDARulebook {

@@ -1,6 +1,6 @@
 use std::collections::{HashSet};
-use pdaconfiguration::{PDAConfiguration};
-use npdarulebook::{NPDARulebook};
+use super::pdaconfiguration::{PDAConfiguration};
+use super::npdarulebook::{NPDARulebook};
 
 pub struct NPDA {
     pub configs: HashSet<PDAConfiguration>,

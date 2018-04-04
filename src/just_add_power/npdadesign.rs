@@ -1,7 +1,8 @@
+use super::pdaconfiguration::{PDAConfiguration};
+use super::npda::{NPDA};
+use super::npdarulebook::{NPDARulebook};
+
 use helper::{to_hashset};
-use pdaconfiguration::{PDAConfiguration};
-use npda::{NPDA};
-use npdarulebook::{NPDARulebook};
 
 pub struct NPDADesign {
     start_state: u32,

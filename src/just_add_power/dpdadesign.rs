@@ -1,7 +1,7 @@
 
-use pdaconfiguration::{PDAConfiguration};
-use dpda::{DPDA};
-use dpdarulebook::{DPDARulebook};
+use super::pdaconfiguration::{PDAConfiguration};
+use super::dpda::{DPDA};
+use super::dpdarulebook::{DPDARulebook};
 
 pub struct DPDADesign {
     start_state: u32,

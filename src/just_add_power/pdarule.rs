@@ -2,7 +2,7 @@ use std::fmt::Display;
 use std::fmt::Result;
 use std::fmt::Formatter;
 
-use pdaconfiguration::{PDAConfiguration};
+use super::pdaconfiguration::{PDAConfiguration};
 
 #[derive(Clone)]
 pub struct PDARule {
