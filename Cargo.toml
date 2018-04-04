@@ -8,10 +8,6 @@ name = "computationbook"
 path = "src/lib.rs"
 
 [[bin]]
-name = "chap5_the_ultimate_machine"
-path = "src/the_ultimate_machine/main.rs"
-
-[[bin]]
 name = "chap6_fizzbuzz"
 path = "programming_with_nothing/fizzbuzz/main.rs"
 

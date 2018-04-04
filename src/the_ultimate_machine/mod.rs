@@ -1,15 +1,8 @@
-mod tape;
-mod tm_configuration;
-mod tm_rule;
-mod dtm_rulebook;
-mod dtm;
-
-use std::collections::HashSet;
-use tape::{Tape};
-use tm_configuration::{TMConfiguration};
-use tm_rule::{TMRule, Direction};
-use dtm_rulebook::{DTMRulebook};
-use dtm::{DTM};
+pub mod tape;
+pub mod tm_configuration;
+pub mod tm_rule;
+pub mod dtm_rulebook;
+pub mod dtm;
 
 #[cfg(test)]
 mod tests {
@@ -131,7 +124,4 @@ mod tests {
         assert!(!dtm.accepting());
         assert!(dtm.stuck());
     }
-}
-
-pub fn main() {
 }

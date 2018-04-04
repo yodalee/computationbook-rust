@@ -1,5 +1,6 @@
 use std::fmt;
-use tape::{Tape};
+
+use super::tape::{Tape};
 
 pub struct TMConfiguration {
     pub state: i32,

@@ -1,5 +1,5 @@
-use tm_rule::{TMRule};
-use tm_configuration::{TMConfiguration};
+use super::tm_rule::{TMRule};
+use super::tm_configuration::{TMConfiguration};
 
 pub struct DTMRulebook {
     pub rules: Vec<TMRule>,

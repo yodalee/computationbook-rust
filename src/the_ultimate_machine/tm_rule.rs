@@ -1,4 +1,4 @@
-use tm_configuration::{TMConfiguration};
+use super::tm_configuration::{TMConfiguration};
 
 #[allow(dead_code)]
 pub enum Direction {

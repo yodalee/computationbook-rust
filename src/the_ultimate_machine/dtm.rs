@@ -1,5 +1,5 @@
-use tm_configuration::{TMConfiguration};
-use dtm_rulebook::{DTMRulebook};
+use super::tm_configuration::{TMConfiguration};
+use super::dtm_rulebook::{DTMRulebook};
 
 use std::collections::HashSet;
 
