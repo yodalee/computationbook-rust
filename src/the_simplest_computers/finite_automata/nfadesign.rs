@@ -13,7 +13,7 @@ pub struct NFADesign<T> {
 }
 
 impl<T: Eq + Clone + Hash> NFADesign<T> {
-    pub fn new(start_state: T,
+    pub fn new(start_state: &T,
                accept_states: &HashSet<T>,
                rulebook: &NFARulebook<T>) -> Self {
         NFADesign{

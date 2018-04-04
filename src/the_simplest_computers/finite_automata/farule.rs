@@ -10,7 +10,7 @@ pub struct FARule<T> {
 }
 
 impl<T: Eq + Clone> FARule<T> {
-    pub fn new(state: T, character: char, next_state: T) -> Self {
+    pub fn new(state: &T, character: char, next_state: &T) -> Self {
         FARule {
             state: state.clone(),
             character: character,
