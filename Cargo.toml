@@ -9,7 +9,7 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "chap4_just_add_power"
-path = "just_add_power/main.rs"
+path = "src/just_add_power/main.rs"
 
 [[bin]]
 name = "chap5_the_ultimate_machine"
