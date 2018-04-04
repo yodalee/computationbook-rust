@@ -2,19 +2,19 @@ use std::rc::Rc;
 
 use the_simplest_computers::helper::{to_hashset};
 
-use super::nfa::farule::{FARule};
-use super::nfa::nfadesign::{NFADesign};
-use super::nfa::nfarulebook::{NFARulebook};
+use the_simplest_computers::finite_automata::farule::{FARule};
+use the_simplest_computers::finite_automata::nfadesign::{NFADesign};
+use the_simplest_computers::finite_automata::nfarulebook::{NFARulebook};
 use super::regex::{Regex};
-use super::state::{State};
+use super::state::{State, RCState};
 
 pub trait ToNFA {
-    fn to_nfa_design(&self) -> NFADesign;
+    fn to_nfa_design(&self) -> NFADesign<RCState>;
     fn matches(&self, &str) -> bool;
 }
 
 impl ToNFA for Regex {
-    fn to_nfa_design(&self) -> NFADesign {
+    fn to_nfa_design(&self) -> NFADesign<RCState> {
         match *self {
             Regex::Empty => {
                 let start_state = Rc::new(State{});
@@ -44,7 +44,7 @@ impl ToNFA for Regex {
                 let rule2 = second.rules();
                 let extrarules = first.accept_state().iter()
                     .map(|state| FARule::new(state, '\0', &second.start_state()))
-                    .collect::<Vec<FARule>>();
+                    .collect::<Vec<FARule<RCState>>>();
                 rule1.extend_from_slice(&rule2);
                 rule1.extend_from_slice(&extrarules);
                 NFADesign::new(

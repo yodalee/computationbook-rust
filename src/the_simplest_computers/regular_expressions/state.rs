@@ -1,9 +1,11 @@
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::fmt::Result;
+use std::rc::Rc;
 
 #[derive(Eq, Hash)]
 pub struct State;
+pub type RCState = Rc<State>;
 
 impl PartialEq for State {
     fn eq(&self, rhs: &Self) -> bool {
