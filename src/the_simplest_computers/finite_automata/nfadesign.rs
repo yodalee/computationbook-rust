@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 use std::hash::Hash;
 
-use farule::{FARule};
-use nfa::{NFA};
-use nfarulebook::{NFARulebook};
-use helper::{to_hashset};
+use super::farule::{FARule};
+use super::nfa::{NFA};
+use super::nfarulebook::{NFARulebook};
+use super::helper::{to_hashset};
 
 pub struct NFADesign<T> {
     start_state: T,

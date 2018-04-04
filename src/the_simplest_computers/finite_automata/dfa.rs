@@ -1,4 +1,4 @@
-use dfarulebook::{DFARulebook};
+use super::dfarulebook::{DFARulebook};
 
 #[derive(Clone)]
 pub struct DFA<T> {

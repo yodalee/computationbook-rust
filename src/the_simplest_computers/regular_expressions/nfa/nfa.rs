@@ -1,24 +1,25 @@
 use std::collections::HashSet;
-use std::hash::Hash;
+use std::rc::Rc;
 
-use nfarulebook::{NFARulebook};
+use super::farule::{State};
+use super::nfarulebook::{NFARulebook};
 
 #[derive(Clone)]
-pub struct NFA<T> {
-    current_state: HashSet<T>,
-    pub accept_states: HashSet<T>,
-    pub rulebook: NFARulebook<T>,
+pub struct NFA {
+    current_state: HashSet<Rc<State>>,
+    pub accept_states: HashSet<Rc<State>>,
+    pub rulebook: NFARulebook,
 }
 
-impl<T: Eq + Clone + Hash> NFA<T> {
-    pub fn new(current_state: &HashSet<T>, accept_states: &HashSet<T>, rulebook: &NFARulebook<T>) -> Self {
+impl NFA {
+    pub fn new(current_state: &HashSet<Rc<State>>, accept_states: &HashSet<Rc<State>>, rulebook: &NFARulebook) -> Self {
         NFA{
             current_state: current_state.clone(),
             accept_states: accept_states.clone(),
             rulebook: rulebook.clone()}
     }
 
-    pub fn current_state(&self) -> HashSet<T> {
+    pub fn current_state(&self) -> HashSet<Rc<State>> {
         self.rulebook.follow_free_moves(&self.current_state)
     }
 

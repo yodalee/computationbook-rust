@@ -1,5 +1,5 @@
-use dfa::{DFA};
-use dfarulebook::{DFARulebook};
+use super::dfa::{DFA};
+use super::dfarulebook::{DFARulebook};
 
 pub struct DFADesign<T> {
     dfa: DFA<T>,

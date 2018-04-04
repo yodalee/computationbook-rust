@@ -1,29 +1,22 @@
-mod farule;
-
-mod dfarulebook;
-mod dfa;
-mod dfadesign;
-
-mod nfarulebook;
-mod nfa;
-mod nfadesign;
-
-mod helper;
-
-pub use farule::{FARule};
-pub use dfarulebook::{DFARulebook};
-pub use dfa::{DFA};
-pub use dfadesign::{DFADesign};
-
-pub use nfarulebook::{NFARulebook};
-pub use nfa::{NFA};
-pub use nfadesign::{NFADesign};
-
-use helper::{to_hashset};
+pub mod farule;
+pub mod dfarulebook;
+pub mod dfa;
+pub mod dfadesign;
+pub mod nfarulebook;
+pub mod nfa;
+pub mod nfadesign;
+pub mod helper;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::farule::*;
+    use super::dfarulebook::*;
+    use super::dfa::*;
+    use super::dfadesign::*;
+    use super::nfarulebook::*;
+    use super::nfa::*;
+    use super::nfadesign::*;
+    use super::helper::*;
 
     #[test]
     fn test_dfa_rulebook() {
@@ -155,7 +148,4 @@ mod tests {
         assert!(!nfa_design.accept("aaaaa"));
         assert!(nfa_design.accept("aaaaaa"));
     }
-}
-
-pub fn main() {
 }

@@ -1,4 +1,4 @@
-use farule::FARule;
+use super::farule::FARule;
 
 #[derive(Clone)]
 pub struct DFARulebook<T> {

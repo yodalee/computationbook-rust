@@ -5,8 +5,8 @@ mod helper;
 
 #[cfg(test)]
 mod tests {
-    use regex::{Regex};
-    use tonfa::{ToNFA};
+    use super::regex::*;
+    use super::tonfa::*;
 
 
     #[test]
@@ -71,7 +71,4 @@ mod tests {
         assert!(pattern.matches("abaab"));
         assert!(!pattern.matches("abba"));
     }
-}
-
-pub fn main() {
 }

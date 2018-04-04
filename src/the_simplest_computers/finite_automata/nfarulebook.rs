@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::hash::Hash;
 
-use farule::FARule;
+use super::farule::FARule;
 
 #[derive(Clone)]
 pub struct NFARulebook<T> {

@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::rc::{Rc};
 
-use nfa::farule::{FARule, State};
+use super::farule::{FARule, State};
 
 #[derive(Clone)]
 pub struct NFARulebook {

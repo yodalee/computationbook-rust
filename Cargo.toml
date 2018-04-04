@@ -8,14 +8,6 @@ name = "computationbook"
 path = "src/lib.rs"
 
 [[bin]]
-name = "chap3_finite_automata"
-path = "the_simplest_computers/finite_automata/main.rs"
-
-[[bin]]
-name = "chap3_regular_expressions"
-path = "the_simplest_computers/regular_expressions/main.rs"
-
-[[bin]]
 name = "chap4_just_add_power"
 path = "just_add_power/main.rs"
 
