@@ -1,7 +1,8 @@
 use std::collections::HashSet;
 use std::rc::{Rc};
 
-use super::farule::{FARule, State};
+use the_simplest_computers::regular_expressions::state::{State};
+use super::farule::{FARule};
 
 #[derive(Clone)]
 pub struct NFARulebook {

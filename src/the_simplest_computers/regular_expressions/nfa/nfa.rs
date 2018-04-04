@@ -1,7 +1,8 @@
 use std::collections::HashSet;
 use std::rc::Rc;
 
-use super::farule::{State};
+use the_simplest_computers::regular_expressions::state::{State};
+
 use super::nfarulebook::{NFARulebook};
 
 #[derive(Clone)]

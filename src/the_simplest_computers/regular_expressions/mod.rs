@@ -1,12 +1,12 @@
 pub mod regex;
 pub mod tonfa;
+mod state;
 mod nfa;
 
 #[cfg(test)]
 mod tests {
     use super::regex::*;
     use super::tonfa::*;
-
 
     #[test]
     fn test_regex_pattern() {

@@ -3,14 +3,7 @@ use std::fmt::Formatter;
 use std::fmt::Result;
 use std::rc::Rc;
 
-#[derive(Eq, Hash)]
-pub struct State;
-
-impl PartialEq for State {
-    fn eq(&self, rhs: &Self) -> bool {
-        self as *const _ == rhs as *const _
-    }
-}
+use the_simplest_computers::regular_expressions::state::{State};
 
 #[derive(Clone)]
 pub struct FARule {
@@ -30,12 +23,6 @@ impl FARule {
 
     pub fn follow(&self) -> Rc<State> {
         self.next_state.clone()
-    }
-}
-
-impl Display for State {
-    fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "{}", self as *const _ as usize)
     }
 }
 

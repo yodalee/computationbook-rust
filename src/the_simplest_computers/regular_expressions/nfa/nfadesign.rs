@@ -2,8 +2,9 @@ use std::collections::HashSet;
 use std::rc::Rc;
 
 use the_simplest_computers::helper::{to_hashset};
+use the_simplest_computers::regular_expressions::state::{State};
 
-use super::farule::{FARule, State};
+use super::farule::{FARule};
 use super::nfa::{NFA};
 use super::nfarulebook::{NFARulebook};
 
