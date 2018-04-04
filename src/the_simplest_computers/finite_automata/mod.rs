@@ -5,7 +5,6 @@ pub mod dfadesign;
 pub mod nfarulebook;
 pub mod nfa;
 pub mod nfadesign;
-pub mod helper;
 
 #[cfg(test)]
 mod tests {
@@ -16,7 +15,7 @@ mod tests {
     use super::nfarulebook::*;
     use super::nfa::*;
     use super::nfadesign::*;
-    use super::helper::*;
+    use the_simplest_computers::helper::*;
 
     #[test]
     fn test_dfa_rulebook() {

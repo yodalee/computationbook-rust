@@ -1,7 +1,6 @@
 pub mod regex;
 pub mod tonfa;
 mod nfa;
-mod helper;
 
 #[cfg(test)]
 mod tests {

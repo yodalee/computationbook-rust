@@ -1,10 +1,11 @@
 use std::collections::HashSet;
 use std::rc::Rc;
 
+use the_simplest_computers::helper::{to_hashset};
+
 use super::farule::{FARule, State};
 use super::nfa::{NFA};
 use super::nfarulebook::{NFARulebook};
-use super::helper::{to_hashset};
 
 pub struct NFADesign {
     pub start_state: Rc<State>,

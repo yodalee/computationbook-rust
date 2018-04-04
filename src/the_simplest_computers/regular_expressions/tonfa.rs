@@ -1,9 +1,10 @@
 use std::rc::Rc;
 
+use the_simplest_computers::helper::{to_hashset};
+
 use super::nfa::farule::{State, FARule};
 use super::nfa::nfadesign::{NFADesign};
 use super::nfa::nfarulebook::{NFARulebook};
-use super::helper::{to_hashset};
 use super::regex::{Regex};
 
 pub trait ToNFA {
