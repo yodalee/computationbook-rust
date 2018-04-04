@@ -1,6 +1,6 @@
-use simple::syntax::Node;
-use simple::environment::Environment;
-use simple::reduce::Reduce;
+use super::syntax::Node;
+use super::environment::Environment;
+use super::reduce::Reduce;
 
 pub struct Machine {
     pub environment: Environment,

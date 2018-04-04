@@ -7,7 +7,12 @@ pub mod denotational;
 
 #[cfg(test)]
 mod tests {
-    pub use ::*;
+    use super::machine::*;
+    use super::syntax::*;
+    use super::environment::*;
+    use super::reduce::*;
+    use super::evaluate::*;
+    use super::denotational::*;
 
     #[test]
     fn test_simple_small_number() {

@@ -1,5 +1,5 @@
-use simple::syntax::{Node};
-use simple::environment::{Environment};
+use super::syntax::{Node};
+use super::environment::{Environment};
 
 pub trait Reduce {
     fn reducible(&self) -> bool;

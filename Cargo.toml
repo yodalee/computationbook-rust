@@ -3,9 +3,9 @@ name = "computationbook-rust"
 version = "0.1.0"
 authors = ["yodalee <lc85301@gmail.com>"]
 
-[[bin]]
-name = "chap2_the_meaning_of_programs"
-path = "the_meaning_of_programs/main.rs"
+[lib]
+name = "computationbook"
+path = "src/lib.rs"
 
 [[bin]]
 name = "chap3_finite_automata"
