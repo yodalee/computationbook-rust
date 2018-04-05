@@ -1,3 +1,2 @@
-#[macro_use]
-pub mod pol;
-pub mod helper;
+pub mod lambda;
+pub mod reduce;

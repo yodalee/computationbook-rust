@@ -12,8 +12,8 @@ name = "fizzbuzz"
 path = "src/programming_with_nothing/fizzbuzz.rs"
 
 [[bin]]
-name = "chap6_lambda_calculus"
-path = "programming_with_nothing/lambda_calculus/main.rs"
+name = "lambda_calculus"
+path = "src/programming_with_nothing/lambda_calculus.rs"
 
 [[bin]]
 name = "chap7_tag_systesms"

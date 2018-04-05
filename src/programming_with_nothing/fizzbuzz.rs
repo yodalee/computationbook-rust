@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate computationbook;
 
-use computationbook::programming_with_nothing::lambda::pol::{Pol, Rp};
-use computationbook::programming_with_nothing::lambda::helper::*;
+use computationbook::programming_with_nothing::pol::pol::{Pol, Rp};
+use computationbook::programming_with_nothing::pol::helper::*;
 use std::rc::Rc;
 use std::vec::Vec;
 
