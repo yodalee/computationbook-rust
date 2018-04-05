@@ -1,5 +1,6 @@
-use lambda::{Lambda};
-use ski::{SKI};
+use programming_with_nothing::lambda::lambda::{Lambda};
+
+use super::ski::{SKI};
 
 pub trait toSKI {
     fn to_ski(&self) -> Box<SKI>;

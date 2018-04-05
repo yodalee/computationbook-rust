@@ -1,12 +1,12 @@
-mod ski;
-mod skicombinator;
-mod lambda;
-mod lc_to_ski;
+pub mod ski;
+pub mod skicombinator;
+pub mod lambda_to_ski;
 
-use ski::{SKI};
-use skicombinator::{SKICombinator};
-use lambda::{Lambda};
-use lc_to_ski::{toSKI};
+use programming_with_nothing::lambda::lambda::{Lambda};
+
+use self::ski::{SKI};
+use self::skicombinator::{SKICombinator};
+use self::lambda_to_ski::{toSKI};
 
 pub fn main() {
     let x = SKI::skisymbol("x");

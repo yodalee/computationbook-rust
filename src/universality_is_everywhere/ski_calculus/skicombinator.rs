@@ -2,7 +2,7 @@ use std::fmt::Formatter;
 use std::fmt::Result;
 use std::fmt::Display;
 
-use ski::{SKI};
+use super::ski::{SKI};
 
 #[derive(Clone)]
 pub enum SKICombinator {
