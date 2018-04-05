@@ -16,6 +16,7 @@ fn sum_of_squares<T: Mul<T, Output=T>+Add<T, Output=T>+Copy>(x: T, y: T) -> T {
 mod tests {
     use super::sign::{Sign};
     use super::numeric::{HasSign};
+    use super::*;
 
     #[test]
     fn test_sign_mul() {
