@@ -1,4 +1,4 @@
-use sign::{Sign};
+use super::sign::{Sign};
 
 pub trait HasSign {
     fn sign(self) -> Sign;

@@ -7,7 +7,7 @@ use std::ops::Neg;
 use std::cmp::PartialOrd;
 use std::cmp::Ordering;
 
-#[derive(PartialEq,Clone,Copy)]
+#[derive(Debug,PartialEq,Clone,Copy)]
 pub enum Sign {
     POSITIVE,
     NEGATIVE,

@@ -18,11 +18,3 @@ path = "programming_with_nothing/lambda_calculus/main.rs"
 [[bin]]
 name = "chap7_tag_systesms"
 path = "universality_is_everywhere/tag_systems/main.rs"
-
-[[bin]]
-name = "chap9_signs"
-path = "programming_in_toyland/signs/main.rs"
-
-[[bin]]
-name = "chap8_types"
-path = "programming_in_toyland/types/main.rs"
