@@ -2,7 +2,7 @@ use std::fmt::Display;
 use std::fmt::Result;
 use std::fmt::Formatter;
 
-#[derive(Clone)]
+#[derive(Debug,PartialEq,Clone)]
 pub enum Node {
     Number(i64),
     Add(Box<Node>, Box<Node>),

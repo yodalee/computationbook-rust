@@ -3,8 +3,8 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use std::fmt::Result;
 
-use syntax::{Node};
-use context::{Context};
+use the_meaning_of_programs::simple::syntax::{Node};
+use super::context::{Context};
 
 #[derive(Clone, PartialEq)]
 pub enum Type {
