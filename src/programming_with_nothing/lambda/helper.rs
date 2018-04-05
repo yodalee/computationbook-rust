@@ -1,4 +1,5 @@
-use pol::{Pol, Rp};
+use super::pol::{Pol, Rp};
+
 use std::rc::Rc;
 
 pub fn to_integer(p: &Rp) -> i32 {

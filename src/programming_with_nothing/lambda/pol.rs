@@ -7,6 +7,7 @@ pub enum Pol {
 }
 pub type Rp = Rc<Pol>;
 
+#[macro_export]
 macro_rules! r {
     ($cl:expr) => {Rc::new(Pol::C(Rc::new($cl)))}
 }

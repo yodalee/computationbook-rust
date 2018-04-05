@@ -1,5 +1,5 @@
 [package]
-name = "computationbook-rust"
+name = "computationbook_rust"
 version = "0.1.0"
 authors = ["yodalee <lc85301@gmail.com>"]
 
@@ -8,8 +8,8 @@ name = "computationbook"
 path = "src/lib.rs"
 
 [[bin]]
-name = "chap6_fizzbuzz"
-path = "programming_with_nothing/fizzbuzz/main.rs"
+name = "fizzbuzz"
+path = "src/programming_with_nothing/fizzbuzz.rs"
 
 [[bin]]
 name = "chap6_lambda_calculus"
