@@ -2,15 +2,11 @@ pub mod ski;
 pub mod skicombinator;
 pub mod lambda_to_ski;
 
-use programming_with_nothing::lambda::lambda::{Lambda};
-
-use self::ski::{SKI};
-use self::skicombinator::{SKICombinator};
-use self::lambda_to_ski::{toSKI, AsFunction};
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::ski::{SKI};
+    use super::lambda_to_ski::{ToSKI, AsFunction};
+    use programming_with_nothing::lambda::lambda::{Lambda};
 
     #[test]
     fn test_ski_symbol() {
@@ -90,6 +86,7 @@ mod tests {
             println!("{}", expr);
             expr = expr.reduce();
         }
+        println!("{}", expr);
         assert_eq!("y[x]", format!("{}", expr));
     }
 
@@ -106,43 +103,53 @@ mod tests {
             println!("{}", expr);
             expr = expr.reduce();
         }
+        println!("{}", expr);
         assert_eq!("S[K][I]", format!("{}", expr));
         assert!(format!("{}", original) == format!("{}", expr));
     }
-}
 
-pub fn main() {
+    #[test]
+    fn test_ski_replace_symbol() {
+        let original = SKI::skicall(SKI::skicall(SKI::s(), SKI::skisymbol("x")), SKI::i());
+        assert_eq!("S[x][I]", format!("{}", original));
 
-    /*
-    original = SKI::skicall(SKI::skicall(SKI::s(), SKI::skisymbol("x")), SKI::i());
-    println!("{}", original);
-    function = original.as_function_of("x");
-    println!("{}", function);
-    expr = SKI::skicall(function.clone(), y.clone());
-    while expr.reducible() {
+        let function = original.as_function_of("x");
+        let mut expr = SKI::skicall(function.clone(), SKI::skisymbol("y"));
+        while expr.reducible() {
+            println!("{}", expr);
+            expr = expr.reduce();
+        }
         println!("{}", expr);
-        expr = expr.reduce();
+        assert_eq!("S[y][I]", format!("{}", expr));
+        assert!(format!("{}", original) != format!("{}", expr));
     }
-    println!("expr reduce: {} != original: {}", expr, original);
 
-    let two = Lambda::lcfun("p", Lambda::lcfun("x", Lambda::lccall(Lambda::lcvar("p"), Lambda::lccall(Lambda::lcvar("p"), Lambda::lcvar("x")))));
-    println!("{} to SKI: {}", two, two.to_ski());
-    let (inc, zero) = (SKI::skisymbol("inc"), SKI::skisymbol("zero"));
+    #[test]
+    fn test_ski_toski_two() {
+        let two = Lambda::lcfun("p", Lambda::lcfun("x", Lambda::lccall(Lambda::lcvar("p"), Lambda::lccall(Lambda::lcvar("p"), Lambda::lcvar("x")))));
+        println!("lambda: {}", two);
+        println!("ski: {}", two.to_ski());
 
-    expr = SKI::skicall(SKI::skicall(two.to_ski(), inc), zero);
-    while expr.reducible() {
+        let (inc, zero) = (SKI::skisymbol("inc"), SKI::skisymbol("zero"));
+        let mut expr = SKI::skicall(SKI::skicall(two.to_ski(), inc), zero);
+        while expr.reducible() {
+            println!("{}", expr);
+            expr = expr.reduce();
+        }
         println!("{}", expr);
-        expr = expr.reduce();
+        assert_eq!("inc[inc[zero]]", format!("{}", expr));
     }
-    println!("{}", expr);
 
-    let identity = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::k());
-    println!("{}", identity);
-    expr = SKI::skicall(identity, SKI::skisymbol("x"));
-    while expr.reducible() {
+    #[test]
+    fn test_ski_identity() {
+        let identity = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::k());
+        println!("{}", identity);
+        let mut expr = SKI::skicall(identity, SKI::skisymbol("x"));
+        while expr.reducible() {
+            println!("{}", expr);
+            expr = expr.reduce();
+        }
         println!("{}", expr);
-        expr = expr.reduce();
+        assert_eq!("x", format!("{}", expr));
     }
-    println!("{}", expr);
-    */
 }

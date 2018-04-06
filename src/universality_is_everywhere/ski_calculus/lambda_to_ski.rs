@@ -1,7 +1,6 @@
 use programming_with_nothing::lambda::lambda::{Lambda};
 
 use super::ski::{SKI};
-use super::skicombinator::{SKICombinator};
 
 pub trait AsFunction {
     fn as_function_of(&self, name: &str) -> Box<SKI>;
@@ -26,11 +25,11 @@ impl AsFunction for SKI {
     }
 }
 
-pub trait toSKI {
+pub trait ToSKI {
     fn to_ski(&self) -> Box<SKI>;
 }
 
-impl toSKI for Lambda {
+impl ToSKI for Lambda {
     fn to_ski(&self) -> Box<SKI> {
         match *self {
             Lambda::LCVariable(ref name) => SKI::skisymbol(&name),

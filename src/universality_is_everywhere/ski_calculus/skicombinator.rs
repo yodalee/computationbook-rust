@@ -89,19 +89,3 @@ impl Display for I {
         write!(f, "I")
     }
 }
-
-/*
-#[derive(Clone)]
-pub enum SKICombinator {
-    S,
-    K,
-    I
-}
-
-impl SKICombinator {
-    pub fn as_function_of(&self, name: &str) -> Box<SKI> {
-        SKI::skicall(SKI::k(),
-            Box::new(SKI::SKICombinator(self.clone())))
-    }
-}
-*/
