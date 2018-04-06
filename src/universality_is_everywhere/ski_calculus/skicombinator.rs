@@ -4,6 +4,93 @@ use std::fmt::Display;
 
 use super::ski::{SKI};
 
+pub trait SKICombinator: Display {
+    fn box_clone(&self) -> Box<SKICombinator>;
+    fn call(&self, args: Vec<Box<SKI>>) -> Box<SKI>;
+    fn callable(&self, args: Vec<Box<SKI>>) -> bool;
+}
+
+impl Clone for Box<SKICombinator> {
+    fn clone(&self) -> Box<SKICombinator> {
+        self.box_clone()
+    }
+}
+
+pub fn s() -> Box<SKICombinator> { Box::new(S{}) }
+pub fn k() -> Box<SKICombinator> { Box::new(K{}) }
+pub fn i() -> Box<SKICombinator> { Box::new(I{}) }
+
+// S combinator
+#[derive(Clone)]
+pub struct S {}
+
+
+impl SKICombinator for S {
+    fn box_clone(&self) -> Box<SKICombinator> {
+        Box::new((*self).clone())
+    }
+    fn call(&self, args: Vec<Box<SKI>>) -> Box<SKI> {
+        SKI::skicall(
+            SKI::skicall(args[0].clone(), args[2].clone()),
+            SKI::skicall(args[1].clone(), args[2].clone())
+        )
+    }
+    fn callable(&self, args: Vec<Box<SKI>>) -> bool {
+        args.len() == 3
+    }
+}
+
+impl Display for S {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "S")
+    }
+}
+
+// K combinator
+#[derive(Clone)]
+pub struct K {}
+
+impl SKICombinator for K {
+    fn box_clone(&self) -> Box<SKICombinator> {
+        Box::new((*self).clone())
+    }
+    fn call(&self, args: Vec<Box<SKI>>) -> Box<SKI> {
+        args[0].clone()
+    }
+    fn callable(&self, args: Vec<Box<SKI>>) -> bool {
+        args.len() == 2
+    }
+}
+
+impl Display for K {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "K")
+    }
+}
+
+// I combinator
+#[derive(Clone)]
+pub struct I {}
+
+impl SKICombinator for I {
+    fn box_clone(&self) -> Box<SKICombinator> {
+        Box::new((*self).clone())
+    }
+    fn call(&self, args: Vec<Box<SKI>>) -> Box<SKI> {
+        args[0].clone()
+    }
+    fn callable(&self, args: Vec<Box<SKI>>) -> bool {
+        args.len() == 1
+    }
+}
+
+impl Display for I {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "I")
+    }
+}
+
+/*
 #[derive(Clone)]
 pub enum SKICombinator {
     S,
@@ -12,45 +99,9 @@ pub enum SKICombinator {
 }
 
 impl SKICombinator {
-    pub fn s() -> SKICombinator { SKICombinator::S }
-    pub fn k() -> SKICombinator { SKICombinator::K }
-    pub fn i() -> SKICombinator { SKICombinator::I }
-
     pub fn as_function_of(&self, name: &str) -> Box<SKI> {
         SKI::skicall(SKI::k(),
             Box::new(SKI::SKICombinator(self.clone())))
     }
-
-    pub fn call(&self, arg: Vec<Box<SKI>>) -> Box<SKI> {
-        match *self {
-            SKICombinator::S => {
-                SKI::skicall(
-                    SKI::skicall(arg[0].clone(), arg[2].clone()),
-                    SKI::skicall(arg[1].clone(), arg[2].clone())
-                )
-            },
-            SKICombinator::K | SKICombinator::I => {
-                arg[0].clone()
-            },
-        }
-    }
-
-    pub fn callable(&self, arg: Vec<Box<SKI>>) -> bool {
-        match *self {
-            SKICombinator::S => { arg.len() == 3 },
-            SKICombinator::K => { arg.len() == 2 },
-            SKICombinator::I => { arg.len() == 1 },
-        }
-    }
-
 }
-
-impl Display for SKICombinator {
-    fn fmt(&self, f: &mut Formatter) -> Result {
-        match *self {
-            SKICombinator::S => write!(f, "S"),
-            SKICombinator::K => write!(f, "K"),
-            SKICombinator::I => write!(f, "I"),
-        }
-    }
-}
+*/

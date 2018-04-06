@@ -1,66 +1,101 @@
 pub mod ski;
 pub mod skicombinator;
-pub mod lambda_to_ski;
+//pub mod lambda_to_ski;
 
 use programming_with_nothing::lambda::lambda::{Lambda};
 
 use self::ski::{SKI};
 use self::skicombinator::{SKICombinator};
-use self::lambda_to_ski::{toSKI};
+//use self::lambda_to_ski::{toSKI};
 
-pub fn main() {
-    let x = SKI::skisymbol("x");
-    println!("{}", x);
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let mut expr = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::skicall(SKI::i(), x.clone()));
-    println!("{}", expr);
+    #[test]
+    fn test_ski_symbol() {
+        let x = SKI::skisymbol("x");
+        assert_eq!("x", format!("{}", x));
+    }
 
-    let y = SKI::skisymbol("y");
-    let z = SKI::skisymbol("z");
+    #[test]
+    fn test_ski_ast() {
+        let expr = SKI::skicall(
+            SKI::skicall(SKI::s(), SKI::k()),
+            SKI::skicall(SKI::i(), SKI::skisymbol("x")));
+        assert_eq!("S[K][I[x]]", format!("{}", expr));
+    }
 
-    expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone()), z.clone());
+    #[test]
+    fn test_ski_left_right() {
+        let x = SKI::skisymbol("x");
+        let y = SKI::skisymbol("y");
+        let z = SKI::skisymbol("z");
+        let expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x), y), z);
+        let combinator = expr.left().left().left();
+        let first_arg = expr.left().left().right();
+        let second_arg = expr.left().right();
+        let third_arg = expr.right();
+        assert_eq!("S", format!("{}", combinator));
+        assert_eq!("x", format!("{}", first_arg));
+        assert_eq!("y", format!("{}", second_arg));
+        assert_eq!("z", format!("{}", third_arg));
+        assert_eq!("x[z][y[z]]", format!("{}", combinator.call(vec![first_arg, second_arg, third_arg])));
+    }
 
-    let combinator = expr.left().left().left();
-    let first_arg = expr.left().left().right();
-    let second_arg = expr.left().right();
-    let third_arg = expr.right();
-    println!("{}", expr);
-    println!("{0} {1} {2} {3}", combinator, first_arg, second_arg, third_arg);
-    println!("{}", combinator.call(vec![first_arg, second_arg, third_arg]));
+    #[test]
+    fn test_ski_combinator_args() {
+        let x = SKI::skisymbol("x");
+        let y = SKI::skisymbol("y");
+        let z = SKI::skisymbol("z");
+        let expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x), y), z);
 
-    println!("{}", expr);
-    println!("{}", expr.combinator());
-    println!("{}", expr.combinator().call(expr.arguments()));
+        assert_eq!("S[x][y][z]", format!("{}", expr));
+        assert_eq!("S", format!("{}", expr.combinator()));
+        assert_eq!("x[z][y[z]]", format!("{}", expr.combinator().call(expr.arguments())));
+    }
 
-    expr = SKI::skicall(SKI::skicall(x.clone(), y.clone()), z.clone());
-    println!("{0} is callable? {1}", expr, expr.callable(expr.arguments()));
-    expr = SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone());
-    println!("{0} is callable? {1}", expr, expr.callable(expr.arguments()));
-    expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone()), z.clone());
-    println!("{0} is callable? {1}", expr, expr.combinator().callable(expr.arguments()));
+    #[test]
+    fn test_ski_callable() {
+        let x = SKI::skisymbol("x");
+        let y = SKI::skisymbol("y");
+        let z = SKI::skisymbol("z");
+        let mut expr = SKI::skicall(SKI::skicall(x.clone(), y.clone()), z.clone());
+        assert!(!expr.callable(expr.arguments()));
+        expr = SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone());
+        assert!(!expr.callable(expr.arguments()));
+        expr = SKI::skicall(SKI::skicall(SKI::skicall(SKI::s(), x.clone()), y.clone()), z.clone());
+        assert!(expr.combinator().callable(expr.arguments()));
+    }
 
-    let swap = SKI::skicall(
-        SKI::skicall(
-            SKI::s(),
+    #[test]
+    fn test_ski_swap() {
+        let swap = SKI::skicall(
             SKI::skicall(
-                SKI::k(),
+                SKI::s(),
                 SKI::skicall(
-                    SKI::s(),
-                    SKI::i()
+                    SKI::k(),
+                    SKI::skicall(
+                        SKI::s(),
+                        SKI::i()
+                    ),
                 ),
             ),
-        ),
-        SKI::k(),
-    );
-    expr = SKI::skicall(SKI::skicall(swap.clone(), SKI::skisymbol("x")), SKI::skisymbol("y"));
+            SKI::k(),
+        );
+        let mut expr = SKI::skicall(SKI::skicall(swap.clone(), SKI::skisymbol("x")), SKI::skisymbol("y"));
 
-    println!("swap: {}", swap);
-    while expr.reducible() {
-        println!("{}", expr);
-        expr = expr.reduce();
+        println!("swap: {}", swap);
+        while expr.reducible() {
+            println!("{}", expr);
+            expr = expr.reduce();
+        }
+        assert_eq!("y[x]", format!("{}", expr));
     }
-    println!("{}", expr);
+}
 
+pub fn main() {
+    /*
     let mut original = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::i());
     println!("{}", original);
     let mut function = original.as_function_of("x");
@@ -103,4 +138,5 @@ pub fn main() {
         expr = expr.reduce();
     }
     println!("{}", expr);
+    */
 }
