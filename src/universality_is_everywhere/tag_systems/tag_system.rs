@@ -1,4 +1,4 @@
-use tag_rulebook::{TagRulebook};
+use super::tag_rulebook::{TagRulebook};
 
 pub struct TagSystem {
     pub current_string: String,

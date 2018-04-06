@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct TagRule {
     first_char: char,
     append_characters: String,

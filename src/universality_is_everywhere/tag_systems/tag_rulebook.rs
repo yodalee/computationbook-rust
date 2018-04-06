@@ -1,5 +1,6 @@
-use tag_rule::{TagRule};
+use super::tag_rule::{TagRule};
 
+#[derive(Clone)]
 pub struct TagRulebook {
     deletion_number: i32,
     rules: Vec<TagRule>,
