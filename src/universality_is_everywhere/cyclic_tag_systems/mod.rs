@@ -1,18 +1,16 @@
-mod tag_rule;
-mod tag_rulebook;
-mod tag_system;
 mod cyclic_tag_rule;
 mod cyclic_tag_rulebook;
 mod cyclic_tag_system;
 mod tag_to_cyclic;
 
-use tag_rule::{TagRule};
-use tag_rulebook::{TagRulebook};
-use tag_system::{TagSystem};
-use cyclic_tag_rule::{CyclicTagRule};
-use cyclic_tag_rulebook::{CyclicTagRulebook};
-use cyclic_tag_system::{CyclicTagSystem};
-use tag_to_cyclic::{TagToCyclic, CyclicTagEncoder};
+use universality_is_everywhere::tag_systems::tag_rule::{TagRule};
+use universality_is_everywhere::tag_systems::tag_rulebook::{TagRulebook};
+use universality_is_everywhere::tag_systems::tag_system::{TagSystem};
+
+use self::cyclic_tag_rule::{CyclicTagRule};
+use self::cyclic_tag_rulebook::{CyclicTagRulebook};
+use self::cyclic_tag_system::{CyclicTagSystem};
+use self::tag_to_cyclic::{TagToCyclic};
 
 pub fn main() {
     let rulebook = CyclicTagRulebook::new(&[CyclicTagRule::new("1"), CyclicTagRule::new("0010"), CyclicTagRule::new("10")].to_vec());
@@ -39,11 +37,11 @@ pub fn main() {
     println!("{}", encoder.encode_character('c'));
     println!("{}", encoder.encode_string("cab"));
 
-    let rule = tagsystem.rulebook.rules[0].clone();
+    let rule = tagsystem.rulebook().rules()[0].clone();
     println!("{:?}", rule.to_cyclic(&encoder));
 
-    println!("{:?}", tagsystem.rulebook.cyclic_rules(&encoder));
-    println!("{:?}", tagsystem.rulebook.cyclic_padding_rules(&encoder));
+    println!("{:?}", tagsystem.rulebook().cyclic_rules(&encoder));
+    println!("{:?}", tagsystem.rulebook().cyclic_padding_rules(&encoder));
 
     let mut cyclic_system = tagsystem.to_cyclic(&encoder);
 

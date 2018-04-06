@@ -1,4 +1,4 @@
-use cyclic_tag_rule::{CyclicTagRule};
+use super::cyclic_tag_rule::{CyclicTagRule};
 
 const DELETION_NUMBER: usize = 1;
 
@@ -20,9 +20,9 @@ impl CyclicTagRulebook {
     }
 
     pub fn next_string(&mut self, s: &str) -> String {
-        let newString = self.follow_next_rule(s);
+        let newstr = self.follow_next_rule(s);
         unsafe {
-            newString.slice_unchecked(DELETION_NUMBER, newString.len())
+            newstr.slice_unchecked(DELETION_NUMBER, newstr.len())
                      .to_string()
         }
     }

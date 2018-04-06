@@ -1,10 +1,10 @@
-use tag_rule::{TagRule};
-use tag_rulebook::{TagRulebook};
-use tag_system::{TagSystem};
+use universality_is_everywhere::tag_systems::tag_rule::{TagRule};
+use universality_is_everywhere::tag_systems::tag_rulebook::{TagRulebook};
+use universality_is_everywhere::tag_systems::tag_system::{TagSystem};
 
-use cyclic_tag_rule::{CyclicTagRule};
-use cyclic_tag_rulebook::{CyclicTagRulebook};
-use cyclic_tag_system::{CyclicTagSystem};
+use super::cyclic_tag_rule::{CyclicTagRule};
+use super::cyclic_tag_rulebook::{CyclicTagRulebook};
+use super::cyclic_tag_system::{CyclicTagSystem};
 
 pub struct CyclicTagEncoder {
     pub v: Vec<char>,
@@ -35,8 +35,8 @@ pub trait TagToCyclic {
 
 impl TagToCyclic for TagRule {
     fn alphabet(&self) -> Vec<char> {
-        let mut v: Vec<char> = self.append_characters.chars().collect();
-        v.push(self.first_char);
+        let mut v: Vec<char> = self.append_characters().chars().collect();
+        v.push(self.first_char());
         v.sort();
         v.dedup();
         v
@@ -45,13 +45,13 @@ impl TagToCyclic for TagRule {
 
 impl TagRule {
     pub fn to_cyclic(&self, encoder: &CyclicTagEncoder) -> CyclicTagRule {
-        CyclicTagRule::new(&encoder.encode_string(&self.append_characters))
+        CyclicTagRule::new(&encoder.encode_string(&self.append_characters()))
     }
 }
 
 impl TagToCyclic for TagRulebook {
     fn alphabet(&self) -> Vec<char> {
-        let mut v: Vec<char> = self.rules
+        let mut v: Vec<char> = self.rules()
             .iter()
             .flat_map(|r| r.alphabet().into_iter())
             .collect();
@@ -79,14 +79,14 @@ impl TagRulebook {
     }
 
     pub fn cyclic_padding_rules(&self, encoder: &CyclicTagEncoder) -> Vec<CyclicTagRule> {
-        vec![CyclicTagRule::new(""); encoder.v.len() * (self.deletion_number-1) as usize]
+        vec![CyclicTagRule::new(""); encoder.v.len() * (self.deletion_number()-1) as usize]
 
     }
 }
 
 impl TagToCyclic for TagSystem {
     fn alphabet(&self) -> Vec<char> {
-        let mut v = self.rulebook.alphabet();
+        let mut v = self.rulebook().alphabet();
         v.append(&mut self.current_string.chars().collect());
         v.sort();
         v.dedup();
@@ -98,7 +98,7 @@ impl TagSystem {
     pub fn to_cyclic(&self, encoder: &CyclicTagEncoder) -> CyclicTagSystem {
         CyclicTagSystem::new(
             &encoder.encode_string(&self.current_string),
-            self.rulebook.to_cyclic(encoder)
+            self.rulebook().to_cyclic(encoder)
             )
     }
     pub fn encoder(&self) -> CyclicTagEncoder {

@@ -2,7 +2,7 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use std::fmt::Result;
 
-use tag_rule::{TagRule};
+use universality_is_everywhere::tag_systems::tag_rule::{TagRule};
 
 const FIRST_CHARACTER: char = '1';
 
@@ -29,6 +29,6 @@ impl CyclicTagRule {
 
 impl Display for CyclicTagRule {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "<CyclicTagRule {}>", self.rule.append_characters)
+        write!(f, "<CyclicTagRule {}>", self.rule.append_characters())
     }
 }

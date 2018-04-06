@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct TagRule {
     first_char: char,
     append_characters: String,
@@ -23,4 +23,7 @@ impl TagRule {
         let buf = input.to_string() + &self.append_characters;
         buf
     }
+
+    pub fn first_char(&self) -> char { self.first_char }
+    pub fn append_characters(&self) -> String { self.append_characters.clone() }
 }

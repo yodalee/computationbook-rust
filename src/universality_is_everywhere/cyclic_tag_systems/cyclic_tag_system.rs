@@ -1,15 +1,14 @@
-use tag_rulebook::{TagRulebook};
-use tag_to_cyclic::{CyclicTagEncoder};
+use super::cyclic_tag_rulebook::{CyclicTagRulebook};
 
-pub struct TagSystem {
+pub struct CyclicTagSystem {
     pub current_string: String,
-    pub rulebook: TagRulebook,
+    rulebook: CyclicTagRulebook,
 }
 
-impl TagSystem {
-    pub fn new<S: Into<String>>(current_string: S, rulebook: TagRulebook) -> TagSystem {
-        TagSystem {
-            current_string: current_string.into(),
+impl CyclicTagSystem {
+    pub fn new(current_string: &str, rulebook: CyclicTagRulebook) -> Self {
+        CyclicTagSystem {
+            current_string: current_string.to_string(),
             rulebook: rulebook,
         }
     }

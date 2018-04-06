@@ -33,4 +33,7 @@ impl TagRulebook {
         input.len() >= self.deletion_number as usize &&
             self.rule_for(input).is_some()
     }
+
+    pub fn deletion_number(&self) -> i32 { self.deletion_number }
+    pub fn rules(&self) -> Vec<TagRule> { self.rules.clone() }
 }

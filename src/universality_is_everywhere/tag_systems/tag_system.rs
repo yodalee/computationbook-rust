@@ -25,4 +25,7 @@ impl TagSystem {
 
         println!("{}", self.current_string);
     }
+
+    pub fn current_string(&self) -> String { self.current_string.clone() }
+    pub fn rulebook(&self) -> TagRulebook { self.rulebook.clone() }
 }

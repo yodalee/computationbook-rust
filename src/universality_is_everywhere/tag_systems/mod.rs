@@ -21,10 +21,10 @@ mod tests {
                 TagRule::new('b', "bbbb")));
         let mut system = TagSystem::new("aabbbbbb", rulebook);
         for _ in 0..4 {
-            println!("{}", system.current_string);
+            println!("{}", system.current_string());
             system.step()
         }
-        print_assert(&system.current_string, "double string", "aabbbbbbbbbbbb");
+        print_assert(&system.current_string(), "double string", "aabbbbbbbbbbbb");
     }
 
     #[test]
@@ -34,7 +34,7 @@ mod tests {
                 TagRule::new('b', "dddd")));
         let mut system = TagSystem::new("aabbbbbb", rulebook);
         system.run();
-        print_assert(&system.current_string, "double and stop", "ccdddddddddddd");
+        print_assert(&system.current_string(), "double and stop", "ccdddddddddddd");
     }
 
     #[test]
@@ -44,7 +44,7 @@ mod tests {
                 TagRule::new('b', "d")));
         let mut system = TagSystem::new("aabbbbbbbbbbbb", rulebook);
         system.run();
-        print_assert(&system.current_string, "half and stop", "ccdddddd");
+        print_assert(&system.current_string(), "half and stop", "ccdddddd");
     }
 
     #[test]
@@ -54,7 +54,7 @@ mod tests {
                 TagRule::new('b', "dd")));
         let mut system = TagSystem::new("aabbbb", rulebook);
         system.run();
-        print_assert(&system.current_string, "increment", "ccdddddd");
+        print_assert(&system.current_string(), "increment", "ccdddddd");
     }
 
     #[test]
@@ -68,7 +68,7 @@ mod tests {
             TagRule::new('d', "ff")));
         let mut system = TagSystem::new("aabbbb", rulebook);
         system.run();
-        print_assert(&system.current_string, "double and increment", "eeffffffffff");
+        print_assert(&system.current_string(), "double and increment", "eeffffffffff");
     }
 
     #[test]
@@ -81,9 +81,9 @@ mod tests {
             TagRule::new('e', "e")));
         let mut system = TagSystem::new("aabbbbbbbb", rulebook.clone());
         system.run();
-        print_assert(&system.current_string, "input 4 (even)", "e");
+        print_assert(&system.current_string(), "input 4 (even)", "e");
         system = TagSystem::new("aabbbbbbbbbb", rulebook);
         system.run();
-        print_assert(&system.current_string, "input 5 (odd)", "o");
+        print_assert(&system.current_string(), "input 5 (odd)", "o");
     }
 }
