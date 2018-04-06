@@ -1,12 +1,12 @@
 pub mod ski;
 pub mod skicombinator;
-//pub mod lambda_to_ski;
+pub mod lambda_to_ski;
 
 use programming_with_nothing::lambda::lambda::{Lambda};
 
 use self::ski::{SKI};
 use self::skicombinator::{SKICombinator};
-//use self::lambda_to_ski::{toSKI};
+use self::lambda_to_ski::{toSKI, AsFunction};
 
 #[cfg(test)]
 mod tests {
@@ -92,22 +92,28 @@ mod tests {
         }
         assert_eq!("y[x]", format!("{}", expr));
     }
+
+    #[test]
+    fn test_ski_asfunction() {
+        let original = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::i());
+        assert_eq!("S[K][I]", format!("{}", original));
+        let function = original.as_function_of("x");
+        assert_eq!("S[S[K[S]][K[K]]][K[I]]", format!("{}", function));
+        assert!(!function.reducible());
+
+        let mut expr = SKI::skicall(function.clone(), SKI::skisymbol("x"));
+        while expr.reducible() {
+            println!("{}", expr);
+            expr = expr.reduce();
+        }
+        assert_eq!("S[K][I]", format!("{}", expr));
+        assert!(format!("{}", original) == format!("{}", expr));
+    }
 }
 
 pub fn main() {
-    /*
-    let mut original = SKI::skicall(SKI::skicall(SKI::s(), SKI::k()), SKI::i());
-    println!("{}", original);
-    let mut function = original.as_function_of("x");
-    println!("{}", function);
-    println!("{}", function.reducible());
-    expr = SKI::skicall(function.clone(), y.clone());
-    while expr.reducible() {
-        println!("{}", expr);
-        expr = expr.reduce();
-    }
-    println!("expr: {} == original: {}", expr, original);
 
+    /*
     original = SKI::skicall(SKI::skicall(SKI::s(), SKI::skisymbol("x")), SKI::i());
     println!("{}", original);
     function = original.as_function_of("x");

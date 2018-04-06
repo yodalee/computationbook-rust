@@ -94,25 +94,6 @@ impl SKI {
             _ => panic!("Cannot reduce on type: {}", *self)
         }
     }
-    /*
-
-    pub fn as_function_of(&self, name: &str) -> Box<SKI> {
-        match *self {
-            SKI::SKISymbol(ref n) => {
-                if n == name { SKI::i() }
-                else { SKI::skicall(SKI::k(), Box::new(self.clone())) }
-            },
-            SKI::SKICall(ref l, ref r) => {
-                let lfun = l.as_function_of(name);
-                let rfun = r.as_function_of(name);
-                SKI::skicall(SKI::skicall(SKI::s(), lfun), rfun)
-            },
-            SKI::SKICombinator(ref c) => {
-                c.as_function_of(name)
-            },
-        }
-    }
-*/
 }
 
 impl Display for SKI {
