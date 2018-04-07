@@ -4,24 +4,44 @@ Understanding Computation example code in Rust
 The example code of [Understanding Computation](http://computationbook.com/), an O’Reilly book about computation theory.
 Re-implement by language [Rust](https://github.com/rust-lang/rust).
 
-* Chapter 2: [The Meaning of Programs](the_meaning_of_programs)
-    * [syntax](the_meaning_of_programs/syntax.rs)
-    * [small-step operational semantics](the_meaning_of_programs/reduce.rs)
-    * [big-step operational semantics](the_meaning_of_programs/evaluate.rs)
-    * [denotational semantics](the_meaning_of_programs/denotational.rs)
-* Chapter 3: [The Simplest Computers](the_simplest_computers)
-    * [deterministic and nondeterministic finite automata](the_simplest_computers/finite_automata)
-    * [regular expressions](the_simplest_computers/regular_expressions)
-* Chapter 4: [Just Add Power](just_add_power)
-    * [deterministic and non-deterministic pushdown automata](just_add_power)
-* Chapter 5: [The Ultimate Machine](the_ultimate_machine)
-    * [deterministic Turing machines](the_ultimate_machine)
-* Chapter 6: [Programming with Nothing](programming_with_nothing)
-    * [FizzBuzz with Closures](programming_with_nothing/fizzbuzz)
-    * [the lambda calculus](programming_with_nothing/lambda_calculus)
-* Chapter 7: [Universality is Everywhere](universality_is_everywhere)
-    * [tag systems](universality_is_everywhere/tag_systems)
+# Reading guide:
+
+Below is the link table to implementation in each chapter:
+Most of the code is implemented in testing form, you can find them in mod.rs.
+To view the test result, use following command:
+```
+RUST_TEST_THREADS=1 cargo test -- --nocapture
+```
+You can specify keyword in testing name in the command line.  
+
+There are places incomplete, including:
+* Chapter 7: recursive partial function.
+* Chapter 7: iota, which directly copy from ski calculus
+
+# Table of Content:
+
+* Chapter 2: [The Meaning of Programs](src/the_meaning_of_programs)
+    * [syntax](src/the_meaning_of_programs/simple/syntax.rs)
+    * [small-step operational semantics](src/the_meaning_of_programs/simple/reduce.rs)
+    * [big-step operational semantics](src/the_meaning_of_programs/simple/evaluate.rs)
+    * [denotational semantics](src/the_meaning_of_programs/simple/denotational.rs)
+* Chapter 3: [The Simplest Computers](src/the_simplest_computers)
+    * [deterministic and nondeterministic finite automata](src/the_simplest_computers/finite_automata)
+    * [regular expressions](src/the_simplest_computers/regular_expressions)
+* Chapter 4: [Just Add Power](src/just_add_power)
+    * [deterministic and non-deterministic pushdown automata](src/just_add_power)
+* Chapter 5: [The Ultimate Machine](src/the_ultimate_machine)
+    * [deterministic Turing machines](src/the_ultimate_machine)
+* Chapter 6: [Programming with Nothing](src/programming_with_nothing)
+    * [FizzBuzz with Closures](src/programming_with_nothing/fizzbuzz.rs)
+    * [the lambda calculus](src/programming_with_nothing/lambda_calculus.rs)
+* Chapter 7: [Universality is Everywhere](src/universality_is_everywhere)
+    * partial\_recursive\_functions: wait for implementation
+    * [ski\_calculus](src/universality_is_everywhere/ski_calculus)
+    * [iota\_calculus](src/universality_is_everywhere/iota)
+    * [tag systems](src/universality_is_everywhere/tag_systems)
+    * [cyclic\_tag\_systems](src/universality_is_everywhere/cyclic_tag_systems)
 * Chapter 8: Not planning to implement this chapter.
-* Chapter 9: [Programming in Toyland](programming_in_toyland)
-    * [abstract interpretation: arithmetic with signs](programming_in_toyland/signs)
-    * [type systems](programming_in_toyland/types)
+* Chapter 9: [Programming in Toyland](src/programming_in_toyland)
+    * [abstract interpretation: arithmetic with signs](src/programming_in_toyland/signs)
+    * [type systems](src/programming_in_toyland/types)
