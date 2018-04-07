@@ -1,0 +1,16 @@
+[package]
+name = "computationbook_rust"
+version = "0.1.0"
+authors = ["yodalee <lc85301@gmail.com>"]
+
+[lib]
+name = "computationbook"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fizzbuzz"
+path = "src/programming_with_nothing/fizzbuzz.rs"
+
+[[bin]]
+name = "lambda_calculus"
+path = "src/programming_with_nothing/lambda_calculus.rs"
