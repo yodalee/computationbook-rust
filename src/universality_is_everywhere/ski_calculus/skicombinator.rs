@@ -5,6 +5,7 @@ use std::fmt::Display;
 use super::ski::{SKI};
 
 pub trait SKICombinator: Display {
+    fn name(&self) -> char;
     fn box_clone(&self) -> Box<SKICombinator>;
     fn call(&self, args: Vec<Box<SKI>>) -> Box<SKI>;
     fn callable(&self, args: Vec<Box<SKI>>) -> bool;
@@ -24,8 +25,9 @@ pub fn i() -> Box<SKICombinator> { Box::new(I{}) }
 #[derive(Clone)]
 pub struct S {}
 
-
 impl SKICombinator for S {
+    fn name(&self) -> char { 'S' }
+
     fn box_clone(&self) -> Box<SKICombinator> {
         Box::new((*self).clone())
     }
@@ -51,6 +53,8 @@ impl Display for S {
 pub struct K {}
 
 impl SKICombinator for K {
+    fn name(&self) -> char { 'K' }
+
     fn box_clone(&self) -> Box<SKICombinator> {
         Box::new((*self).clone())
     }
@@ -73,6 +77,8 @@ impl Display for K {
 pub struct I {}
 
 impl SKICombinator for I {
+    fn name(&self) -> char { 'I' }
+
     fn box_clone(&self) -> Box<SKICombinator> {
         Box::new((*self).clone())
     }
