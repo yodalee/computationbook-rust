@@ -4,11 +4,11 @@ use std::ops::Add;
 pub mod sign;
 pub mod numeric;
 
-fn calculate<T: Mul<T, Output=T>+Copy>(x: T, y: T, z: T) -> T {
+pub fn calculate<T: Mul<T, Output=T>+Copy>(x: T, y: T, z: T) -> T {
     (x*y) * (x*z)
 }
 
-fn sum_of_squares<T: Mul<T, Output=T>+Add<T, Output=T>+Copy>(x: T, y: T) -> T {
+pub fn sum_of_squares<T: Mul<T, Output=T>+Add<T, Output=T>+Copy>(x: T, y: T) -> T {
     (x*x) + (y*y)
 }
 
