@@ -1,0 +1,20 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+
+whitespace = _{ " " }
+
+variable = @ { (alpha) ~ (alpha | digit)+ }
+number = @ { (digit)+ }
+
+op_add = { "+" }
+op_mul = { "*" }
+op_lt  = { "<" }
+
+factor = _{ (variable | number) }
+term = _{ factor ~ (op_mul ~ factor)* }
+
+expr = { term ~ (op_add ~ term)* ~ eoi }
+condition_expr = { factor ~ op_lt ~ factor }
+
+simple = _{ soi ~ expr ~ eoi }
+
