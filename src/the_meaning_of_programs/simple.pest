@@ -3,7 +3,7 @@ digit = { '0'..'9' }
 
 whitespace = _{ " " }
 
-variable = @ { (alpha) ~ (alpha | digit)+ }
+variable = @ { (alpha) ~ (alpha | digit)* }
 number = @ { (digit)+ }
 
 op_add = { "+" }
@@ -13,8 +13,17 @@ op_lt  = { "<" }
 factor = _{ (variable | number) }
 term = _{ factor ~ (op_mul ~ factor)* }
 
-expr = { term ~ (op_add ~ term)* ~ eoi }
-condition_expr = { factor ~ op_lt ~ factor }
+expr = { term ~ (op_add ~ term)* }
+expr_condition = { term ~ (op_lt ~ term)? }
 
-simple = _{ soi ~ expr ~ eoi }
+stat_assign = { variable ~ "=" ~ expr ~ ";" }
+stat_while = { "while" ~ "(" ~ expr_condition ~ ")" ~ "{" ~ stats ~ "}" }
+stat_if = { ("if" ~ "(" ~ expr_condition ~ ")" ~ "{" ~ stats ~ "}" ~ "else" ~ "{" ~ stats ~ "}" ) |
+            ("if" ~ "(" ~ expr_condition ~ ")" ~ "{" ~ stats ~ "}") }
+
+stat = _{ ( stat_if | stat_while | stat_assign ) }
+
+stats = { (stat)* }
+
+simple = _{ soi ~ stats ~ eoi }
 
