@@ -1,7 +1,7 @@
 alpha = { 'a'..'z' | 'A'..'Z' }
 digit = { '0'..'9' }
 
-whitespace = _{ " " }
+whitespace = _{ " " | "\n" }
 
 variable = @ { (alpha) ~ (alpha | digit)* }
 number = @ { (digit)+ }
@@ -9,17 +9,15 @@ number = @ { (digit)+ }
 op_add = { "+" }
 op_mul = { "*" }
 op_lt  = { "<" }
+op_binary = _ {op_add | op_mul | op_lt }
 
 factor = _{ (variable | number) }
-term = _{ factor ~ (op_mul ~ factor)* }
-
-expr = { term ~ (op_add ~ term)* }
-expr_condition = { term ~ (op_lt ~ term)? }
+expr = { factor ~ (op_binary ~ factor)* }
 
 stat_assign = { variable ~ "=" ~ expr ~ ";" }
-stat_while = { "while" ~ "(" ~ expr_condition ~ ")" ~ "{" ~ stats ~ "}" }
-stat_if = { ("if" ~ "(" ~ expr_condition ~ ")" ~ "{" ~ stats ~ "}" ~ "else" ~ "{" ~ stats ~ "}" ) |
-            ("if" ~ "(" ~ expr_condition ~ ")" ~ "{" ~ stats ~ "}") }
+stat_while = { "while" ~ "(" ~ expr ~ ")" ~ "{" ~ stats ~ "}" }
+stat_if = { ("if" ~ "(" ~ expr ~ ")" ~ "{" ~ stats ~ "}" ~ "else" ~ "{" ~ stats ~ "}" ) |
+            ("if" ~ "(" ~ expr ~ ")" ~ "{" ~ stats ~ "}") }
 
 stat = _{ ( stat_if | stat_while | stat_assign ) }
 

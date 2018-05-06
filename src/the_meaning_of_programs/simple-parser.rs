@@ -8,28 +8,33 @@ use computationbook::the_meaning_of_programs::simple::machine::{Machine};
 use computationbook::the_meaning_of_programs::simple::environment::{Environment};
 use pest::Parser;
 use pest::iterators::{Pair};
+use std::env;
+use std::fs::File;
+use std::io::prelude::*;
+
+#[cfg(debug_assertions)]
+const _GRAMMAR: &'static str = include_str!("simple.pest");
 
 #[derive(Parser)]
 #[grammar = "the_meaning_of_programs/simple.pest"]
 struct SimpleParser;
 
-static EXPR_STR: &str = "1*2+3*4";
-
 pub fn main() {
-    let pairs = SimpleParser::parse(Rule::simple, EXPR_STR).unwrap_or_else(|e| panic!("{}", e));
-    for pair in pairs {
-        println!("Rule: {:?}", pair.as_rule());
-        match pair.as_rule() {
-            Rule::expr => {
-                let ast = build_expr(pair);
-                let mut machine = Machine::new_with_empty_env(ast);
-                machine.run();
-                // Notice we have not deal with precedence yet
-                assert_eq!(20, machine.get_expression().value());
-            },
-            _ => unreachable!(),
-        };
+    for arg in env::args().skip(1) {
+        let mut f = File::open(&arg).expect(&format!("file {} not found", arg));
+        let mut content = String::new();
+        f.read_to_string(&mut content).expect(&format!("Error in reading file {}", arg));
+        parse_simple(&content);
     }
+}
+
+fn parse_simple(content: &str) {
+    let pair = SimpleParser::parse(Rule::simple, content)
+                    .unwrap_or_else(|e| panic!("{}", e))
+                    .next().unwrap();
+    let ast = build_stats(pair);
+    let mut machine = Machine::new_with_empty_env(ast);
+    machine.run();
 }
 
 fn build_assign(pair: Pair<Rule>) -> Box<Node> {
@@ -199,7 +204,7 @@ mod tests {
 
     #[test]
     fn test_simpleparser_stats() {
-        let pair = SimpleParser::parse(Rule::stats, "x = 1; while (x < 5) { x = x * 3; };")
+        let pair = SimpleParser::parse(Rule::stats, "x = 1; while \n (x < 5) { x = x * 3; };")
                      .unwrap_or_else(|e| panic!("{}", e))
                      .next().unwrap();
         match pair.as_rule() {
