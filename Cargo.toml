@@ -6,6 +6,7 @@ authors = ["yodalee <lc85301@gmail.com>"]
 [dependencies]
 pest = "^1.0"
 pest_derive = "^1.0"
+lazy_static = "1.0.0"
 
 [lib]
 name = "computationbook"

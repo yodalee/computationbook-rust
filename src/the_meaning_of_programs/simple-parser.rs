@@ -2,12 +2,14 @@ extern crate computationbook;
 extern crate pest;
 #[macro_use]
 extern crate pest_derive;
+#[macro_use]
+extern crate lazy_static;
 
 use computationbook::the_meaning_of_programs::simple::syntax::{Node};
 use computationbook::the_meaning_of_programs::simple::machine::{Machine};
-use computationbook::the_meaning_of_programs::simple::environment::{Environment};
 use pest::Parser;
 use pest::iterators::{Pair};
+use pest::prec_climber::{Assoc, PrecClimber, Operator};
 use std::env;
 use std::fs::File;
 use std::io::prelude::*;
@@ -40,13 +42,13 @@ fn parse_simple(content: &str) {
 fn build_assign(pair: Pair<Rule>) -> Box<Node> {
     let mut inner = pair.into_inner();
     let lhs = inner.next().unwrap().into_span().as_str();
-    let rhs = build_expr(inner.next().unwrap());
+    let rhs = climb(inner.next().unwrap());
     Node::assign(lhs, rhs)
 }
 
 fn build_if(pair: Pair<Rule>) -> Box<Node> {
     let mut inner = pair.into_inner();
-    let cond = build_expr(inner.next().unwrap());
+    let cond = climb(inner.next().unwrap());
     let thenstmt = build_stats(inner.next().unwrap());
     match inner.next() {
         Some(stmt) => Node::if_cond_else(cond, thenstmt, build_stats(stmt)),
@@ -56,30 +58,34 @@ fn build_if(pair: Pair<Rule>) -> Box<Node> {
 
 fn build_while(pair: Pair<Rule>) -> Box<Node> {
     let mut inner = pair.into_inner();
-    let cond = build_expr(inner.next().unwrap());
+    let cond = climb(inner.next().unwrap());
     let stmt = build_stats(inner.next().unwrap());
     Node::while_node(cond, stmt)
 }
 
-fn build_expr(pair: Pair<Rule>) -> Box<Node> {
-    let mut inner = pair.into_inner();
-    let mut lhs = build_factor(inner.next().unwrap());
-    loop {
-        let op = inner.next();
-        match op {
-            Some(op) => {
-                let rhs = build_factor(inner.next().unwrap());
-                lhs = match op.as_rule() {
-                    Rule::op_add => Node::add(lhs, rhs),
-                    Rule::op_mul => Node::multiply(lhs, rhs),
-                    Rule::op_lt  => Node::lessthan(lhs, rhs),
-                    _ => unreachable!(),
-                }
-            },
-            None => break,
-        }
+lazy_static! {
+    static ref PREC_CLIMBER: PrecClimber<Rule> = build_precedence_climber();
+}
+
+fn build_precedence_climber() -> PrecClimber<Rule> {
+    PrecClimber::new(vec![
+        Operator::new(Rule::op_lt,  Assoc::Left),
+        Operator::new(Rule::op_add, Assoc::Left),
+        Operator::new(Rule::op_mul, Assoc::Left)
+    ])
+}
+
+fn infix_rule(lhs: Box<Node>, pair: Pair<Rule>, rhs: Box<Node>) -> Box<Node> {
+    match pair.as_rule() {
+        Rule::op_add => Node::add(lhs, rhs),
+        Rule::op_mul => Node::multiply(lhs, rhs),
+        Rule::op_lt => Node::lessthan(lhs, rhs),
+        _ => unreachable!(),
     }
-    lhs
+}
+
+pub fn climb(pair: Pair<Rule>) -> Box<Node> {
+    PREC_CLIMBER.climb(pair.into_inner(), build_factor, infix_rule)
 }
 
 fn build_stats(pair: Pair<Rule>) -> Box<Node> {
@@ -108,6 +114,7 @@ fn build_factor(pair: Pair<Rule>) -> Box<Node> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use computationbook::the_meaning_of_programs::simple::environment::{Environment};
 
     #[test]
     fn test_simpleparser_expr() {
@@ -116,11 +123,11 @@ mod tests {
                     .next().unwrap();
         match pair.as_rule() {
             Rule::expr => {
-                let ast = build_expr(pair);
+                let ast = climb(pair);
                 let mut machine = Machine::new_with_empty_env(ast);
                 machine.run();
                 // Notice we have not deal with precedence yet
-                assert_eq!(20, machine.get_expression().value());
+                assert_eq!(14, machine.get_expression().value());
             },
             _ => unreachable!(),
         };
