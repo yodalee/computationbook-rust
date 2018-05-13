@@ -18,7 +18,7 @@ path = "src/programming_with_nothing/fizzbuzz.rs"
 
 [[bin]]
 name = "lambda_calculus"
-path = "src/programming_with_nothing/lambda_calculus.rs"
+path = "src/programming_with_nothing/lambda/lambda_calculus.rs"
 
 [[bin]]
 name = "simple_parser"
