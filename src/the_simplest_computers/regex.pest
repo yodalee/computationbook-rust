@@ -1,0 +1,20 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+
+whitespace = _{ " " | "\n" }
+
+choose = { concat_or_empty ~ "|" ~ choose | concat_or_empty }
+
+concat_or_empty = _{ concat | empty }
+
+concat = { repeat ~ concat | repeat }
+
+empty = { "" }
+
+op_repeat = { "*" }
+repeat = { brackets ~ op_repeat | brackets }
+
+brackets = _{ "(" ~ choose ~ ")" | alpha }
+
+regex = _{ soi ~ choose ~ eoi }
+
+

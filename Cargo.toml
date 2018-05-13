@@ -23,3 +23,7 @@ path = "src/programming_with_nothing/lambda_calculus.rs"
 [[bin]]
 name = "simple_parser"
 path = "src/the_meaning_of_programs/simple-parser.rs"
+
+[[bin]]
+name = "regex_parser"
+path = "src/the_simplest_computers/regex-parser.rs"
