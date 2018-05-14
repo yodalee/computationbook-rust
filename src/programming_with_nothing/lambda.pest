@@ -1,0 +1,11 @@
+alpha = { 'a'..'z' }
+
+whitespace = _{ " " | "\n" }
+
+expression = _{ call | variable | function }
+
+call = { (variable | function) ~ ("[" ~ expression ~ "]")+ }
+
+variable = @{ alpha+ }
+
+function = { "->" ~ alpha+ ~ "{" ~ expression ~ "}" }
