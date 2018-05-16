@@ -3,6 +3,11 @@ name = "computationbook_rust"
 version = "0.1.0"
 authors = ["yodalee <lc85301@gmail.com>"]
 
+[dependencies]
+pest = "^1.0"
+pest_derive = "^1.0"
+lazy_static = "1.0.0"
+
 [lib]
 name = "computationbook"
 path = "src/lib.rs"
@@ -13,4 +18,16 @@ path = "src/programming_with_nothing/fizzbuzz.rs"
 
 [[bin]]
 name = "lambda_calculus"
-path = "src/programming_with_nothing/lambda_calculus.rs"
+path = "src/programming_with_nothing/lambda/lambda_calculus.rs"
+
+[[bin]]
+name = "simple_parser"
+path = "src/the_meaning_of_programs/simple-parser.rs"
+
+[[bin]]
+name = "regex_parser"
+path = "src/the_simplest_computers/regex-parser.rs"
+
+[[bin]]
+name = "lambda_parser"
+path = "src/programming_with_nothing/lambda-parser.rs"

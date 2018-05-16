@@ -1,0 +1,27 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+
+whitespace = _{ " " | "\n" }
+
+variable = @ { (alpha) ~ (alpha | digit)* }
+number = @ { (digit)+ }
+
+op_add = { "+" }
+op_mul = { "*" }
+op_lt  = { "<" }
+op_binary = _ {op_add | op_mul | op_lt }
+
+factor = _{ (variable | number) }
+expr = { factor ~ (op_binary ~ factor)* }
+
+stat_assign = { variable ~ "=" ~ expr ~ ";" }
+stat_while = { "while" ~ "(" ~ expr ~ ")" ~ "{" ~ stats ~ "}" }
+stat_if = { ("if" ~ "(" ~ expr ~ ")" ~ "{" ~ stats ~ "}" ~ "else" ~ "{" ~ stats ~ "}" ) |
+            ("if" ~ "(" ~ expr ~ ")" ~ "{" ~ stats ~ "}") }
+
+stat = _{ ( stat_if | stat_while | stat_assign ) }
+
+stats = { (stat)* }
+
+simple = _{ soi ~ stats ~ eoi }
+
