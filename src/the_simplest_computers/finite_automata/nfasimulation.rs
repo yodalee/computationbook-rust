@@ -17,10 +17,15 @@ impl<T: Eq + Clone + Hash> NFASimulation<T> {
         }
     }
 
-    pub fn next_state (&self, state: &HashSet<T>, c: char) -> HashSet<T> {
-        let mut nfa = self.nfa_design.to_nfa_with_state(state);
+    pub fn next_state (&self, states: &HashSet<T>, c: char) -> HashSet<T> {
+        let mut nfa = self.nfa_design.to_nfa_with_state(states);
         nfa.read_character(c);
         nfa.current_state()
+    }
+
+    pub fn rule_for(&self, states: &HashSet<T>) -> Vec<FARule<HashSet<T>>> {
+        let alphabet = self.nfa_design.rulebook().alphabet();
+        alphabet.iter().map(|&c| FARule::new(states, c, &self.next_state(states, c))).collect()
     }
 }
 

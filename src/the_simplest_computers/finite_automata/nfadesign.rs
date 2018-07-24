@@ -44,5 +44,6 @@ impl<T: Eq + Clone + Hash> NFADesign<T> {
 
     pub fn start_state(&self) -> T { self.start_state.clone() }
     pub fn accept_state(&self) -> HashSet<T> { self.accept_states.clone() }
+    pub fn rulebook(&self) -> NFARulebook<T> { self.rulebook.clone() }
     pub fn rules(&self) -> Vec<FARule<T>> { self.rulebook.rules() }
 }

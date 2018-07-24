@@ -202,4 +202,38 @@ mod tests {
         assert!(hashset_eq(&result4, &to_hashset(&[1,2,3])));
         assert!(hashset_eq(&result5, &to_hashset(&[1,2])));
     }
+
+    #[test]
+    fn test_nfa_simulation_rule_for() {
+        let rulebook = NFARulebook::new(vec![
+            FARule::new(&1, 'a',  &1), FARule::new(&1, 'a',  &2),
+            FARule::new(&1, '\0', &2), FARule::new(&2, 'b',  &3),
+            FARule::new(&3, 'b',  &1), FARule::new(&3, '\0', &2)
+        ]);
+        let alphabet = rulebook.alphabet();
+        assert_eq!(&alphabet, &['a','b']);
+
+        let nfa_design = NFADesign::new(&1, &to_hashset(&[3]), &rulebook);
+        let nfa_simulation = NFASimulation::new(&nfa_design);
+        let result1 = nfa_simulation.rule_for(&to_hashset(&[1,2]));
+        let ans1 = vec![
+            FARule::new(&to_hashset(&[1,2]), 'a', &to_hashset(&[1,2])),
+            FARule::new(&to_hashset(&[1,2]), 'b', &to_hashset(&[2,3]))
+        ];
+        let result2 = nfa_simulation.rule_for(&to_hashset(&[2,3]));
+        let ans2 = vec![
+            FARule::new(&to_hashset(&[2,3]), 'a', &to_hashset(&[])),
+            FARule::new(&to_hashset(&[2,3]), 'b', &to_hashset(&[1,2,3]))
+        ];
+        assert!(result1.iter().zip(ans1.iter())
+            .all(|(ref rule1, ref rule2)|
+                 rule1.character == rule2.character &&
+                 hashset_eq(&rule1.state, &rule2.state) &&
+                 hashset_eq(&rule1.next_state, &rule2.next_state)));
+        assert!(result2.iter().zip(ans2.iter())
+            .all(|(ref rule1, ref rule2)|
+                 rule1.character == rule2.character &&
+                 hashset_eq(&rule1.state, &rule2.state) &&
+                 hashset_eq(&rule1.next_state, &rule2.next_state)));
+    }
 }
