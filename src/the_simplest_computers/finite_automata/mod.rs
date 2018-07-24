@@ -38,10 +38,10 @@ mod tests {
                 FARule::new(&2, 'a', &2), FARule::new(&2, 'b', &3),
                 FARule::new(&3, 'a', &3), FARule::new(&3, 'b', &3)
             ]);
-        assert!(DFA::new(1, vec![1, 3], &rulebook).accepting());
-        assert!(!DFA::new(1, vec![3], &rulebook).accepting());
+        assert!(DFA::new(1, &vec![1, 3], &rulebook).accepting());
+        assert!(!DFA::new(1, &vec![3], &rulebook).accepting());
 
-        let mut dfa = DFA::new(1, vec![3], &rulebook);
+        let mut dfa = DFA::new(1, &vec![3], &rulebook);
         assert!(!dfa.accepting());
         dfa.read_character('b');
         assert!(!dfa.accepting());
@@ -55,7 +55,7 @@ mod tests {
         dfa.read_character('b');
         assert!(dfa.accepting());
 
-        dfa = DFA::new(1, vec![3], &rulebook);
+        dfa = DFA::new(1, &vec![3], &rulebook);
         assert!(!dfa.accepting());
         dfa.read_string("baaab");
         assert!(dfa.accepting());
@@ -69,7 +69,7 @@ mod tests {
                 FARule::new(&2, 'a', &2), FARule::new(&2, 'b', &3),
                 FARule::new(&3, 'a', &3), FARule::new(&3, 'b', &3)
             ]);
-        let dfa_design = DFADesign::new(1, vec![3], &rulebook);
+        let dfa_design = DFADesign::new(1, &vec![3], &rulebook);
         assert!(!dfa_design.accept("a"));
         assert!(!dfa_design.accept("baa"));
         assert!(dfa_design.accept("baba"));
