@@ -89,9 +89,9 @@ mod tests {
         let ans2 = to_hashset(&[1,3]);
         let result3 = rulebook.next_states(&to_hashset(&[1,3]), 'b');
         let ans3 = to_hashset(&[1,2,4]);
-        assert!(result1.is_subset(&ans1) && result1.is_superset(&ans1));
-        assert!(result2.is_subset(&ans2) && result2.is_superset(&ans2));
-        assert!(result3.is_subset(&ans3) && result3.is_superset(&ans3));
+        assert!(hashset_eq(&result1, &ans1));
+        assert!(hashset_eq(&result2, &ans2));
+        assert!(hashset_eq(&result3, &ans3));
     }
 
     #[test]
@@ -147,13 +147,36 @@ mod tests {
         let ans1 = to_hashset(&[2,4]);
         let result2 = rulebook.follow_free_moves(&to_hashset(&[1]));
         let ans2 = to_hashset(&[1,2,4]);
-        assert!(result1.is_subset(&ans1) && result1.is_superset(&ans1));
-        assert!(result2.is_subset(&ans2) && result2.is_superset(&ans2));
+        assert!(hashset_eq(&result1, &ans1));
+        assert!(hashset_eq(&result2, &ans2));
 
         let nfa_design = NFADesign::new(&1, &to_hashset(&[2, 4]), &rulebook);
         assert!(nfa_design.accept("aa"));
         assert!(nfa_design.accept("aaa"));
         assert!(!nfa_design.accept("aaaaa"));
         assert!(nfa_design.accept("aaaaaa"));
+    }
+
+    #[test]
+    fn test_nfa_start_state() {
+        let rulebook = NFARulebook::new(vec![
+            FARule::new(&1, 'a',  &1), FARule::new(&1, 'a',  &2),
+            FARule::new(&1, '\0', &2), FARule::new(&2, 'b',  &3),
+            FARule::new(&3, 'b',  &1), FARule::new(&3, '\0', &2)
+        ]);
+        let nfa_design = NFADesign::new(&1, &to_hashset(&[3]), &rulebook);
+        let result1 = nfa_design.to_nfa().current_state();
+        let ans1 = to_hashset(&[1, 2]);
+        let result2 = nfa_design.to_nfa_with_state(&to_hashset(&[2])).current_state();
+        let ans2 = to_hashset(&[2]);
+        let result3 = nfa_design.to_nfa_with_state(&to_hashset(&[3])).current_state();
+        let ans3 = to_hashset(&[3, 2]);
+        assert!(hashset_eq(&result1, &ans1));
+        assert!(hashset_eq(&result2, &ans2));
+        assert!(hashset_eq(&result3, &ans3));
+
+        let mut nfa = nfa_design.to_nfa_with_state(&to_hashset(&[2,3]));
+        nfa.read_character('b');
+        assert!(hashset_eq(&nfa.current_state(), &to_hashset(&[1,2,3])));
     }
 }

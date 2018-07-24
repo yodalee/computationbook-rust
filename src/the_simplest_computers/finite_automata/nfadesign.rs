@@ -24,11 +24,19 @@ impl<T: Eq + Clone + Hash> NFADesign<T> {
         }
     }
 
-    pub fn accept(&self, s: &str) -> bool {
-        let mut nfa = NFA::new(
-            &to_hashset(&[self.start_state.clone()]),
+    pub fn to_nfa_with_state(&self, start_state: &HashSet<T>) -> NFA<T> {
+        NFA::new(
+            start_state,
             &self.accept_states,
-            &self.rulebook);
+            &self.rulebook)
+    }
+
+    pub fn to_nfa(&self) -> NFA<T> {
+        self.to_nfa_with_state(&to_hashset(&[self.start_state.clone()]))
+    }
+
+    pub fn accept(&self, s: &str) -> bool {
+        let mut nfa = self.to_nfa();
         nfa.read_string(s);
         nfa.accepting()
     }
