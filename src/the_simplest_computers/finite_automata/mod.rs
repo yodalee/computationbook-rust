@@ -5,6 +5,7 @@ pub mod dfadesign;
 pub mod nfarulebook;
 pub mod nfa;
 pub mod nfadesign;
+pub mod nfasimulation;
 
 #[cfg(test)]
 mod tests {
@@ -15,6 +16,7 @@ mod tests {
     use super::nfarulebook::*;
     use super::nfa::*;
     use super::nfadesign::*;
+    use super::nfasimulation::*;
     use helper::*;
 
     #[test]
@@ -178,5 +180,26 @@ mod tests {
         let mut nfa = nfa_design.to_nfa_with_state(&to_hashset(&[2,3]));
         nfa.read_character('b');
         assert!(hashset_eq(&nfa.current_state(), &to_hashset(&[1,2,3])));
+    }
+
+    #[test]
+    fn test_nfa_simulation() {
+        let rulebook = NFARulebook::new(vec![
+            FARule::new(&1, 'a',  &1), FARule::new(&1, 'a',  &2),
+            FARule::new(&1, '\0', &2), FARule::new(&2, 'b',  &3),
+            FARule::new(&3, 'b',  &1), FARule::new(&3, '\0', &2)
+        ]);
+        let nfa_design = NFADesign::new(&1, &to_hashset(&[3]), &rulebook);
+        let nfa_simulation = NFASimulation::new(&nfa_design);
+        let result1 = nfa_simulation.next_state(&to_hashset(&[1,2]), 'a');
+        let result2 = nfa_simulation.next_state(&to_hashset(&[1,2]), 'b');
+        let result3 = nfa_simulation.next_state(&to_hashset(&[2,3]), 'b');
+        let result4 = nfa_simulation.next_state(&to_hashset(&[1,2,3]), 'b');
+        let result5 = nfa_simulation.next_state(&to_hashset(&[1,2,3]), 'a');
+        assert!(hashset_eq(&result1, &to_hashset(&[1,2])));
+        assert!(hashset_eq(&result2, &to_hashset(&[2,3])));
+        assert!(hashset_eq(&result3, &to_hashset(&[1,2,3])));
+        assert!(hashset_eq(&result4, &to_hashset(&[1,2,3])));
+        assert!(hashset_eq(&result5, &to_hashset(&[1,2])));
     }
 }

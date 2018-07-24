@@ -7,6 +7,7 @@ use super::farule::{FARule};
 use super::nfa::{NFA};
 use super::nfarulebook::{NFARulebook};
 
+#[derive(Clone)]
 pub struct NFADesign<T> {
     start_state: T,
     accept_states: HashSet<T>,
