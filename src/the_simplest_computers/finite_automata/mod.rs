@@ -19,6 +19,8 @@ mod tests {
     use super::nfasimulation::*;
     use helper::*;
 
+    use std::collections::HashSet;
+
     #[test]
     fn test_dfa_rulebook() {
         let rulebook = DFARulebook::new(
@@ -235,5 +237,25 @@ mod tests {
                  rule1.character == rule2.character &&
                  hashset_eq(&rule1.state, &rule2.state) &&
                  hashset_eq(&rule1.next_state, &rule2.next_state)));
+    }
+
+    #[test]
+    fn test_nfa_simulation_discover() {
+        let rulebook = NFARulebook::new(vec![
+            FARule::new(&1, 'a',  &1), FARule::new(&1, 'a',  &2),
+            FARule::new(&1, '\0', &2), FARule::new(&2, 'b',  &3),
+            FARule::new(&3, 'b',  &1), FARule::new(&3, '\0', &2)
+        ]);
+        let nfa_design = NFADesign::new(&1, &to_hashset(&[3]), &rulebook);
+        let nfa_simulation = NFASimulation::new(&nfa_design);
+
+        let start_state = nfa_design.to_nfa().current_state();
+        println!("{:?}", start_state);
+        // let startset = StateSet::new(&start_state);
+        let mut stateset = HashSet::new();
+        stateset.insert(StateSet::new(&start_state));
+
+        nfa_simulation.discover_states_and_rules(&mut stateset);
+        panic!();
     }
 }
