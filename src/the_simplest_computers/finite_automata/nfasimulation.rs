@@ -23,30 +23,29 @@ impl<T: Debug + Eq + Clone + Hash + Ord> NFASimulation<T> {
         nfa.current_state()
     }
 
-    pub fn rule_for(&self, states: &HashSet<T>) -> Vec<FARule<HashSet<T>>> {
+    pub fn rule_for(&self, states: &HashSet<T>) -> Vec<FARule<StateSet<T>>> {
+        let start_set = StateSet::new(states);
         let alphabet = self.nfa_design.rulebook().alphabet();
-        alphabet.iter().map(|&c| FARule::new(states, c, &self.next_state(states, c))).collect()
+        alphabet.iter()
+                .map(|&c| FARule::new(&start_set, c, &StateSet::new(&self.next_state(states, c))))
+                .collect()
     }
 
-    pub fn discover_states_and_rules(&self, mut states: &mut HashSet<StateSet<T>>) {
+    pub fn discover_states_and_rules(&self, mut states: &mut HashSet<StateSet<T>>)
+            -> (HashSet<StateSet<T>>, Vec<FARule<StateSet<T>>>) {
         let rules: Vec<_>  = states.iter()
                              .flat_map(|state| self.rule_for(&state.0))
                              .collect::<Vec<_>>();
-        println!("{:?}", rules);
-        let more_states: Vec<_> = rules.iter()
+        let more_states: HashSet<StateSet<T>> = rules.iter()
                                   .map(|rule| rule.follow())
                                   .collect();
-        let mut more_states_set = HashSet::new();
-        for stateset in more_states.iter() {
-            more_states_set.insert(StateSet::new(&stateset));
-        }
-        if more_states_set.is_subset(states) {
-            println!("XD");
+        if more_states.is_subset(states) {
+            (states.clone(), rules)
         } else {
-            for state in more_states_set.iter() {
+            for state in more_states.iter() {
                 states.insert(state.clone());
             }
-            self.discover_states_and_rules(&mut states);
+            self.discover_states_and_rules(&mut states)
         }
     }
 }
