@@ -33,7 +33,7 @@ impl<T: Debug + Eq + Clone + Hash + Ord> NFASimulation<T> {
                 .collect()
     }
 
-    pub fn discover_states_and_rules(&self, mut states: &mut HashSet<StateSet<T>>)
+    pub fn discover_states_and_rules(&self, states: &HashSet<StateSet<T>>)
             -> (HashSet<StateSet<T>>, Vec<FARule<StateSet<T>>>) {
         let rules: Vec<_>  = states.iter()
                              .flat_map(|state| self.rule_for(&state.0))
@@ -44,10 +44,8 @@ impl<T: Debug + Eq + Clone + Hash + Ord> NFASimulation<T> {
         if more_states.is_subset(states) {
             (states.clone(), rules)
         } else {
-            for state in more_states.iter() {
-                states.insert(state.clone());
-            }
-            self.discover_states_and_rules(&mut states)
+            let mut union = states.union(&more_states).cloned().collect();
+            self.discover_states_and_rules(&mut union)
         }
     }
 
