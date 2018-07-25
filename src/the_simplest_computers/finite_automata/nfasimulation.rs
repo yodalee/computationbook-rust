@@ -5,6 +5,8 @@ use std::fmt::Debug;
 use super::farule::{FARule};
 use super::nfadesign::{NFADesign};
 use super::stateset::{StateSet};
+use super::dfadesign::{DFADesign};
+use super::dfarulebook::{DFARulebook};
 
 pub struct NFASimulation<T> {
     nfa_design: NFADesign<T>
@@ -47,6 +49,17 @@ impl<T: Debug + Eq + Clone + Hash + Ord> NFASimulation<T> {
             }
             self.discover_states_and_rules(&mut states)
         }
+    }
+
+    pub fn to_dfa_design(&self) -> DFADesign<StateSet<T>> {
+        let start_state = self.nfa_design.to_nfa().current_state();
+        let mut start_set = HashSet::new();
+        start_set.insert(StateSet::new(&start_state));
+        let (states, rules) = self.discover_states_and_rules(&mut start_set);
+        let accept_state = states.into_iter()
+                                 .filter(|state| self.nfa_design.to_nfa_with_state(&state.0).accepting())
+                                 .collect();
+        DFADesign::new(StateSet::new(&start_state), &accept_state, &DFARulebook::new(rules))
     }
 }
 
