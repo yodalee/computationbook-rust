@@ -6,6 +6,7 @@ pub mod nfarulebook;
 pub mod nfa;
 pub mod nfadesign;
 pub mod nfasimulation;
+pub mod stateset;
 
 #[cfg(test)]
 mod tests {
@@ -17,6 +18,7 @@ mod tests {
     use super::nfa::*;
     use super::nfadesign::*;
     use super::nfasimulation::*;
+    use super::stateset::*;
     use helper::*;
 
     use std::collections::HashSet;
