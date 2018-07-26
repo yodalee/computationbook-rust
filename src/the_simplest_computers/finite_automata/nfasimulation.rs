@@ -19,17 +19,17 @@ impl<T: Debug + Eq + Clone + Hash + Ord> NFASimulation<T> {
         }
     }
 
-    pub fn next_state (&self, states: &HashSet<T>, c: char) -> HashSet<T> {
+    pub fn next_state (&self, states: &HashSet<T>, c: char) -> StateSet<T> {
         let mut nfa = self.nfa_design.to_nfa_with_state(states);
         nfa.read_character(c);
-        nfa.current_state()
+        StateSet::new(&nfa.current_state())
     }
 
     pub fn rule_for(&self, states: &HashSet<T>) -> Vec<FARule<StateSet<T>>> {
         let start_set = StateSet::new(states);
         let alphabet = self.nfa_design.rulebook().alphabet();
         alphabet.iter()
-                .map(|&c| FARule::new(&start_set, c, &StateSet::new(&self.next_state(states, c))))
+                .map(|&c| FARule::new(&start_set, c, &self.next_state(states, c)))
                 .collect()
     }
 

@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
+use std::fmt;
 
 use helper::{hashset_eq};
 
@@ -29,5 +30,11 @@ impl<T: Eq + Clone + Hash + Ord> Hash for StateSet<T> {
         for s in a.iter() {
             s.hash(state);
         }
+    }
+}
+
+impl<T: fmt::Debug + Eq + Hash> fmt::Debug for StateSet<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "StateSet: {:?}", self.0)
     }
 }

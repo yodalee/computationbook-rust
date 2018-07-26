@@ -200,11 +200,11 @@ mod tests {
         let result3 = nfa_simulation.next_state(&to_hashset(&[2,3]), 'b');
         let result4 = nfa_simulation.next_state(&to_hashset(&[1,2,3]), 'b');
         let result5 = nfa_simulation.next_state(&to_hashset(&[1,2,3]), 'a');
-        assert!(hashset_eq(&result1, &to_hashset(&[1,2])));
-        assert!(hashset_eq(&result2, &to_hashset(&[2,3])));
-        assert!(hashset_eq(&result3, &to_hashset(&[1,2,3])));
-        assert!(hashset_eq(&result4, &to_hashset(&[1,2,3])));
-        assert!(hashset_eq(&result5, &to_hashset(&[1,2])));
+        assert_eq!(&result1, &StateSet::new(&to_hashset(&[1,2])));
+        assert_eq!(&result2, &StateSet::new(&to_hashset(&[2,3])));
+        assert_eq!(&result3, &StateSet::new(&to_hashset(&[1,2,3])));
+        assert_eq!(&result4, &StateSet::new(&to_hashset(&[1,2,3])));
+        assert_eq!(&result5, &StateSet::new(&to_hashset(&[1,2])));
     }
 
     #[test]
