@@ -12,6 +12,17 @@ impl<T: Eq + Clone + Hash> NFARulebook<T> {
     pub fn new(rules: Vec<FARule<T>>) -> Self {
         NFARulebook{rules: rules}
     }
+
+    pub fn alphabet(&self) -> Vec<char> {
+        let mut alphabet: Vec<_> = self.rules.iter()
+                  .map(|rule| rule.character)
+                  .filter(|&c| c != '\0')
+                  .collect();
+        alphabet.sort();
+        alphabet.dedup();
+        alphabet
+    }
+
     pub fn next_states(&self, states: &HashSet<T>, character: char) -> HashSet<T> {
         let mut next_states: HashSet<T> = HashSet::new();
         for state in states.iter() {

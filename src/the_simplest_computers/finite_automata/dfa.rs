@@ -9,7 +9,7 @@ pub struct DFA<T> {
 
 impl<T: Eq + Clone> DFA<T> {
     pub fn new(current_state: T,
-               accept_states: Vec<T>,
+               accept_states: &Vec<T>,
                rulebook: &DFARulebook<T>) -> Self {
         DFA {
             current_state: current_state,

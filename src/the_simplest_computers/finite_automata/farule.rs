@@ -2,14 +2,14 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use std::fmt::Result;
 
-#[derive(Clone)]
+#[derive(Debug,Clone)]
 pub struct FARule<T> {
     pub state: T,
-    character: char,
+    pub character: char,
     pub next_state: T,
 }
 
-impl<T: Eq + Clone> FARule<T> {
+impl<T: Eq + PartialEq + Clone> FARule<T> {
     pub fn new(state: &T, character: char, next_state: &T) -> Self {
         FARule {
             state: state.clone(),
