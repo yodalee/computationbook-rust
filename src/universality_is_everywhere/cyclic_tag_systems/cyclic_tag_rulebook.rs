@@ -22,7 +22,7 @@ impl CyclicTagRulebook {
     pub fn next_string(&mut self, s: &str) -> String {
         let newstr = self.follow_next_rule(s);
         unsafe {
-            newstr.slice_unchecked(DELETION_NUMBER, newstr.len())
+            newstr.get_unchecked(DELETION_NUMBER..newstr.len())
                      .to_string()
         }
     }

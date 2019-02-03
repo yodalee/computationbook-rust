@@ -18,7 +18,7 @@ impl TagRulebook {
         match self.rule_for(input) {
             Some(rule) => unsafe {
                 let newstr = rule.follow(input);
-                newstr.slice_unchecked(self.deletion_number as usize, newstr.len())
+                newstr.get_unchecked(self.deletion_number as usize..newstr.len())
                     .to_string()
             },
             None => "".to_string(),
