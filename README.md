@@ -4,19 +4,12 @@ Understanding Computation example code in Rust
 The example code of [Understanding Computation](http://computationbook.com/), an O’Reilly book about computation theory.
 Re-implement by language [Rust](https://github.com/rust-lang/rust).
 
-# Reading guide:
-
-Below is the link table to implementation in each chapter:
-Most of the code is implemented in testing form, you can find them in mod.rs.
-To view the test result, use following command:
+# Build:
+Use
 ```
-RUST_TEST_THREADS=1 cargo test -- --nocapture
+cargo build
 ```
-You can specify keyword in testing name in the command line.  
-
-There are places incomplete, including:
-* Chapter 7: recursive partial function.
-* Chapter 7: iota, which directly copy from ski calculus
+to build the code.
 
 # Table of Content:
 
@@ -39,7 +32,7 @@ There are places incomplete, including:
     * [the lambda calculus](src/programming_with_nothing/lambda_calculus.rs)
     * [lambda parser](src/programming_with_nothing/lambda-parser.rs)
 * Chapter 7: [Universality is Everywhere](src/universality_is_everywhere)
-    * partial recursive functions: wait for implementation
+    * [partial recursive function](src/universality_is_everywhere/partial_recursive_function)
     * [ski calculus](src/universality_is_everywhere/ski_calculus)
     * [iota calculus](src/universality_is_everywhere/iota)
     * [tag systems](src/universality_is_everywhere/tag_systems)
@@ -48,3 +41,29 @@ There are places incomplete, including:
 * Chapter 9: [Programming in Toyland](src/programming_in_toyland)
     * [abstract interpretation: arithmetic with signs](src/programming_in_toyland/signs)
     * [type systems](src/programming_in_toyland/types)
+
+# Reading guide:
+
+Most of the example code is implemented in testing form, you can find them in mod.rs.
+To view the test result, use following command:
+```
+RUST_TEST_THREADS=1 cargo test -- --nocapture
+```
+You can specify keyword in testing name in the command line.  
+
+For example:
+```
+$ RUST_TEST_THREADS=1 cargo test -- --nocapture ski_swap
+running 1 test
+test universality_is_everywhere::ski_calculus::tests::test_ski_swap ... swap: S[K[S[I]]][K]
+S[K[S[I]]][K][x][y]
+K[S[I]][x][K[x]][y]
+S[I][K[x]][y]
+I[y][K[x][y]]
+y[K[x][y]]
+y[x]
+ok
+```
+
+If you find any bugs or other programs with the code, please [open an issue](https://github.com/yodalee/computationbook-rust/issues/new).
+
