@@ -36,9 +36,6 @@ fn build_lambda(pair: Pair<Rule>) -> Box<Lambda> {
             let mut inner = pair.into_inner();
             let fst = build_lambda(inner.next().unwrap());
             let args : Vec<_> = inner.into_iter().map(|pair| build_lambda(pair)).collect();
-            for i in &args {
-                println!("{}", i);
-            }
             args.iter().fold(fst, |l, r| Lambda::lccall(l, r.clone()))
         }
         Rule::variable => Lambda::lcvar(pair.into_span().as_str()),
@@ -62,9 +59,11 @@ mod tests {
                                        "-> x { x[x] }[-> y { y }]")
                     .unwrap_or_else(|e| panic!("{}", e))
                     .next().unwrap();
-        let expr = build_lambda(pair);
-        println!("{}", expr);
+        let mut expr = build_lambda(pair);
+        println!("expression: {}", expr);
+        expr = expr.reduce();
+        println!("reduce: {}", expr);
         assert_eq!("-> y { y }[-> y { y }]",
-                   format!("{}", expr.reduce()));
+                   format!("{}", expr));
     }
 }
